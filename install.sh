@@ -21,7 +21,6 @@ backups=(
   ".p10k.zsh"
   ".tmux.conf"
   ".zshrc"
-  # ".bashrc"
   ".vimrc"
 )
 
@@ -51,6 +50,9 @@ if [ -e $1 ] || [ $1 != "skipinstall" ]; then
   printf '\n\n####################################\n'
   printf 'installing oh my zsh...'
   printf '\n####################################\n\n'
+
+  echo "rm -rf ~/.oh-my-zsh"
+  rm -rf ~/.oh-my-zsh
 
   echo "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
   curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
