@@ -58,9 +58,9 @@ if [ -e $1 ] || [ $1 != "skipinstall" ]; then
   chsh -s `which zsh`
 
 
-  # install powerline10k
+  # install powerlevel10k
   printf '\n\n####################################\n'
-  printf 'installing powerline10k...'
+  printf 'installing powerlevel10k...'
   printf '\n####################################\n\n'
 
   echo "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
