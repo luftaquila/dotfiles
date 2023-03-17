@@ -20,7 +20,7 @@ backups=(
   ".p10k.zsh"
   ".tmux.conf"
   ".zshrc"
-  ".bashrc"
+  # ".bashrc"
   ".vimrc"
 )
 
