@@ -112,6 +112,7 @@ export LANG=en_US.UTF-8
 # export PATH="/usr/local/opt/llvm/bin:$PATH"
 eval $(thefuck --alias)
 
+alias vi='vim'
 alias v='vi'
 alias glg='git log --graph'
 alias gad='git add'

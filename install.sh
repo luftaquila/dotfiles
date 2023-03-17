@@ -146,5 +146,5 @@ cp -r ./.vim ~
 echo "git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-echo "vi -E -s -u ~/.vimrc +VundleInstall +qall"
-vi -E -s -u ~/.vimrc +VundleInstall +qall
+echo "vim -E -s -u ~/.vimrc +VundleInstall +qall"
+vim -E -s -u ~/.vimrc +VundleInstall +qall
