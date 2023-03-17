@@ -1,3 +1,6 @@
+" #########################################################
+"   VUNDLE
+" #########################################################
 set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -37,23 +40,17 @@ Plugin 'sjl/gundo.vim'
 call vundle#end()
 filetype plugin indent on
 
-filetype plugin on
-filetype on
 
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline_section_warning = ''
-let g:airline_powerline_fonts = 1
-let g:airline_theme = 'onedark'
+" #########################################################
+"   PROJECT SPECIFIC
+" #########################################################
+:command B !cd ~/workspace/builder/; ./build.py -r -l4 -d
+:command M !cd build; cmake -DBSP=stm32h743i-eval2 -DUSE_MISRA_CHECKER=1 ..; make check-misra > tmp_check-misra.txt; ../misc/scripts/report_misra.sh > tmp_report_misra.txt; bat tmp_report_misra.txt
 
-let g:NERDCreateDefaultMappings = 1
-let g:NERDSpaceDelims = 1
-let g:NERDCompactSexyComs = 1
-let g:NERDDefaultAlign = 'left'
 
-nmap tr :NERDTreeToggle<CR>
-
+" #########################################################
+"   DEFAULT SETTINGS
+" #########################################################
 syntax on
 set number
 set autoindent
@@ -63,6 +60,33 @@ set ruler
 set showcmd
 set cursorline
 set laststatus=2
+set hlsearch
+set showmatch
+set incsearch
+set ignorecase
+set smartcase
+set autowrite
+set autoread
+set hidden
+set history=1024
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+set shiftround
+set scrolloff=5
+set clipboard^=unnamed
+
+
+" #########################################################
+"   THEMES
+" #########################################################
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline_section_warning = ''
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'onedark'
 
 colorscheme onehalfdark
 hi Normal term=NONE cterm=NONE ctermbg=234 ctermfg=231 gui=NONE guibg=#1D1F21 guifg=#F8F8F2
@@ -71,31 +95,11 @@ hi LineNr term=underline cterm=NONE ctermbg=235 ctermfg=244 gui=NONE guibg=#2325
 set t_Co=256
 set termguicolors
 
-set hlsearch
-set showmatch
-set incsearch
-set ignorecase
-set smartcase
 
-set autowrite
-set autoread
-set hidden
-
-set history=1024
-
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-set expandtab
-set shiftround
-
-set scrolloff=5
-" set colorcolumn=80
-
-set clipboard^=unnamed
-
+" #########################################################
+"   CURSOR, WINDOW, TAB CONTROL
+" #########################################################
 nmap <Enter> o<ESC>
-nmap <S-Enter> O<ESC>
 
 nmap H :bp<CR>
 nmap L :bn<CR>
@@ -119,44 +123,6 @@ nmap <Tab>h :tabprev<CR>
 nmap <Tab>n :tabnew<CR>
 nmap <Tab>c :tabclose<CR>
 
-" edit from last position
-au BufReadPost *
-\ if line("'\"") > 0 && line("'\"") <= line("$") |
-\ exe "norm g`\"" |
-\ endif
-
-:command B !cd ~/workspace/builder/; python build.py
-:command M !cd build; cmake -DBSP=stm32h743i-eval2 -DUSE_MISRA_CHECKER=1 ..; make check-misra > tmp_check-misra.txt; ../misc/scripts/report_misra.sh > tmp_report_misra.txt; bat tmp_report_misra.txt
-
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
-
-set signcolumn=yes
-au VimEnter * GitGutterEnable
-au VimEnter * set updatetime=100
-autocmd ColorScheme * highlight! link SignColumn LineNr
-
-au VimEnter * ShowBadWhitespace
-
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-map z/ <Plug>(incsearch-fuzzy-/)
-map z? <Plug>(incsearch-fuzzy-?)
-map zg/ <Plug>(incsearch-fuzzy-stay)
-
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-
-let mapleader=','
-map <Leader> <Plug>(easymotion-prefix)
-map <Leader><Leader> <Plug>(easymotion-repeat)
-nmap <Leader>f <Plug>(easymotion-overwin-f)
-nmap <Leader>a <Plug>(easymotion-jumptoanywhere)
-
 :command VS :execute 'vs' | :norm <C-e><C-l>
 :cabbrev vs VS
 
@@ -166,6 +132,10 @@ nmap <Leader>a <Plug>(easymotion-jumptoanywhere)
 :command TERM :execute 'bo sp' | :res 20 | :term ++curwin
 :cabbrev term TERM
 
+
+" #########################################################
+"   CUSTOM COMMANDS
+" #########################################################
 :command SUDO :execute 'w !sudo tee %'
 :cabbrev sudo SUDO
 
@@ -175,9 +145,91 @@ nmap <Leader>a <Plug>(easymotion-jumptoanywhere)
 :command TAGEN :execute '!ctags -R'
 :cabbrev tagen TAGEN
 
+:command -nargs=1 G :let g:gitgutter_diff_base = '<args>' | :GitGutterAll
+
+
+" #########################################################
+"   SCRIPTS
+" #########################################################
+" edit from last position
+au BufReadPost *
+\ if line("'\"") > 0 && line("'\"") <= line("$") |
+\ exe "norm g`\"" |
+\ endif
+
+
+" #########################################################
+"   NERDTree
+" #########################################################
+let g:NERDCreateDefaultMappings = 1
+let g:NERDSpaceDelims = 1
+let g:NERDCompactSexyComs = 1
+let g:NERDDefaultAlign = 'left'
+
+nmap tr :NERDTreeToggle<CR>
+
+
+" #########################################################
+"   RAINBOW PARENTHESES
+" #########################################################
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+
+" #########################################################
+"   GIT GUTTER
+" #########################################################
+set signcolumn=yes
+au VimEnter * GitGutterEnable
+au VimEnter * set updatetime=100
+autocmd ColorScheme * highlight! link SignColumn LineNr
+let g:gitgutter_diff_base = 'HEAD'
+
+
+" #########################################################
+"   BAD WHITESPACE
+" #########################################################
+au VimEnter * ShowBadWhitespace
+
+
+" #########################################################
+"   INCSEARCH
+" #########################################################
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+map z/ <Plug>(incsearch-fuzzy-/)
+map z? <Plug>(incsearch-fuzzy-?)
+map zg/ <Plug>(incsearch-fuzzy-stay)
+
+
+" #########################################################
+"   CTRL-P
+" #########################################################
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP :pwd'
+
+
+" #########################################################
+"   EASYMOTION
+" #########################################################
+let mapleader=','
+map <Leader> <Plug>(easymotion-prefix)
+map <Leader><Leader> <Plug>(easymotion-repeat)
+nmap <Leader>f <Plug>(easymotion-overwin-f)
+nmap <Leader>a <Plug>(easymotion-jumptoanywhere)
+
+
+" #########################################################
+"   SESSION.VIM
+" #########################################################
 set sessionoptions-=buffers
 let g:session_autosave = 'yes'
 let g:session_autoload = 'no'
 let g:session_autosave_periodic = 1
 let g:session_autosave_silent = 1
+let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
+
