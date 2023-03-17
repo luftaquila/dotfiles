@@ -2,10 +2,8 @@
 
 packages=(
   "bat"
-  "ctags"
   "git"
   "htop"
-  "powerline-go"
   "ripgrep"
   "thefuck"
   "tmux"
