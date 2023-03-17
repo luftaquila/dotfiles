@@ -1,6 +1,7 @@
 #!/bin/bash
 
 packages=(
+  "curl"
   "bat"
   "git"
   "htop"
