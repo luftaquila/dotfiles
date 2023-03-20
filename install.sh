@@ -38,10 +38,10 @@ backups=(
   ".vimrc"
 )
 
+
 # install packages
-printf '\n\n'
 read -p "install system packages? (Y/n): " install
-if [ $install != 'n' ]; then
+if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
   printf '\n####################################\n'
   printf 'installing packages...'
   printf '\n####################################\n\n'
@@ -60,13 +60,13 @@ if [ $install != 'n' ]; then
     printf "unknown os $os!\n"
     exit -1
   fi
+  echo
 fi
 
 
 # create symbolic links
-printf '\n\n'
 read -p "create symbolic links? (Y/n): " install
-if [ $install != 'n' ]; then
+if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
   printf '\n\n####################################\n'
   printf 'creating symbolic links...'
   printf '\n####################################\n\n'
@@ -81,14 +81,15 @@ if [ $install != 'n' ]; then
     ln -s $(which batcat) ~/.local/bin/bat
 
   elif [ $os == 'mac' ]; then
+    echo
   fi
+  echo
 fi
 
 
 # install Oh My Zsh
-printf '\n\n'
 read -p "install Oh My Zsh? (Y/n): " install
-if [ $install != 'n' ]; then
+if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
   printf '\n\n####################################\n'
   printf 'installing oh my zsh...'
   printf '\n####################################\n\n'
@@ -101,50 +102,50 @@ if [ $install != 'n' ]; then
 
   echo "chsh -s `which zsh`"
   chsh -s `which zsh`
+  echo
 fi
 
 
 # install powerlevel10k
-printf '\n\n'
 read -p "install powerlevel10k? (Y/n): " install
-if [ $install != 'n' ]; then
+if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
   printf '\n\n####################################\n'
   printf 'installing powerlevel10k...'
   printf '\n####################################\n\n'
 
   echo "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+  echo
 fi
 
 
 # install rust
-printf '\n\n'
 read -p "install rust? (Y/n): " install
-if [ $install != 'n' ]; then
+if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
   printf '\n\n####################################\n'
   printf 'installing rust...'
   printf '\n####################################\n\n'
   echo "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh"
   curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+  echo
 fi
 
 
 # install rust cargo packages
-printf '\n\n'
 read -p "install rust cargo packages? (Y/n): " install
-if [ $install != 'n' ]; then
+if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
   printf '\n\n####################################\n'
   printf 'installing rust cargo packages...'
   printf '\n####################################\n\n'
   echo "cargo install ${rust_packages[*]}"
   cargo install ${rust_packages[*]}
+  echo
 fi
 
 
 # install dotfiles
-printf '\n\n'
-read -p "install dotfiles? (Y/n): " install
-if [ $install != 'n' ]; then
+read -p "install dotfiles?(Y/n): " install
+if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
   # create backups
   printf '\n\n####################################\n'
   printf 'creating backups...'
@@ -188,12 +189,12 @@ if [ $install != 'n' ]; then
     echo "ln -s `pwd`/$obj ~/$obj"
     ln -s `pwd`/$obj ~/$obj
   done
+  echo
 fi
 
 # install vim
-printf '\n\n'
-read -p "install VIM? (Y/n): " install
-if [ $install != 'n' ]; then
+read -p "install VIM?(Y/n): " install
+if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
   printf '\n\n####################################\n'
   printf 'installing VIM...'
   printf '\n####################################\n\n'
@@ -202,13 +203,13 @@ if [ $install != 'n' ]; then
   cd vim/src
   make
   make install
+  echo
 fi
 
 
 # configure vim
-printf '\n\n'
-read -p "configure VIM? (Y/n): " install
-if [ $install != 'n' ]; then
+read -p "configure VIM?(Y/n): " install
+if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
   printf '\n\n####################################\n'
   printf 'configuring VIM...'
   printf '\n####################################\n\n'
@@ -224,6 +225,7 @@ if [ $install != 'n' ]; then
 
   echo "vi -E -s -u ~/.vimrc +VundleInstall +qall"
   vi -E -s -u ~/.vimrc +VundleInstall +qall
+  echo
 fi
 
 
