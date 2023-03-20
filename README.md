@@ -6,8 +6,3 @@ cd dotfiles
 chmod u+x install.sh
 ./install.sh
 ```
-
-## options
-```sh
-./install.sh skipinstall
-```
