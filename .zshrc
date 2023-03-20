@@ -78,6 +78,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
+plugins+=(k)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -120,6 +121,8 @@ alias gcm='git commit -m'
 alias gst='git status'
 
 alias tmux='tmux -2'
+
+alias k='k -h'
 
 # To customize prompt, run `p10k configure` or edit ~/dotfiles/.p10k.zsh.
 [[ ! -f ~/dotfiles/.p10k.zsh ]] || source ~/dotfiles/.p10k.zsh

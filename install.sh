@@ -102,6 +102,13 @@ if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
 
   echo "chsh -s `which zsh`"
   chsh -s `which zsh`
+
+  printf '\n\n####################################\n'
+  printf 'installing zsh plugins...'
+  printf '\n####################################\n\n'
+
+  echo "git clone https://github.com/supercrabtree/k $ZSH_CUSTOM/plugins/k"
+  git clone https://github.com/supercrabtree/k $ZSH_CUSTOM/plugins/k
   echo
 fi
 
