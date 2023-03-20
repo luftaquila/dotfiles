@@ -81,6 +81,9 @@ set clipboard^=unnamed
 " #########################################################
 "   THEMES
 " #########################################################
+set t_Co=256
+set termguicolors
+
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
@@ -92,8 +95,8 @@ colorscheme onehalfdark
 hi Normal term=NONE cterm=NONE ctermbg=234 ctermfg=231 gui=NONE guibg=#1D1F21 guifg=#F8F8F2
 hi Comment term=bold cterm=NONE ctermbg=bg ctermfg=244 gui=NONE guibg=bg guifg=#7C7C7C
 hi LineNr term=underline cterm=NONE ctermbg=235 ctermfg=244 gui=NONE guibg=#232526 guifg=#7C7C7C
-set t_Co=256
-set termguicolors
+hi Search term=NONE cterm=NONE ctermbg=70 ctermfg=231 gui=NONE guibg=#5FAF00 guifg=#F8F8F2
+hi IncSearch term=NONE cterm=NONE ctermbg=70 ctermfg=231 gui=NONE guibg=#5FAF00 guifg=#F8F8F2
 
 
 " #########################################################
