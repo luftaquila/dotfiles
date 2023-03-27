@@ -44,7 +44,9 @@ filetype plugin indent on
 " #########################################################
 "   PROJECT SPECIFIC
 " #########################################################
-:command B !cd ~/workspace/builder/; ./build.py -r -l4 -d
+:command R !(>&2 ~/.local/bin/reset.sh) > /dev/null 2>&1;
+:command B !(>&2 ~/.local/bin/reset.sh) > /dev/null 2>&1 & (cd ~/workspace/builder/; ./build.py -l4 -d);
+
 :command M !cd build; cmake -DBSP=stm32h743i-eval2 -DUSE_MISRA_CHECKER=1 ..; make check-misra > tmp_check-misra.txt; ../misc/scripts/report_misra.sh > tmp_report_misra.txt; bat tmp_report_misra.txt
 
 

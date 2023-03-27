@@ -123,6 +123,9 @@ alias gst='git status'
 alias tmux='tmux -2'
 
 alias k='k -h'
+alias td='tb'
 
 # To customize prompt, run `p10k configure` or edit ~/dotfiles/.p10k.zsh.
 [[ ! -f ~/dotfiles/.p10k.zsh ]] || source ~/dotfiles/.p10k.zsh
+
+export PATH="/usr/local/opt/binutils/bin:$PATH"
