@@ -110,22 +110,21 @@ export LANG=en_US.UTF-8
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-# export PATH="/usr/local/opt/llvm/bin:$PATH"
+
+# per machine scripts
+[[ ! -f ~/.machine.zsh ]] || source ~/.machine.zsh
+
 eval $(thefuck --alias)
 
 alias vi='vim'
 alias v='vi'
-alias glg='git log --graph'
 alias gad='git add'
 alias gcm='git commit -m'
 alias gst='git status'
+alias glg='git log --graph'
+alias gck='git checkout'
 
 alias tmux='tmux -2'
 
 alias k='k -h'
-alias td='tb'
-
-# To customize prompt, run `p10k configure` or edit ~/dotfiles/.p10k.zsh.
-[[ ! -f ~/dotfiles/.p10k.zsh ]] || source ~/dotfiles/.p10k.zsh
-
-export PATH="/usr/local/opt/binutils/bin:$PATH"
+alias td='tb' # taskbook
