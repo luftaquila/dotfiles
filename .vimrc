@@ -108,7 +108,6 @@ nmap <Enter> o<ESC>
 
 nmap H :bp<CR>
 nmap L :bn<CR>
-nmap R :BufOnly<CR>
 nmap K :BD<CR>
 
 nnoremap <C-c> <C-w>c
