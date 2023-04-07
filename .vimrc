@@ -133,21 +133,21 @@ nmap <Tab>c :tabclose<CR>
 :command US :execute 'bo sp' | :res 15
 :cabbrev us US
 
-:command TERM :execute 'bo sp' | :res 20 | :term ++curwin
+:command -nargs=? TERM :execute 'bo sp' | :execute 'term ++curwin ++rows=' . (empty(<q-args>) ? 20 : <q-args>)
 :cabbrev term TERM
 
 
 " #########################################################
 "   CUSTOM COMMANDS
 " #########################################################
-:command SUDO :execute 'w !sudo tee %'
-:cabbrev sudo SUDO
-
 :cabbrev rg Rg
 :cabbrev tag Tags
 
-:command TAGEN :execute '!ctags -R'
-:cabbrev tagen TAGEN
+:command SUDO :execute 'w !sudo tee %'
+:cabbrev sudo SUDO
+
+:command CTAGS :execute '!ctags -R'
+:cabbrev ctags CTAGS
 
 :command -nargs=1 G :let g:gitgutter_diff_base = '<args>' | :GitGutterAll
 
