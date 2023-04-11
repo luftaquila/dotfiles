@@ -31,6 +31,7 @@ Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plugin 'junegunn/fzf.vim'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
+Plugin 'yegappan/taglist'
 
 Plugin 'tpope/vim-surround'
 Plugin 'mg979/vim-visual-multi'
@@ -78,6 +79,7 @@ set expandtab
 set shiftround
 set scrolloff=5
 set clipboard^=unnamed
+set shortmess+=I
 
 
 " #########################################################
@@ -169,8 +171,14 @@ let g:NERDCreateDefaultMappings = 1
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 let g:NERDDefaultAlign = 'left'
-
 nmap tr :NERDTreeToggle<CR>
+
+
+" #########################################################
+"   taglist
+" #########################################################
+let Tlist_Use_Right_Window = 1
+nmap tl :TlistToggle<CR>
 
 
 " #########################################################

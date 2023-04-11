@@ -111,22 +111,47 @@ export LANG=en_US.UTF-8
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# per machine scripts
+
+#############################################################################
+# PER MACHINE
+#############################################################################
 [[ ! -f ~/.machine.zsh ]] || source ~/.machine.zsh
 
-eval $(thefuck --alias)
 
+#############################################################################
+# CUSTOM COMMANDS
+#############################################################################
 alias mkdcd='f() { mkdir $1 && cd $1 };f'
 
-alias vi='vim'
-alias v='vi'
+
+#############################################################################
+# git
+#############################################################################
 alias gad='git add'
 alias gcm='git commit -m'
 alias gst='git status'
 alias glg='git log --graph'
 alias gck='git checkout'
 
-alias tmux='tmux -2'
 
+#############################################################################
+# vi
+#############################################################################
+alias vi='vim'
+alias v='vi'
+
+
+#############################################################################
+# ctags
+#############################################################################
+alias ctags="ctags -R"
+alias pytags="ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./tags . $(python -c "import os, sys; print(' '.join('{}'.format(d) for d in sys.path if os.path.isdir(d)))")"
+
+
+#############################################################################
+# others
+#############################################################################
+eval $(thefuck --alias)
+alias tmux='tmux -2'
 alias k='k -h'
 alias td='tb' # taskbook
