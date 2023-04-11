@@ -116,6 +116,8 @@ export LANG=en_US.UTF-8
 
 eval $(thefuck --alias)
 
+alias mkdcd='f() { mkdir $1 && cd $1 };f'
+
 alias vi='vim'
 alias v='vi'
 alias gad='git add'
