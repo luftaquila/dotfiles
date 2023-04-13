@@ -1,0 +1,83 @@
+#!/bin/bash
+
+osInfo=`lsb_release -d | awk '{print $2, $3, $4}'`
+
+uptime=`uptime | awk -F'( |,|:)+' '{d=h=m=0; if ($7=="min") m=$6; else {if ($7~/^day/) {d=$6;h=$8;m=$9} else {h=$6;m=$7}}} {print d+0,"days",h+0,"hrs",m+0,"mins"}'`
+
+sensors=`sensors`
+
+cpuName=`grep 'model name' '/proc/cpuinfo' | uniq | awk -F ':' '{print $2}' | sed -e 's/(R)//g' -e 's/ //' -e 's/@ /@/'`
+cpuTemp=`awk '{print $4}' <<< ${sensors} | sed -n '3p'`
+
+nvmeTemp=`awk '{print $2}' <<< ${sensors} | sed -n '19p'`
+mbdTemp=`awk '{print $2}' <<< ${sensors} | sed -n '11p'`
+
+
+cpuStat=`mpstat | sed -n '3,4p'`
+cpuStatName=`awk '{print $3"\011", $5"\011", $6"\011", $7"\011", $8"\011", $12}' <<< ${cpuStat} | sed -n '1p' | sed 's/ //g'`
+cpuStatData=`awk '{print $3"\011", $5"\011", $6"\011", $7"\011", $8"\011", $12"\011"}' <<< ${cpuStat} | sed -n '2p' | sed 's/ //g'`
+
+memStat=`free -h --si | sed -n '2, 3p'`
+memValue=`free | sed -n '2, 3p'`
+
+memValueUsage=`awk '{print $3}' <<< ${memValue} | sed -n '1p'`
+memValueTotal=`awk '{print $2}' <<< ${memValue} | sed -n '1p'`
+
+swapValueUsage=`awk '{print $3}' <<< ${memValue} | sed -n '2p'`
+swapValueTotal=`awk '{print $2}' <<< ${memValue} | sed -n '2p'`
+
+memUsage=`awk '{print $3}' <<< ${memStat} | sed -n '1p' | sed -e 's/ //g'`
+memTotal=`awk '{print $2}' <<< ${memStat} | sed -n '1p' | sed -e 's/ //g'`
+memPercent=`expr $memValueUsage '*' 100 / $memValueTotal`
+
+swapUsage=`awk '{print $3}' <<< ${memStat} | sed -n '2p' | sed -e 's/ //g'`
+swapTotal=`awk '{print $2}' <<< ${memStat} | sed -n '2p' | sed -e 's/ //g'`
+swapPercent=`expr $swapValueUsage '*' 100 / $swapValueTotal`
+
+hddStat=`df -h | grep sda1`
+hddTotal=`awk '{print $2}' <<< $hddStat`
+hddUsage=`awk '{print $3}' <<< $hddStat`
+hddPercent=`awk '{print $5}' <<< $hddStat`
+
+nvmeStat=`df -h | grep ubuntu`
+nvmeTotal=`awk '{print $2}' <<< $nvmeStat`
+nvmeUsage=`awk '{print $3}' <<< $nvmeStat`
+nvmePercent=`awk '{print $5}' <<< $nvmeStat`
+
+loadAvg=`uptime | awk '{ print $10, $11, $12 }' | sed 's/,//g'`
+load1m=`awk '{print $1}' <<< ${loadAvg}`
+load5m=`awk '{print $2}' <<< ${loadAvg}`
+load15m=`awk '{print $3}' <<< ${loadAvg}`
+
+publicIP=`wget http://ipecho.net/plain -O - -q ; echo 2> /dev/null`
+
+echo    ""
+echo -e "  \e[97m\e[1m\e[4mLUFT - AQUILA SERVER\e[0m"
+echo    "   └ mail@luftaquila.io"
+echo    ""
+echo -e "  \e[4m\e[36mSystem Overview\e[0m"
+echo    ""
+echo -e "    \e[1m\e[91m- OS\e[0m"
+echo -e "        \e[0mDIST : \e[37m${osInfo}"
+echo -e "        \e[0mKRNL : \e[37m`uname -o` `uname -r` `uname -m`"
+echo -e "        \e[0mBOOT : \e[37m`uptime -s`"
+echo -e "        \e[0mUP_T : \e[37m${uptime}\e[0m"
+echo    ""
+echo -e "    \e[1m\e[91m- SYSTEM\e[0m"
+echo -e	"        CPU  : \e[37m${cpuName}\e[39m \e[38;5;227m${cpuTemp}°C\e[0m"
+echo -e "          \e[38;5;120m${cpuStatName}\e[0m"
+echo -e "          \e[38;5;177m${cpuStatData}\e[0m"
+echo    ""
+echo -e "        LOAD : \e[37m1m \e[38;5;196m${load1m}  \e[37m5m \e[38;5;202m${load5m}  \e[37m15m \e[38;5;184m${load15m}\e[0m \e[38;5;227m${mbdTemp}°C\e[0m"
+echo    ""
+echo -e "        MEM  : \e[38;5;83m${memUsage}\e[0m / \e[38;5;87m${memTotal}\e[0m (\e[38;5;213m${memPercent}%\e[0m)"
+echo -e "        SWAP : \e[38;5;83m${swapUsage}\e[0m / \e[38;5;87m${swapTotal}\e[0m (\e[38;5;213m${swapPercent}%\e[0m)"
+echo    ""
+echo -e "        HDD  : \e[38;5;83m${hddUsage}\e[0m / \e[38;5;87m${hddTotal}\e[0m (\e[38;5;213m${hddPercent}\e[0m)"
+echo -e "        NVMe : \e[38;5;83m${nvmeUsage}\e[0m / \e[38;5;87m${nvmeTotal}\e[0m (\e[38;5;213m${nvmePercent}\e[0m) \e[38;5;227m$nvmeTemp°C\e[0m"
+echo    ""
+echo -e "    \e[1m\e[91m- NETWORK\e[0m"
+echo -e "        IP   : \e[37m${publicIP}\e[0m"
+echo    ""
+curl wttr.in/suwon\?0
+echo    ""
