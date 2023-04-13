@@ -138,6 +138,8 @@ nmap <Tab>c :tabclose<CR>
 :command -nargs=? TERM :execute 'bo sp' | :execute 'term ++curwin ++rows=' . (empty(<q-args>) ? 20 : <q-args>)
 :cabbrev term TERM
 
+command Q :q!
+
 
 " #########################################################
 "   CUSTOM COMMANDS
@@ -153,6 +155,11 @@ nmap <Tab>c :tabclose<CR>
 
 :command -nargs=1 G :let g:gitgutter_diff_base = '<args>' | :GitGutterAll
 
+" CTRL+R in VISUAL mode to replace selected
+vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+
+" CTRL+F in VISUAL mode to search selected
+vnoremap <C-f> y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " #########################################################
 "   SCRIPTS
