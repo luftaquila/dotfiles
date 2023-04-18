@@ -132,6 +132,8 @@ alias gcm='git commit -m'
 alias gst='git status'
 alias glg='git log --graph'
 alias gck='git checkout'
+alias gdf='git diff'
+alias grs='git restore'
 
 
 #############################################################################
