@@ -33,11 +33,11 @@ Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
 Plugin 'yegappan/taglist'
 
+" to learn
 Plugin 'tpope/vim-surround'
 Plugin 'mg979/vim-visual-multi'
 Plugin 'jiangmiao/auto-pairs'
-Plugin 'sjl/gundo.vim'
-" Plugin 'fholgado/minibufexpl.vim'
+Plugin 'ycm-core/YouCompleteMe'
 call vundle#end()
 filetype plugin indent on
 
@@ -45,12 +45,14 @@ filetype plugin indent on
 " #########################################################
 "   PROJECT SPECIFIC
 " #########################################################
-:command R !(>&2 ~/.local/bin/reset.sh) > /dev/null 2>&1;
-:command B !(>&2 ~/.local/bin/reset.sh) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -l4 -g);
+:command R !(>&2 ~/.local/bin/rst) > /dev/null 2>&1;
+:command D :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/.local/bin/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gdl4);"'
+:command B :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/.local/bin/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gd);"'
 
-:command -nargs=1 M !cd ~/workspace/rtworks/<args>/build; cmake -DBSP=stm32h743i-eval2 -DUSE_MISRA_CHECKER=1 ..; make check-misra > tmp_check-misra.txt; ../misc/scripts/report_misra.sh > tmp_report_misra.txt; bat tmp_report_misra.txt
+:command -nargs=1 M :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "cd ~/workspace/rtworks/<args>/build; cmake -DBSP=stm32h743i-eval2 -DUSE_MISRA_CHECKER=1 ..; make check-misra > tmp_check-misra.txt; ../misc/scripts/report_misra.sh > tmp_report_misra.txt; bat tmp_report_misra.txt"'
 
-" #########################################################
+
+#########################################################
 "   DEFAULT SETTINGS
 " #########################################################
 syntax on
@@ -79,6 +81,7 @@ set shiftround
 set scrolloff=5
 set clipboard^=unnamed
 set shortmess+=I
+set wildmode=longest:full,full
 
 
 " #########################################################
@@ -110,6 +113,7 @@ nmap <Enter> o<ESC>
 nmap H :bp<CR>
 nmap L :bn<CR>
 nmap K :BD<CR>
+command K :BD!
 
 nnoremap <C-c> <C-w>c
 nmap <C-u> :horizontal wincmd =<CR>
@@ -143,8 +147,11 @@ command Q :q!
 " #########################################################
 "   CUSTOM COMMANDS
 " #########################################################
-:cabbrev rg Rg
-:cabbrev tag Tags
+:command -complete=tag -nargs=* RG :execute 'Rg <args>'
+:cabbrev rg RG
+
+:command -complete=tag -nargs=* TAGS :execute 'Tags <args>'
+:cabbrev tag TAGS
 
 :command SUDO :execute 'w !sudo tee %'
 :cabbrev sudo SUDO
@@ -159,6 +166,27 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
 " CTRL+F in VISUAL mode to search selected
 vnoremap <C-f> y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+" execute shell in new buffer
+:command -complete=file -nargs=+ E :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "<args>"'
+
+" show shell output in new buffer
+function! s:ExecuteInShell(command)
+  let command = join(map(split(a:command), 'expand(v:val)'))
+  let winnr = bufwinnr('^' . command . '$')
+  silent! execute  winnr < 0 ? 'botright vnew ' . fnameescape(command) : winnr . 'wincmd w'
+  setlocal buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap number
+  echo 'executing ' . command . '...'
+  silent! execute 'silent %!'. command
+  silent! execute 'resize '
+  silent! redraw
+  silent! execute 'au BufUnload <buffer> execute bufwinnr(' . bufnr('#') . ') . ''wincmd w'''
+  silent! execute 'nnoremap <silent> <buffer> <LocalLeader>r :call <SID>ExecuteInShell(''' . command . ''')<CR>'
+  echo 'command ' . command . ' executed.'
+endfunction
+command! -complete=shellcmd -nargs=+ SHELL call s:ExecuteInShell(<q-args>)
+:cabbrev ss SHELL
+
 
 " #########################################################
 "   SCRIPTS
@@ -229,6 +257,8 @@ map zg/ <Plug>(incsearch-fuzzy-stay)
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP :pwd'
 
+let g:ctrlp_user_command = 'rg %s --files --glob ""'
+let g:ctrlp_use_caching = 0
 
 " #########################################################
 "   EASYMOTION
@@ -250,4 +280,5 @@ let g:session_autosave_periodic = 1
 let g:session_autosave_silent = 1
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
+
 
