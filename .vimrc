@@ -19,6 +19,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'qpkorr/vim-bufkill'
+Plugin 'schickling/vim-bufonly'
 Plugin 'dhruvasagar/vim-table-mode'
 Plugin 'bitc/vim-bad-whitespace'
 Plugin 'haya14busa/incsearch.vim'
@@ -26,7 +27,6 @@ Plugin 'haya14busa/incsearch-fuzzy.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-commentary'
 Plugin 'easymotion/vim-easymotion'
-Plugin 'schickling/vim-bufonly'
 Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plugin 'junegunn/fzf.vim'
 Plugin 'xolox/vim-misc'
@@ -112,8 +112,10 @@ nmap <Enter> o<ESC>
 
 nmap H :bp<CR>
 nmap L :bn<CR>
-nmap K :BD<CR>
+nmap K :bd<CR>
+nmap Q :BD<CR>
 command K :BD!
+command Q :q!
 
 nnoremap <C-c> <C-w>c
 nmap <C-u> :horizontal wincmd =<CR>
@@ -140,8 +142,6 @@ nmap <Tab>c :tabclose<CR>
 
 :command -nargs=? TERM :execute 'bo sp' | :execute 'term ++curwin ++rows=' . (empty(<q-args>) ? 20 : <q-args>)
 :cabbrev term TERM
-
-command Q :q!
 
 
 " #########################################################
