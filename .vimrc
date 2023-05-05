@@ -46,13 +46,13 @@ filetype plugin indent on
 "   PROJECT SPECIFIC
 " #########################################################
 :command R !(>&2 ~/.local/bin/rst) > /dev/null 2>&1;
-:command D :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/.local/bin/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gdl4);"'
-:command B :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/.local/bin/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gd);"'
+:command D :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/.local/bin/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gdl4);"'
+:command B :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/.local/bin/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gd);"'
 
 :command -nargs=1 M :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "cd ~/workspace/rtworks/<args>/build; cmake -DBSP=stm32h743i-eval2 -DUSE_MISRA_CHECKER=1 ..; make check-misra > tmp_check-misra.txt; ../misc/scripts/report_misra.sh > tmp_report_misra.txt; bat tmp_report_misra.txt"'
 
 
-#########################################################
+" #########################################################
 "   DEFAULT SETTINGS
 " #########################################################
 syntax on
