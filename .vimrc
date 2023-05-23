@@ -84,6 +84,7 @@ set scrolloff=5
 set clipboard^=unnamed
 set shortmess+=I
 set wildmode=longest:full,full
+:cabbrev so so ~/.vimrc
 
 
 " #########################################################
@@ -275,5 +276,6 @@ let g:session_autosave_periodic = 1
 let g:session_autosave_silent = 1
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
+:command OS :OpenSession
 
 
