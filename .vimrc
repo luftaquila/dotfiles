@@ -24,7 +24,6 @@ Plugin 'dhruvasagar/vim-table-mode'
 Plugin 'bitc/vim-bad-whitespace'
 Plugin 'haya14busa/incsearch.vim'
 Plugin 'haya14busa/incsearch-fuzzy.vim'
-Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-commentary'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -38,6 +37,9 @@ Plugin 'tpope/vim-surround'
 Plugin 'mg979/vim-visual-multi'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'ycm-core/YouCompleteMe'
+
+" disabled
+" Plugin 'kien/ctrlp.vim'
 call vundle#end()
 filetype plugin indent on
 
@@ -45,11 +47,11 @@ filetype plugin indent on
 " #########################################################
 "   PROJECT SPECIFIC
 " #########################################################
-:command R !(>&2 ~/.local/bin/rst) > /dev/null 2>&1;
-:command D :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/.local/bin/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gdl4);"'
-:command B :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/.local/bin/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gd);"'
+:command R !(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1;
+:command -nargs=? D :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gdv<args>l4);"'
+:command -nargs=? B :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gdv<args>);"'
 
-:command -nargs=1 M :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "cd ~/workspace/rtworks/<args>/build; cmake -DBSP=stm32h743i-eval2 -DUSE_MISRA_CHECKER=1 ..; make check-misra > tmp_check-misra.txt; ../misc/scripts/report_misra.sh > tmp_report_misra.txt; bat tmp_report_misra.txt"'
+:command -nargs=1 M :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "cd ~/workspace/rtworks/<args>/build; cmake -DBSP=stm32h743i-eval2 -DUSE_MISRA_CHECKER=1 ..; make check-misra > tmp_check-misra.txt; ../misc/scripts/report_misra.sh > tmp_report_misra.txt; cat tmp_report_misra.txt"'
 
 
 " #########################################################
@@ -153,6 +155,8 @@ nmap <Tab>c :tabclose<CR>
 :command -complete=tag -nargs=* TAGS :execute 'Tags <args>'
 :cabbrev tag TAGS
 
+:command -complete=file -nargs=* F :execute 'Files <args>'
+
 :command SUDO :execute 'w !sudo tee %'
 :cabbrev sudo SUDO
 
@@ -250,15 +254,6 @@ map z/ <Plug>(incsearch-fuzzy-/)
 map z? <Plug>(incsearch-fuzzy-?)
 map zg/ <Plug>(incsearch-fuzzy-stay)
 
-
-" #########################################################
-"   CTRL-P
-" #########################################################
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP :pwd'
-
-let g:ctrlp_user_command = 'rg %s --files --glob ""'
-let g:ctrlp_use_caching = 0
 
 " #########################################################
 "   EASYMOTION
