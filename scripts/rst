@@ -1,0 +1,7 @@
+#!/bin/bash
+
+curl -fsSL "http://192.168.55.45/relay/0?turn=off"
+sleep 0.3
+curl -fsSL "http://192.168.55.45/relay/0?turn=on"
+
+(echo "d" | sudo cu -s 115200 -l /dev/cu.usbmodem143301 &) > /dev/null 2>&1

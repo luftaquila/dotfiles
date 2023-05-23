@@ -1,0 +1,1 @@
+/opt/rtst/powerpc-unknown-elf/bin/powerpc-unknown-elf-objdump -dS ~/workspace/rtworks/builder/build.partition1/rtworks_partition.elf > ~/dumpinfo && vi ~/dumpinfo
