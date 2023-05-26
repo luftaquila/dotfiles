@@ -51,7 +51,7 @@ filetype plugin indent on
 :command -nargs=? D :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gdv<args>l4);"'
 :command -nargs=? B :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gdv<args>);"'
 
-:command -nargs=1 M :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "cd ~/workspace/rtworks/<args>/build; cmake -DBSP=stm32h743i-eval2 -DUSE_MISRA_CHECKER=1 ..; make check-misra > tmp_check-misra.txt; ../misc/scripts/report_misra.sh > tmp_report_misra.txt; cat tmp_report_misra.txt"'
+:command -nargs=1 M :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "cd ~/workspace/rtworks/<args>/build; pwd; cmake -DBSP=t2080rdb -DUSE_MISRA_CHECKER=1 ..; make check-misra > tmp_check-misra.txt; ../misc/scripts/report_misra.sh > tmp_report_misra.txt; cat tmp_report_misra.txt"'
 
 
 " #########################################################
@@ -84,7 +84,8 @@ set scrolloff=5
 set clipboard^=unnamed
 set shortmess+=I
 set wildmode=longest:full,full
-:cabbrev so so ~/.vimrc
+set ttyfast
+set lazyredraw
 
 
 " #########################################################
@@ -143,9 +144,6 @@ nmap <Tab>c :tabclose<CR>
 :command US :execute 'bo sp' | :res 15
 :cabbrev us US
 
-:command -nargs=? TERM :execute 'bo sp' | :execute 'term ++curwin ++rows=' . (empty(<q-args>) ? 20 : <q-args>)
-:cabbrev term TERM
-
 
 " #########################################################
 "   CUSTOM COMMANDS
@@ -158,12 +156,15 @@ nmap <Tab>c :tabclose<CR>
 
 :command -complete=file -nargs=* F :execute 'Files <args>'
 
+" force write file
 :command SUDO :execute 'w !sudo tee %'
 :cabbrev sudo SUDO
 
+" generate new ctag file
 :command CTAGS :execute '!ctags -R'
 :cabbrev ctags CTAGS
 
+" change git diff base
 :command -nargs=1 G :let g:gitgutter_diff_base = '<args>' | :GitGutterAll
 
 " CTRL+R in VISUAL mode to replace selected
@@ -171,6 +172,18 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
 " CTRL+F in VISUAL mode to search selected
 vnoremap <C-f> y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+:cabbrev so so ~/.vimrc
+
+:cabbrev en enew
+
+
+" #########################################################
+"   TERMINALS
+" #########################################################
+" open shell window
+:command -nargs=? TERM :execute 'bo sp' | :execute 'term ++curwin ++rows=' . (empty(<q-args>) ? 20 : <q-args>)
+:cabbrev term TERM
 
 " execute shell in new buffer
 :command -complete=file -nargs=+ E :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "<args>"'
