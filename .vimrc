@@ -48,8 +48,8 @@ filetype plugin indent on
 "   PROJECT SPECIFIC
 " #########################################################
 :command R !(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1;
-:command -nargs=? D :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gdv<args>l4);"'
-:command -nargs=? B :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gdv<args>);"'
+:command -nargs=? D :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gv<args>l4);"'
+:command -nargs=? B :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gv<args>);"'
 
 :command -nargs=1 M :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "cd ~/workspace/rtworks/<args>/build; pwd; cmake -DBSP=t2080rdb -DUSE_MISRA_CHECKER=1 ..; make check-misra > tmp_check-misra.txt; ../misc/scripts/report_misra.sh > tmp_report_misra.txt; cat tmp_report_misra.txt"'
 
