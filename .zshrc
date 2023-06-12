@@ -128,12 +128,16 @@ alias mkdcd='f() { mkdir $1 && cd $1 };f'
 # git
 #############################################################################
 alias gad='git add'
+alias gap='git add -p'
 alias gcm='git commit -m'
 alias gst='git status'
 alias glg='git log --graph'
 alias gck='git checkout'
 alias gdf='git diff'
+alias gdc='git diff --cached'
 alias grs='git restore'
+alias grt='git reset'
+alias grp='git reset -p'
 
 
 #############################################################################
