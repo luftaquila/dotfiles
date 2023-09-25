@@ -32,9 +32,15 @@
     "alwaysShowNotificationIcon": false,
     "copyFormatting": "none",
     "copyOnSelect": true,
-    "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+    "defaultProfile": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
     "language": "en-US",
     "launchMode": "default",
+    "newTabMenu": 
+    [
+        {
+            "type": "remainingProfiles"
+        }
+    ],
     "profiles": 
     {
         "defaults": 
@@ -45,20 +51,11 @@
             "font": 
             {
                 "face": "SauceCodePro NF",
-                "size": 10.0
+                "size": 9.0
             }
         },
         "list": 
         [
-            {
-                "bellStyle": "none",
-                "closeOnExit": "graceful",
-                "guid": "{58ad8b0c-3ef8-5f4d-bc6f-13e4c00f2530}",
-                "hidden": false,
-                "icon": "C:\\Users\\LUFT-AQUILA\\Nextcloud\\storage\\Images\\Icons\\icons8-matrix-desktop-100.png",
-                "name": "Debian Linux",
-                "source": "Windows.Terminal.Wsl"
-            },
             {
                 "commandline": "ssh luftaquila@luftaquila.io -p 3737",
                 "guid": "{5fa5e532-c02d-5cae-94d0-f8faceda685d}",
@@ -78,22 +75,30 @@
                 "name": "RTST"
             },
             {
+                "font": 
+                {
+                    "size": 8.0
+                },
                 "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
                 "hidden": false,
                 "name": "PowerShell",
                 "source": "Windows.Terminal.PowershellCore"
             },
             {
-                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-                "hidden": false,
-                "name": "Windows PowerShell"
-            },
-            {
                 "colorScheme": "One Half Dark",
                 "commandline": "%SystemRoot%\\System32\\cmd.exe",
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "hidden": false,
-                "name": "\uba85\ub839 \ud504\ub86c\ud504\ud2b8"
+                "name": "cmd"
+            },
+            {
+                "bellStyle": "none",
+                "closeOnExit": "graceful",
+                "guid": "{58ad8b0c-3ef8-5f4d-bc6f-13e4c00f2530}",
+                "hidden": false,
+                "icon": "C:\\Users\\LUFT-AQUILA\\Nextcloud\\storage\\Images\\Icons\\icons8-matrix-desktop-100.png",
+                "name": "Linux subsystem",
+                "source": "Windows.Terminal.Wsl"
             }
         ]
     },
@@ -309,6 +314,50 @@
     ],
     "showTerminalTitleInTitlebar": true,
     "startOnUserLogin": false,
-    "themes": [],
+    "themes": 
+    [
+        {
+            "name": "legacyDark",
+            "tab": 
+            {
+                "background": null,
+                "showCloseButton": "always",
+                "unfocusedBackground": null
+            },
+            "window": 
+            {
+                "applicationTheme": "dark",
+                "useMica": false
+            }
+        },
+        {
+            "name": "legacyLight",
+            "tab": 
+            {
+                "background": null,
+                "showCloseButton": "always",
+                "unfocusedBackground": null
+            },
+            "window": 
+            {
+                "applicationTheme": "light",
+                "useMica": false
+            }
+        },
+        {
+            "name": "legacySystem",
+            "tab": 
+            {
+                "background": null,
+                "showCloseButton": "always",
+                "unfocusedBackground": null
+            },
+            "window": 
+            {
+                "applicationTheme": "system",
+                "useMica": false
+            }
+        }
+    ],
     "useAcrylicInTabRow": true
 }
