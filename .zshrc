@@ -161,3 +161,4 @@ eval $(thefuck --alias)
 alias tmux='tmux -2'
 alias k='k -h'
 alias td='tb' # taskbook
+alias ta='tmux attach'

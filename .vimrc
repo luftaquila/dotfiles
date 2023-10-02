@@ -122,7 +122,7 @@ command K :BD!
 command Q :q!
 
 nnoremap <C-c> <C-w>c
-nmap <C-u> :horizontal wincmd =<CR>
+nmap <C-i> :horizontal wincmd =<CR>
 nmap <C-h> <C-w>h
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
@@ -144,6 +144,11 @@ nmap <Tab>c :tabclose<CR>
 :command US :execute 'bo sp' | :res 15
 :cabbrev us US
 
+:command S :execute 'SaveSession' | :execute 'qa'
+:cabbrev s S
+
+:command O :execute 'OpenSession'
+:cabbrev o O
 
 " #########################################################
 "   CUSTOM COMMANDS
@@ -170,8 +175,8 @@ nmap <Tab>c :tabclose<CR>
 " CTRL+R in VISUAL mode to replace selected
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 
-" CTRL+F in VISUAL mode to search selected
-vnoremap <C-f> y/\V<C-R>=escape(@",'/\')<CR><CR>
+" CTRL+L in VISUAL mode to search selected
+vnoremap <C-l> y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 :cabbrev so so ~/.vimrc
 
