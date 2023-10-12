@@ -5,6 +5,7 @@
 
 [core]
   pager = delta  # diff-so-fancy | bat
+	editor = vim
 
 [interactive]
   diffFilter = delta --color-only
