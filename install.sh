@@ -10,6 +10,8 @@ linux_packages=(
   "thefuck"
   "tmux"
   "zsh"
+  "universal-ctags"
+  "cmake"
 )
 
 macos_packages=(
@@ -208,6 +210,7 @@ if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
 
   git clone https://github.com/vim/vim.git
   cd vim/src
+  ./configure --enable-pythoninterp --enable-python3interp --enable-multibyte
   make
   make install
   echo
@@ -230,8 +233,8 @@ if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
   echo "git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-  echo "vi -E -s -u ~/.vimrc +VundleInstall +qall"
-  vi -E -s -u ~/.vimrc +VundleInstall +qall
+  echo "vim -E -s -u ~/.vimrc +VundleInstall +qall"
+  vim -E -s -u ~/.vimrc +VundleInstall +qall
   echo
 fi
 
