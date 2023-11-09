@@ -1,5 +1,5 @@
 [user]
-  name = 오병준
+	name = 오병준
   email = mail@luftaquila.io
   useConfigOn1y = true  # force set user.name and user.email
 

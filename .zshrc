@@ -158,7 +158,7 @@ alias pytags="ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./ta
 # others
 #############################################################################
 eval $(thefuck --alias)
-alias tmux='tmux -2'
+alias tm='tmux -2'
 alias k='k -h'
 alias td='tb' # taskbook
 alias ta='tmux attach'

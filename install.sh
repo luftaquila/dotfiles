@@ -12,6 +12,7 @@ linux_packages=(
   "zsh"
   "universal-ctags"
   "cmake"
+  "libncurses-dev"
 )
 
 macos_packages=(
@@ -38,6 +39,7 @@ backups=(
   ".tmux.conf"
   ".zshrc"
   ".vimrc"
+  ".wakatime.cfg"
 )
 
 
@@ -51,6 +53,8 @@ if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
   read -p "os(linux/mac): " os
 
   if [ $os == 'linux' ]; then
+    echo "sudo apt-get update && sudo apt-get upgrade"
+    sudo apt-get update && sudo apt-get upgrade
     echo "sudo apt-get install ${linux_packages[*]}"
     sudo apt-get install ${linux_packages[*]}
 

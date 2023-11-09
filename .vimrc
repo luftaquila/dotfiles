@@ -86,6 +86,7 @@ set shortmess+=I
 set wildmode=longest:full,full
 set ttyfast
 set lazyredraw
+set completeopt-=preview
 
 
 " #########################################################
