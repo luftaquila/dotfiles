@@ -87,6 +87,7 @@ set wildmode=longest:full,full
 set ttyfast
 set lazyredraw
 set completeopt-=preview
+set encoding=utf-8
 
 
 " #########################################################
