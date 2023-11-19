@@ -6,40 +6,37 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'wakatime/vim-wakatime'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'tpope/vim-fugitive'
 Plugin 'sonph/onehalf', {'rtp': 'vim/'}
+Plugin 'ryanoasis/vim-devicons'
+Plugin 'luochen1990/rainbow'
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'preservim/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'PhilRunninger/nerdtree-visual-selection'
 Plugin 'PhilRunninger/nerdtree-buffer-ops'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'qpkorr/vim-bufkill'
 Plugin 'schickling/vim-bufonly'
 Plugin 'dhruvasagar/vim-table-mode'
 Plugin 'bitc/vim-bad-whitespace'
 Plugin 'haya14busa/incsearch.vim'
 Plugin 'haya14busa/incsearch-fuzzy.vim'
-Plugin 'tpope/vim-commentary'
-Plugin 'easymotion/vim-easymotion'
 Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plugin 'junegunn/fzf.vim'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-session'
+Plugin 'tpope/vim-commentary'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'rstacruz/vim-closer'
 Plugin 'yegappan/taglist'
+Plugin 'ycm-core/YouCompleteMe'
+Plugin 'wakatime/vim-wakatime'
 
 " to learn
 Plugin 'tpope/vim-surround'
 Plugin 'mg979/vim-visual-multi'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'ycm-core/YouCompleteMe'
-
-" disabled
-" Plugin 'kien/ctrlp.vim'
 call vundle#end()
 filetype plugin indent on
 
@@ -58,19 +55,20 @@ filetype plugin indent on
 "   DEFAULT SETTINGS
 " #########################################################
 syntax on
+set ruler
 set number
+set encoding=utf-8
 set autoindent
 set smartindent
 set smarttab
-set ruler
+set smartcase
+set ignorecase
 set showcmd
 set cursorline
+set colorcolumn=80
 set laststatus=2
 set hlsearch
-set showmatch
 set incsearch
-set ignorecase
-set smartcase
 set autowrite
 set autoread
 set hidden
@@ -87,7 +85,6 @@ set wildmode=longest:full,full
 set ttyfast
 set lazyredraw
 set completeopt-=preview
-set encoding=utf-8
 
 
 " #########################################################
@@ -112,7 +109,7 @@ hi IncSearch term=NONE cterm=NONE ctermbg=70 ctermfg=231 gui=NONE guibg=#5FAF00 
 
 
 " #########################################################
-"   CURSOR, WINDOW, TAB CONTROL
+"   CURSOR, WINDOW, TAB CONTROLs
 " #########################################################
 nmap <Enter> o<ESC>
 
@@ -241,12 +238,9 @@ nmap tl :TlistToggle<CR>
 
 
 " #########################################################
-"   RAINBOW PARENTHESES
+"   RAINBOW
 " #########################################################
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+let g:rainbow_active = 1
 
 
 " #########################################################
@@ -297,5 +291,4 @@ let g:session_autosave_silent = 1
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
 :command OS :OpenSession
-
 
