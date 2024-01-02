@@ -217,7 +217,7 @@ if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
   cd vim/src
   ./configure --enable-pythoninterp --enable-python3interp --enable-multibyte
   make
-  make install
+  sudo make install
   echo
 fi
 
