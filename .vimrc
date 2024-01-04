@@ -84,8 +84,6 @@ set wildmode=longest:full,full
 set ttyfast
 set lazyredraw
 set completeopt-=preview
-set splitbelow
-set splitright
 
 
 " #########################################################
@@ -141,8 +139,8 @@ nmap <Tab>c :tabclose<CR>
 :command VS :execute 'vs' | :norm <C-e><C-l>
 :cabbrev vs VS
 
-:command US :execute 'bo sp' | :res 15
-:cabbrev us US
+:command SP :execute 'sp' | :norm <C-e><C-j>
+:cabbrev sp SP
 
 :command S :execute 'SaveSession' | :execute 'qa'
 :cabbrev s S
