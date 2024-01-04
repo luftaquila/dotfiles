@@ -65,7 +65,6 @@ set smartcase
 set ignorecase
 set showcmd
 set cursorline
-set colorcolumn=80
 set laststatus=2
 set hlsearch
 set incsearch
@@ -262,12 +261,8 @@ au VimEnter * ShowBadWhitespace
 " #########################################################
 "   INCSEARCH
 " #########################################################
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-map z/ <Plug>(incsearch-fuzzy-/)
-map z? <Plug>(incsearch-fuzzy-?)
-map zg/ <Plug>(incsearch-fuzzy-stay)
+map /  <Plug>(incsearch-stay)
+map z/ <Plug>(incsearch-fuzzy-stay)
 
 
 " #########################################################
