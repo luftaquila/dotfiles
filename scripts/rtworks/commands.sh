@@ -1,4 +1,4 @@
-alias bsp="vi ~/rtworks/bsp.sh; cd ~/rtworks/builder; ./init.py -b `~/rtworks/bsp.sh`"
+alias bsp="(vi ~/rtworks/bsp.sh; cd ~/rtworks/builder; ./init.py -b `~/rtworks/bsp.sh`)"
 
 alias RB=rtworks_build
 alias RM=rtworks_misra
