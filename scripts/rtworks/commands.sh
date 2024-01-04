@@ -1,14 +1,9 @@
 alias bsp="(vi ~/rtworks/bsp.sh; cd ~/rtworks/builder; ./init.py -b `~/rtworks/bsp.sh`)"
 
-alias RB=rtworks_build
-alias RM=rtworks_misra
-alias RR=rtworks_remote_run
-alias RE=rtworks_remote_execute
-
-alias rtworks_build=fn_rtworks_build
-alias rtworks_misra=fn_rtworks_misra
-alias rtworks_remote_run=fn_rtworks_remote_run
-alias rtworks_remote_execute=fn_rtworks_remote_execute
+alias RB=fn_rtworks_build
+alias RM=fn_rtworks_misra
+alias RR=fn_rtworks_remote_run
+alias RE=fn_rtworks_remote_execute
 
 function fn_rtworks_build() {(
   set -e;
