@@ -44,7 +44,7 @@ function fn_rtworks_remote_execute() {(
   set -e;
   BSP=t2080rdb;
 
-  fn_rtworks_build $BSP;
+  fn_rtworks_build;
   fn_rtworks_remote_run;
 )}
 
