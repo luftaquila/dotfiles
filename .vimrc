@@ -84,6 +84,8 @@ set wildmode=longest:full,full
 set ttyfast
 set lazyredraw
 set completeopt-=preview
+set splitbelow
+set splitright
 
 
 " #########################################################
@@ -188,26 +190,6 @@ vnoremap <C-l> y/\V<C-R>=escape(@",'/\')<CR><CR>
 :command -nargs=? TERM :execute 'bo sp' | :execute 'term ++curwin ++rows=' . (empty(<q-args>) ? 20 : <q-args>)
 :cabbrev term TERM
 
-" execute shell in new buffer
-:command -complete=file -nargs=+ E :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "<args>"'
-
-" show shell output in new buffer
-function! s:ExecuteInShell(command)
-  let command = join(map(split(a:command), 'expand(v:val)'))
-  let winnr = bufwinnr('^' . command . '$')
-  silent! execute  winnr < 0 ? 'botright vnew ' . fnameescape(command) : winnr . 'wincmd w'
-  setlocal buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap number
-  echo 'executing ' . command . '...'
-  silent! execute 'silent %!'. command
-  silent! execute 'resize '
-  silent! redraw
-  silent! execute 'au BufUnload <buffer> execute bufwinnr(' . bufnr('#') . ') . ''wincmd w'''
-  silent! execute 'nnoremap <silent> <buffer> <LocalLeader>r :call <SID>ExecuteInShell(''' . command . ''')<CR>'
-  echo 'command ' . command . ' executed.'
-endfunction
-command! -complete=shellcmd -nargs=+ SHELL call s:ExecuteInShell(<q-args>)
-:cabbrev ss SHELL
-
 
 " #########################################################
 "   SCRIPTS
@@ -261,8 +243,10 @@ au VimEnter * ShowBadWhitespace
 " #########################################################
 "   INCSEARCH
 " #########################################################
-map /  <Plug>(incsearch-stay)
-map z/ <Plug>(incsearch-fuzzy-stay)
+map /  <Plug>(incsearch-forward)
+map g/  <Plug>(incsearch-stay)
+map z/ <Plug>(incsearch-fuzzy-/)
+map zg/ <Plug>(incsearch-fuzzy-stay)
 
 
 " #########################################################
