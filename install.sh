@@ -115,6 +115,10 @@ if [ -z $install ] || [ $install == 'y' ] || [ $install == 'Y' ]; then
 
   echo "git clone https://github.com/supercrabtree/k $ZSH_CUSTOM/plugins/k"
   git clone https://github.com/supercrabtree/k $ZSH_CUSTOM/plugins/k
+
+  echo "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+
   echo
 fi
 

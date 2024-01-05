@@ -79,6 +79,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 plugins+=(k)
+plugins+=(zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -131,6 +132,7 @@ alias gad='git add'
 alias gap='git add -p'
 alias gcm='git commit -m'
 alias gca='git commit --amend'
+alias gfh='git fetch'
 alias gpu='git push'
 alias gpf='git push -f'
 alias gdf='git diff'
@@ -138,7 +140,8 @@ alias gds='git diff --staged'
 alias gst='git status'
 alias glg='git log --graph'
 alias gck='git checkout'
-alias grh='git reset --hard'
+alias grs='git reset'
+alias grt='git restore --staged'
 
 
 #############################################################################
@@ -151,7 +154,6 @@ alias v='vi'
 #############################################################################
 # ctags
 #############################################################################
-alias ctags="ctags -R"
 alias pytags="ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./tags . $(python -c "import os, sys; print(' '.join('{}'.format(d) for d in sys.path if os.path.isdir(d)))")"
 
 
@@ -161,5 +163,5 @@ alias pytags="ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./ta
 eval $(thefuck --alias)
 alias tm='tmux -2'
 alias k='k -h'
-alias td='tb' # taskbook
 alias ta='tmux attach'
+
