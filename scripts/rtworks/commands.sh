@@ -1,16 +1,35 @@
 alias bsp="(vi ~/rtworks/bsp.sh; cd ~/rtworks/builder; ./init.py -b `~/rtworks/bsp.sh`)"
 
-alias RB=fn_rtworks_build
-alias RM=fn_rtworks_misra
-alias RR=fn_rtworks_remote_run
-alias RE=fn_rtworks_remote_execute
+alias bb=fn_rtworks_build
+alias mm=fn_rtworks_misra
+alias ee= # fn_rtworks_build_run
+alias rr=fn_rtworks_remote_run
+alias re=fn_rtworks_remote_execute
 
 function fn_rtworks_build() {(
   set -e;
-  OPTION=$1;
+  RTWORKS_DIR=~/rtworks
 
-  cd ~/rtworks/builder;
-  ./build.py -adg$OPTION;
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+      -d|--dir)
+        RTWORKS_DIR="`pwd`/$2"
+        shift
+        shift
+        ;;
+      *)
+        RTWORKS_OPTION="$1"
+        shift
+        ;;
+    esac
+  done
+
+  echo DIR=$RTWORKS_DIR
+  echo OPT=$RTWORKS_OPTION
+
+  cd "$RTWORKS_DIR/builder";
+  pwd;
+  ./build.py -adg$RTWORKS_OPTION;
 )}
 
 function fn_rtworks_misra() {(
