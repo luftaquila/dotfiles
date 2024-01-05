@@ -24,9 +24,6 @@ function fn_rtworks_build() {(
     esac
   done
 
-  echo DIR=$RTWORKS_DIR
-  echo OPT=$RTWORKS_OPTION
-
   cd "$RTWORKS_DIR/builder";
   pwd;
   ./build.py -adg$RTWORKS_OPTION;
