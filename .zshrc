@@ -130,18 +130,22 @@ alias mkdcd='f() { mkdir $1 && cd $1 };f'
 #############################################################################
 alias gad='git add'
 alias gap='git add -p'
+alias grs='git reset'
+alias grt='git restore --staged'
 alias gcm='git commit -m'
 alias gca='git commit --amend'
+alias gsh='git stash'
+alias gsp='git stash pop'
+
+alias gst='git status'
+alias gdf='git diff'
+alias gds='git diff --staged'
+alias glg='git log --graph'
+
+alias gck='git checkout'
 alias gfh='git fetch'
 alias gpu='git push'
 alias gpf='git push -f'
-alias gdf='git diff'
-alias gds='git diff --staged'
-alias gst='git status'
-alias glg='git log --graph'
-alias gck='git checkout'
-alias grs='git reset'
-alias grt='git restore --staged'
 
 
 #############################################################################
