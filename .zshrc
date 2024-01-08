@@ -120,12 +120,6 @@ export LANG=en_US.UTF-8
 
 
 #############################################################################
-# CUSTOM COMMANDS
-#############################################################################
-alias mkdcd='f() { mkdir $1 && cd $1 };f'
-
-
-#############################################################################
 # git
 #############################################################################
 alias gad='git add'
@@ -156,16 +150,54 @@ alias v='vi'
 
 
 #############################################################################
+# tmux
+#############################################################################
+alias tm='tmux -2'
+alias ta='tmux attach'
+
+
+#############################################################################
 # ctags
 #############################################################################
 alias pytags="ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./tags . $(python -c "import os, sys; print(' '.join('{}'.format(d) for d in sys.path if os.path.isdir(d)))")"
 
 
 #############################################################################
+# toolchains
+#############################################################################
+TOOLCHAIN_ARM_PREFIX="arm-none-eabi"
+TOOLCHAIN_PPC_PREFIX="powerpc-unknown-elf"
+
+alias elf=fn_elf
+alias dmp=fn_dmp
+
+fn_elf() {(
+  set -e;
+  if   [[ $1 == "arm" ]]; then TARGET_TOOLCHAIN=$TOOLCHAIN_ARM_PREFIX;
+  elif [[ $1 == "ppc" ]]; then TARGET_TOOLCHAIN=$TOOLCHAIN_PPC_PREFIX;
+  else echo "Unknown toolchain $1 for readelf"; exit 1;
+  fi
+
+  $TARGET_TOOLCHAIN-readelf -es $2;
+)}
+
+fn_dmp() {(
+  set -e;
+  if   [[ $1 == "arm" ]]; then TARGET_TOOLCHAIN=$TOOLCHAIN_ARM_PREFIX;
+  elif [[ $1 == "ppc" ]]; then TARGET_TOOLCHAIN=$TOOLCHAIN_PPC_PREFIX;
+  else echo "Unknown toolchain $1 for objdump"; exit 1;
+  fi
+
+  $TARGET_TOOLCHAIN-objdump -dS $2 | vi -;
+)}
+
+
+#############################################################################
 # others
 #############################################################################
+fn_mkdcd() { mkdir $1 && cd $1; }
+alias mkdcd='fn_mkdcd'
+
 eval $(thefuck --alias)
-alias tm='tmux -2'
 alias k='k -h'
-alias ta='tmux attach'
 
