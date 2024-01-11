@@ -124,22 +124,32 @@ export LANG=en_US.UTF-8
 #############################################################################
 alias gad='git add'
 alias gap='git add -p'
+
 alias grs='git reset'
+alias grh='git reset HEAD^'
+
+alias grr='git restore'
 alias grt='git restore --staged'
-alias gcm='git commit -m'
+
+alias gcm='git commit'
 alias gca='git commit --amend'
+
 alias gsh='git stash'
 alias gsp='git stash pop'
 
 alias gst='git status'
+alias glg='git log --graph'
+
 alias gdf='git diff'
 alias gds='git diff --staged'
-alias glg='git log --graph'
+
+alias gpu='git push'
+alias gpf='git push -f'
+
+alias gpl='git pull'
 
 alias gck='git checkout'
 alias gfh='git fetch'
-alias gpu='git push'
-alias gpf='git push -f'
 
 
 #############################################################################

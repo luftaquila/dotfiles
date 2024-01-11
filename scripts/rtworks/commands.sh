@@ -36,7 +36,7 @@ function fn_rtworks_misra() {(
   BSP=`~/rtworks/bsp.sh`;
   TARGET=$1;
 
-  if [[ "$TARGET" == "p" ]]; then TARGET="partition";
+  if   [[ "$TARGET" == "p" ]]; then TARGET="partition";
   elif [[ "$TARGET" == "k" ]]; then TARGET="kernel";
   fi
 
