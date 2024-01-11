@@ -4,8 +4,9 @@ alias bsp="(vi ~/rtworks/bsp.sh; cd ~/rtworks/builder; ./init.py -b `~/rtworks/b
 
 alias bb=fn_rtworks_build
 alias mm=fn_rtworks_misra
-alias ee= # fn_rtworks_build_run
+alias lr=fn_rtworks_local_run
 alias rr=fn_rtworks_remote_run
+alias le=fn_rtworks_local_execute
 alias re=fn_rtworks_remote_execute
 
 function fn_rtworks_build() {(
@@ -55,9 +56,25 @@ function fn_rtworks_remote_run() {(
 
 function fn_rtworks_remote_execute() {(
   set -e;
-  BSP=t2080rdb;
 
   fn_rtworks_build;
   fn_rtworks_remote_run;
 )}
 
+function fn_rtworks_local_run() {(
+  set -e;
+  BSP=`~/rtworks/bsp.sh`;
+  MODEM=`cat ~/rtworks/modem`
+
+  if   [[ "$BSP" == "t2080rdb" ]];      then push-return $MODEM;
+  elif [[ "$BSP" == "ima_fcc-t2080" ]]; then push-toggle $MODEM;
+  else push-return $MODEM;
+  fi
+)}
+
+function fn_rtworks_local_execute() {(
+  set -e;
+
+  fn_rtworks_build;
+  fn_rtworks_local_run;
+)}
