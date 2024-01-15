@@ -29,3 +29,6 @@
 
 [status]
   submoduleSummary = true
+
+[init]
+	defaultBranch = main
