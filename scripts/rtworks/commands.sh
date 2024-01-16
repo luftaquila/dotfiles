@@ -9,6 +9,8 @@ alias rr=fn_rtworks_remote_run
 alias le=fn_rtworks_local_execute
 alias re=fn_rtworks_remote_execute
 
+alias qq='MODEM=`cat ~/rtworks/modem`; push-return $MODEM;'
+
 function fn_rtworks_build() {(
   set -e;
   RTWORKS_DIR=~/rtworks
