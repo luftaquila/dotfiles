@@ -133,31 +133,36 @@ bindkey "^L" forward-word
 alias gad='git add'
 alias gap='git add -p'
 
-alias grs='git reset'
+alias gck='git checkout'
+alias gcb='git checkout -b'
+
+alias gcm='git commit --verbose'
+alias gca='git commit --verbose --amend'
+
+alias gdf='git diff'
+alias gds='git diff --staged'
+
+alias gfh='git fetch'
+
+alias glg='git log --graph'
+alias glo='git log --oneline'
+
+alias gpl='git pull'
+alias gpr='git pull --rebase'
+
+alias gph='git push'
+alias gpf='git push -f'
+
+alias grt='git reset'
 alias grh='git reset HEAD^'
 
 alias grr='git restore'
-alias grt='git restore --staged'
-
-alias gcm='git commit'
-alias gca='git commit --amend'
+alias grs='git restore --staged'
 
 alias gsh='git stash'
 alias gsp='git stash pop'
 
 alias gst='git status'
-alias glg='git log --graph'
-
-alias gdf='git diff'
-alias gds='git diff --staged'
-
-alias gpu='git push'
-alias gpf='git push -f'
-
-alias gpl='git pull'
-
-alias gck='git checkout'
-alias gfh='git fetch'
 
 
 #############################################################################
