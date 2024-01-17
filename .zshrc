@@ -215,7 +215,7 @@ fn_dmp() {(
   else echo "Unknown toolchain $1 for objdump"; exit 1;
   fi
 
-  $TARGET_TOOLCHAIN-objdump -dS $2 | vi -;
+  $TARGET_TOOLCHAIN-objdump -dS $2 | vi - -c 'set filetype=objdump';
 )}
 
 
