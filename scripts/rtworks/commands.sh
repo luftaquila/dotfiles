@@ -59,7 +59,7 @@ function fn_rtworks_remote_run() {(
 function fn_rtworks_remote_execute() {(
   set -e;
 
-  fn_rtworks_build;
+  fn_rtworks_build "$1";
   fn_rtworks_remote_run;
 )}
 
@@ -77,6 +77,6 @@ function fn_rtworks_local_run() {(
 function fn_rtworks_local_execute() {(
   set -e;
 
-  fn_rtworks_build;
+  fn_rtworks_build "$1";
   fn_rtworks_local_run;
 )}
