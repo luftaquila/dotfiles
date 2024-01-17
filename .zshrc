@@ -161,8 +161,12 @@ alias grs='git restore --staged'
 
 alias gsh='git stash'
 alias gsp='git stash pop'
+alias gsl='git stash list'
 
 alias gst='git status'
+
+unalias gp
+unalias gpu
 
 
 #############################################################################
