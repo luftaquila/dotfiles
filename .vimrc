@@ -10,7 +10,6 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'sonph/onehalf', {'rtp': 'vim/'}
 Plugin 'ryanoasis/vim-devicons'
-Plugin 'luochen1990/rainbow'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'preservim/nerdtree'
@@ -214,12 +213,6 @@ nmap tr :NERDTreeToggle<CR>
 " #########################################################
 let Tlist_Use_Right_Window = 1
 nmap tl :TlistToggle<CR>
-
-
-" #########################################################
-"   RAINBOW
-" #########################################################
-let g:rainbow_active = 1
 
 
 " #########################################################
