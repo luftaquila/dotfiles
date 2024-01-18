@@ -226,5 +226,7 @@ fn_mkdcd() { mkdir $1 && cd $1; }
 alias mkdcd='fn_mkdcd'
 
 eval $(thefuck --alias)
+alias fk='fuck'
+
 alias k='k -h'
 

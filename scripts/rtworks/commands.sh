@@ -1,6 +1,6 @@
 export PATH="$PATH:/opt/rtst/arm-none-eabi/bin:/opt/rtst/powerpc-unknown-elf/bin"
 
-alias bsp="(vi ~/rtworks/bsp.sh; cd ~/rtworks/builder; ./init.py -b `~/rtworks/bsp.sh`)"
+alias bsp=fn_bsp
 
 alias bb=fn_rtworks_build
 alias mm=fn_rtworks_misra
@@ -10,6 +10,12 @@ alias le=fn_rtworks_local_execute
 alias re=fn_rtworks_remote_execute
 
 alias qq='MODEM=`cat ~/rtworks/modem`; push-return $MODEM;'
+
+function fn_bsp() {(
+  vi ~/rtworks/bsp.sh;
+  cd ~/rtworks/builder;
+  ./init.py -b `~/rtworks/bsp.sh`
+)}
 
 function fn_rtworks_build() {(
   set -e;
