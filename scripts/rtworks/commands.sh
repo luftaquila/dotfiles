@@ -4,9 +4,12 @@ alias bsp=fn_bsp
 
 alias bb=fn_rtworks_build
 alias mm=fn_rtworks_misra
+
 alias lr=fn_rtworks_local_run
+alias le=fn_rtworks_local_execute_fast
+alias les=fn_rtworks_local_execute
+
 alias rr=fn_rtworks_remote_run
-alias le=fn_rtworks_local_execute
 alias re=fn_rtworks_remote_execute
 
 alias qq='MODEM=`cat ~/rtworks/modem`; push-return $MODEM;'
@@ -36,7 +39,6 @@ function fn_rtworks_build() {(
   done
 
   cd "$RTWORKS_DIR/builder";
-  pwd;
   ./build.py -adg$RTWORKS_OPTION;
 )}
 
@@ -52,21 +54,6 @@ function fn_rtworks_misra() {(
   cd ~/rtworks/$TARGET/build;
   cmake -DBSP=$BSP -DUSE_MISRA_CHECKER=1 ..;
   ../misc/scripts/report_misra.sh | bat;
-)}
-
-function fn_rtworks_remote_run() {(
-  set -e;
-  BSP=t2080rdb;
-
-  cd ~/rtworks/remote;
-  ruby remote.rb -b $BSP -u ~/rtworks/builder/load.scr;
-)}
-
-function fn_rtworks_remote_execute() {(
-  set -e;
-
-  fn_rtworks_build "$1";
-  fn_rtworks_remote_run;
 )}
 
 function fn_rtworks_local_run() {(
@@ -86,3 +73,26 @@ function fn_rtworks_local_execute() {(
   fn_rtworks_build "$1";
   fn_rtworks_local_run;
 )}
+
+function fn_rtworks_local_execute_fast() {(
+  set -e;
+
+  fn_rtworks_local_run;
+  fn_rtworks_build "$1";
+)}
+
+function fn_rtworks_remote_run() {(
+  set -e;
+  BSP=t2080rdb;
+
+  cd ~/rtworks/remote;
+  ruby remote.rb -b $BSP -u ~/rtworks/builder/load.scr;
+)}
+
+function fn_rtworks_remote_execute() {(
+  set -e;
+
+  fn_rtworks_build "$1";
+  fn_rtworks_remote_run;
+)}
+
