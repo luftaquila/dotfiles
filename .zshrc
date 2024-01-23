@@ -230,3 +230,4 @@ alias fk='fuck'
 
 alias k='k -h'
 
+alias make='make -j'

@@ -15,7 +15,7 @@ alias re=fn_rtworks_remote_execute
 alias qq='MODEM=`cat ~/rtworks/modem`; push-return $MODEM;'
 
 function fn_bsp() {(
-  vi ~/rtworks/bsp.sh;
+  vim ~/rtworks/bsp.sh;
   cd ~/rtworks/builder;
   ./init.py -b `~/rtworks/bsp.sh`
 )}
