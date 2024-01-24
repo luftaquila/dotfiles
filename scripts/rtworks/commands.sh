@@ -24,6 +24,8 @@ function fn_rtworks_build() {(
   set -e;
   RTWORKS_DIR=~/rtworks
 
+  fn_patch_autostart_delay;
+
   while [[ $# -gt 0 ]]; do
     case $1 in
       -d|--dir)
@@ -96,3 +98,12 @@ function fn_rtworks_remote_execute() {(
   fn_rtworks_remote_run;
 )}
 
+function fn_patch_autostart_delay() {(
+  set -e;
+
+  cd ~/rtworks/builder/build.kernel;
+
+  if [ -f CMakeCache.txt ]; then
+    sed -i '' -E 's/^(CONFIG_AUTOSTART_DELAY:STRING=)(.*)/\10/' CMakeCache.txt;
+  fi
+)}
