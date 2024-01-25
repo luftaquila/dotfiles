@@ -150,14 +150,6 @@ nmap <Tab>c :tabclose<CR>
 " #########################################################
 "   CUSTOM COMMANDS
 " #########################################################
-:command -complete=tag -nargs=* RG :execute 'Rg <args>'
-:cabbrev rg RG
-
-:command -complete=tag -nargs=* TAGS :execute 'Tags <args>'
-:cabbrev tag TAGS
-
-:command -complete=file -nargs=* F :execute 'Files <args>'
-
 " force write file
 :command SUDO :execute 'w !sudo tee %'
 :cabbrev sudo SUDO
@@ -261,4 +253,16 @@ let g:session_autosave_silent = 1
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
 :command OS :OpenSession
+
+" #########################################################
+"   FZF
+" #########################################################
+:command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case --glob='!{**/rtworks_packager/*,**/tags}' -- ".fzf#shellescape(<q-args>), fzf#vim#with_preview(), <bang>0)
+:command -complete=tag -nargs=* RG :execute 'Rg <args>'
+:cabbrev rg RG
+
+:command -complete=tag -nargs=* TAGS :execute 'Tags <args>'
+:cabbrev tag TAGS
+
+:command -complete=file -nargs=* F :execute 'Files <args>'
 
