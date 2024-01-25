@@ -55,7 +55,7 @@ function fn_rtworks_misra() {(
 
   cd ~/rtworks/$TARGET/build;
   cmake -DBSP=$BSP -DUSE_MISRA_CHECKER=1 ..;
-  ../misc/scripts/report_misra.sh | bat;
+  ../misc/scripts/report_misra.sh | bat --language=c;
 )}
 
 function fn_rtworks_local_run() {(
