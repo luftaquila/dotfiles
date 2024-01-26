@@ -248,7 +248,7 @@ let g:session_command_aliases = 1
 " #########################################################
 let fzf_exclude = '**/rtworks_packager/*,**/tags,**/node_modules/*,**/target/debug/*'
 
-command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case --glob='!{" . fzf_exclude . "}' -- ".fzf#shellescape(<q-args>), fzf#vim#with_preview(), <bang>0)
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case --glob='!{" . fzf_exclude . "}' -- ".shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)
 
 command -complete=tag -nargs=* R execute 'Rg <args>'
 command -complete=tag -nargs=* T execute 'Tags <args>'
