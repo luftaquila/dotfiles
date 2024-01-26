@@ -19,6 +19,7 @@ function fn_bsp() {(
   cd ~/rtworks/builder;
   ./init.py -b `~/rtworks/bsp.sh`
 )}
+autoload fn_bsp
 
 function fn_rtworks_build() {(
   set -e;
@@ -43,6 +44,7 @@ function fn_rtworks_build() {(
   cd "$RTWORKS_DIR/builder";
   ./build.py -adg$RTWORKS_OPTION;
 )}
+autoload fn_rtworks_build
 
 function fn_rtworks_misra() {(
   set -e;
@@ -57,6 +59,7 @@ function fn_rtworks_misra() {(
   cmake -DBSP=$BSP -DUSE_MISRA_CHECKER=1 ..;
   ../misc/scripts/report_misra.sh | bat --language=c;
 )}
+autoload fn_rtworks_misra
 
 function fn_rtworks_local_run() {(
   set -e;
@@ -68,6 +71,7 @@ function fn_rtworks_local_run() {(
   else push-return $MODEM;
   fi
 )}
+autoload fn_rtworks_local_run
 
 function fn_rtworks_local_execute() {(
   set -e;
@@ -75,6 +79,7 @@ function fn_rtworks_local_execute() {(
   fn_rtworks_build "$1";
   fn_rtworks_local_run;
 )}
+autoload fn_rtworks_local_execute
 
 function fn_rtworks_local_execute_fast() {(
   set -e;
@@ -82,6 +87,7 @@ function fn_rtworks_local_execute_fast() {(
   fn_rtworks_local_run;
   fn_rtworks_build "$1";
 )}
+autoload fn_rtworks_local_execute_fast
 
 function fn_rtworks_remote_run() {(
   set -e;
@@ -90,6 +96,7 @@ function fn_rtworks_remote_run() {(
   cd ~/rtworks/remote;
   ruby remote.rb -b $BSP -u ~/rtworks/builder/load.scr;
 )}
+autoload fn_rtworks_remote_run
 
 function fn_rtworks_remote_execute() {(
   set -e;
@@ -97,6 +104,7 @@ function fn_rtworks_remote_execute() {(
   fn_rtworks_build "$1";
   fn_rtworks_remote_run;
 )}
+autoload fn_rtworks_remote_execute
 
 function fn_patch_autostart_delay() {(
   set -e;
@@ -107,3 +115,4 @@ function fn_patch_autostart_delay() {(
     sed -i '' -E 's/^(CONFIG_AUTOSTART_DELAY:STRING=)(.*)/\10/' CMakeCache.txt;
   fi
 )}
+autoload fn_patch_autostart_delay

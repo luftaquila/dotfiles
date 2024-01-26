@@ -32,9 +32,9 @@ Plugin 'cohama/lexima.vim'
 Plugin 'yegappan/taglist'
 Plugin 'ycm-core/YouCompleteMe'
 Plugin 'wakatime/vim-wakatime'
+Plugin 'tpope/vim-surround'
 
 " to learn
-Plugin 'tpope/vim-surround'
 Plugin 'mg979/vim-visual-multi'
 call vundle#end()
 filetype plugin indent on
@@ -43,11 +43,11 @@ filetype plugin indent on
 " #########################################################
 "   PROJECT SPECIFIC
 " #########################################################
-:command R !(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1;
-:command -nargs=? D :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gv<args>l4);"'
-:command -nargs=? B :execute 'w' | :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "(>&2 ~/dotfiles/scripts/rst) > /dev/null 2>&1 & (cd ~/workspace/rtworks/builder/; ./build.py -gv<args>);"'
+let cmd = 'source ~/dotfiles/scripts/rtworks/commands.sh;'
 
-:command -nargs=1 M :execute 'bo sp' | :execute 'terminal ++curwin ++rows=20 zsh -c "cd ~/workspace/rtworks/<args>/build; pwd; cmake -DBSP=t2080rdb -DUSE_MISRA_CHECKER=1 ..; make check-misra > tmp_check-misra.txt; ../misc/scripts/report_misra.sh > tmp_report_misra.txt; cat tmp_report_misra.txt"'
+command -nargs=? B execute 'w | bo sp | terminal ++curwin ++rows=20 zsh -c "' . cmd . 'fn_rtworks_build <args>"'
+command -nargs=1 M execute 'w | bo sp | terminal ++curwin ++rows=20 zsh -c "' . cmd . 'fn_rtworks_misra <args>"'
+command -nargs=? L echom system('zsh -c "' . cmd . 'fn_rtworks_local_run"')
 
 
 " #########################################################
@@ -107,16 +107,19 @@ hi IncSearch term=NONE cterm=NONE ctermbg=70 ctermfg=231 gui=NONE guibg=#5FAF00 
 
 
 " #########################################################
-"   CURSOR, WINDOW, TAB CONTROLs
+"   BUFFER, CURSOR, WINDOW, TAB CONTROL
 " #########################################################
 nmap <Enter> o<ESC>
 
 nmap H :bp<CR>
 nmap L :bn<CR>
+
 nmap K :bd<CR>
-nmap Q :BD<CR>
-command K :BD!
-command Q :q!
+command K bd!
+
+nmap Q :q!
+command Q execute 'qa!'
+command O execute 'OpenSession'
 
 nnoremap <C-c> <C-w>c
 nmap <C-i> :horizontal wincmd =<CR>
@@ -124,6 +127,7 @@ nmap <C-h> <C-w>h
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
+tmap <C-s> <C-w><C-w>
 
 nmap <left> :vertical resize -5<CR>
 nmap <right> :vertical resize +5<CR>
@@ -135,31 +139,25 @@ nmap <Tab>h :tabprev<CR>
 nmap <Tab>n :tabnew<CR>
 nmap <Tab>c :tabclose<CR>
 
-:command VS :execute 'vs' | :norm <C-e><C-l>
-:cabbrev vs VS
+command VS execute 'vs' | norm <C-e><C-l>
+cabbrev vs VS
 
-:command SP :execute 'sp' | :norm <C-e><C-j>
-:cabbrev sp SP
-
-:command S :execute 'SaveSession' | :execute 'qa'
-:cabbrev s S
-
-:command O :execute 'OpenSession'
-:cabbrev o O
+command SP execute 'sp' | norm <C-e><C-j>
+cabbrev sp SP
 
 " #########################################################
 "   CUSTOM COMMANDS
 " #########################################################
 " force write file
-:command SUDO :execute 'w !sudo tee %'
-:cabbrev sudo SUDO
+command SUDO execute 'w !sudo tee %'
+cabbrev sudo SUDO
 
 " generate new ctag file
-:command CTAGS :execute '!ctags -R'
-:cabbrev ctags CTAGS
+command CTAGS execute '!ctags -R'
+cabbrev ctags CTAGS
 
 " change git diff base
-:command -nargs=1 G :let g:gitgutter_diff_base = '<args>' | :GitGutterAll
+command -nargs=1 G let g:gitgutter_diff_base = '<args>' | GitGutterAll
 
 " CTRL+R in VISUAL mode to replace selected
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
@@ -167,17 +165,17 @@ vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 " CTRL+L in VISUAL mode to search selected
 vnoremap <C-l> y/\V<C-R>=escape(@",'/\')<CR><CR>
 
-:cabbrev so so ~/.vimrc
+cabbrev so so ~/.vimrc
 
-:cabbrev en enew
+cabbrev en enew
 
 
 " #########################################################
 "   TERMINALS
 " #########################################################
 " open shell window
-:command -nargs=? TERM :execute 'bo sp' | :execute 'term ++curwin ++rows=' . (empty(<q-args>) ? 20 : <q-args>)
-:cabbrev term TERM
+command -nargs=? TERM execute 'bo sp | term ++curwin ++rows=' . (empty(<q-args>) ? 20 : <q-args>)
+cabbrev term TERM
 
 
 " #########################################################
@@ -252,17 +250,13 @@ let g:session_autosave_periodic = 1
 let g:session_autosave_silent = 1
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
-:command OS :OpenSession
 
 " #########################################################
 "   FZF
 " #########################################################
-:command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case --glob='!{**/rtworks_packager/*,**/tags}' -- ".fzf#shellescape(<q-args>), fzf#vim#with_preview(), <bang>0)
-:command -complete=tag -nargs=* RG :execute 'Rg <args>'
-:cabbrev rg RG
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case --glob='!{**/rtworks_packager/*,**/tags}' -- ".fzf#shellescape(<q-args>), fzf#vim#with_preview(), <bang>0)
 
-:command -complete=tag -nargs=* TAGS :execute 'Tags <args>'
-:cabbrev tag TAGS
-
-:command -complete=file -nargs=* F :execute 'Files <args>'
+command -complete=tag -nargs=* R execute 'Rg <args>'
+command -complete=tag -nargs=* T execute 'Tags <args>'
+command -complete=file -nargs=* F execute 'Files <args>'
 
