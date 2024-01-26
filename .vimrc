@@ -41,20 +41,6 @@ filetype plugin indent on
 
 
 " #########################################################
-"   PROJECT SPECIFIC
-" #########################################################
-let cmd = 'source ~/dotfiles/scripts/rtworks/commands.sh;'
-
-command -nargs=? B execute 'w | bo sp | terminal ++curwin ++rows=20 zsh -c "' . cmd . 'fn_rtworks_build <args>"' | normal <c-p>
-command -nargs=? E execute 'w | bo sp | terminal ++curwin ++rows=20 zsh -c "' . cmd . 'fn_rtworks_local_execute_fast <args>"' | normal <c-p>
-command -nargs=1 M execute 'w | bo sp | terminal ++curwin ++rows=20 zsh -c "' . cmd . 'fn_rtworks_misra <args>"' | normal <c-p>
-command -nargs=? L echom system('zsh -c "' . cmd . 'fn_rtworks_local_run"')
-
-nmap <C-b> :B l4<CR>
-nmap <C-f> :E<CR>
-
-
-" #########################################################
 "   DEFAULT SETTINGS
 " #########################################################
 syntax on
@@ -265,4 +251,18 @@ command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-hea
 command -complete=tag -nargs=* R execute 'Rg <args>'
 command -complete=tag -nargs=* T execute 'Tags <args>'
 command -complete=file -nargs=* F execute 'Files <args>'
+
+
+" #########################################################
+"   PROJECT SPECIFIC
+" #########################################################
+let cmd = 'source ~/dotfiles/scripts/rtworks/commands.sh;'
+
+command -nargs=? B execute 'w | bo sp | terminal ++curwin ++rows=20 zsh -c "' . cmd . 'fn_rtworks_build <args>"' | normal <c-p>
+command -nargs=? E execute 'w | bo sp | terminal ++curwin ++rows=20 zsh -c "' . cmd . 'fn_rtworks_local_execute_fast <args>"' | normal <c-p>
+command -nargs=1 M execute 'w | bo sp | terminal ++curwin ++rows=20 zsh -c "' . cmd . 'fn_rtworks_misra <args>"' | normal <c-p>
+command -nargs=? L echom system('zsh -c "' . cmd . 'fn_rtworks_local_run"')
+
+nmap <C-b> :B l4<CR>
+nmap <C-f> :E<CR>
 
