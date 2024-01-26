@@ -184,6 +184,12 @@ alias ta='tmux attach'
 
 
 #############################################################################
+# build-essential
+#############################################################################
+alias make='make -j'
+
+
+#############################################################################
 # ctags
 #############################################################################
 alias pytags="ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./tags . $(python -c "import os, sys; print(' '.join('{}'.format(d) for d in sys.path if os.path.isdir(d)))")"
@@ -231,9 +237,14 @@ fn_dmp() {(
 fn_mkdcd() { mkdir $1 && cd $1; }
 alias mkdcd='fn_mkdcd'
 
+# https://github.com/nvbn/thefuck
 eval $(thefuck --alias)
 alias fk='fuck'
 
+# https://github.com/supercrabtree/k
 alias k='k -h'
 
-alias make='make -j'
+# https://github.com/ogham/exa
+alias ls='exa --color-scale --time-style long-iso'
+alias ll='exa --color-scale --time-style long-iso --long'
+alias la='exa --color-scale --time-style long-iso --long --all'
