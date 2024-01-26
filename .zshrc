@@ -190,6 +190,12 @@ alias pytags="ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./ta
 
 
 #############################################################################
+# fzf
+#############################################################################
+export FZF_DEFAULT_COMMAND="fdfind --exclude={.git,.vscode,node_modules,target,debug} --type f"
+
+
+#############################################################################
 # toolchains
 #############################################################################
 TOOLCHAIN_ARM_PREFIX="arm-none-eabi"
