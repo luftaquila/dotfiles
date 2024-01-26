@@ -151,14 +151,16 @@ cabbrev ctags CTAGS
 " change git diff base
 command -nargs=1 G let g:gitgutter_diff_base = '<args>' | GitGutterAll
 
-" CTRL+R in VISUAL mode to replace selected
-vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+" CTRL+F in VISUAL mode to search selected
+vnoremap <C-f> y:<C-u>call setreg('s', ":R\<lt>Return><C-r>"", 'c')<CR>@s
 
-" CTRL+L in VISUAL mode to search selected
-vnoremap <C-l> y/\V<C-R>=escape(@",'/\')<CR><CR>
+" CTRL+H in VISUAL mode to replace selected
+vnoremap <C-h> "hy:%s/<C-r>h//gc<left><left><left>
+
+" repeat macro with space
+nnoremap <Space> @q
 
 cabbrev so so ~/.vimrc
-
 cabbrev en enew
 
 
@@ -242,6 +244,7 @@ let g:session_autosave_periodic = 1
 let g:session_autosave_silent = 1
 let g:session_default_overwrite = 1
 let g:session_command_aliases = 1
+
 
 " #########################################################
 "   FZF
