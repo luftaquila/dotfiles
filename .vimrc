@@ -33,6 +33,7 @@ Plugin 'yegappan/taglist'
 Plugin 'ycm-core/YouCompleteMe'
 Plugin 'wakatime/vim-wakatime'
 Plugin 'tpope/vim-surround'
+Plugin 'bling/vim-bufferline'
 
 " to learn
 Plugin 'mg979/vim-visual-multi'
@@ -54,7 +55,6 @@ set smartcase
 set ignorecase
 set showcmd
 set cursorline
-set laststatus=2
 set hlsearch
 set incsearch
 set autowrite
@@ -82,11 +82,12 @@ set t_Co=256
 set termguicolors
 
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline_section_warning = ''
+let g:airline_statusline_ontop = 1
 let g:airline_powerline_fonts = 1
+let g:airline_section_warning = ''
 let g:airline_theme = 'onedark'
+let g:airline_section_z = '%l%#__restore__#%#__accent_bold#/%L%\(%p%%)%\:%v%#__restore__#'
+let g:bufferline_show_bufnr = 0
 
 colorscheme onehalfdark
 hi Normal term=NONE cterm=NONE ctermbg=234 ctermfg=231 gui=NONE guibg=#1D1F21 guifg=#F8F8F2
@@ -107,7 +108,7 @@ nmap L :bn<CR>
 nmap K :bd<CR>
 command K bd!
 
-nmap Q :q!
+nmap Q :q!<CR>
 command Q execute 'qa!'
 command O execute 'OpenSession'
 
