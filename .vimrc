@@ -73,6 +73,7 @@ set wildmode=longest:full,full
 set ttyfast
 set lazyredraw
 set completeopt-=preview
+set laststatus=0
 
 
 " #########################################################
