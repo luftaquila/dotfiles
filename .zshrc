@@ -198,7 +198,7 @@ alias pytags="ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./ta
 #############################################################################
 # fzf
 #############################################################################
-export FZF_DEFAULT_COMMAND="fdfind --exclude={.git,.vscode,node_modules,target,debug} --type f"
+export FZF_DEFAULT_COMMAND="fd --exclude={.git,.vscode,node_modules,target,debug} --type f"
 
 
 #############################################################################
@@ -244,7 +244,7 @@ alias fk='fuck'
 # https://github.com/supercrabtree/k
 alias k='k -h'
 
-# https://github.com/ogham/exa
-alias ls='exa --color-scale --time-style long-iso'
-alias ll='exa --color-scale --time-style long-iso --long'
-alias la='exa --color-scale --time-style long-iso --long --all'
+# https://github.com/eza-community/eza
+alias ls='eza --color-scale --time-style long-iso'
+alias ll='eza --color-scale --time-style long-iso --long'
+alias la='eza --color-scale --time-style long-iso --long --all'

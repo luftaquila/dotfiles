@@ -13,7 +13,7 @@ linux_packages=(
   "universal-ctags"
   "cmake"
   "libncurses-dev"
-  "exa"
+  "eza"
 )
 
 macos_packages=(
@@ -26,7 +26,7 @@ macos_packages=(
   "thefuck"
   "tmux"
   "zsh"
-  "exa"
+  "eza"
 )
 
 rust_packages=(
