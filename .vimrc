@@ -87,7 +87,7 @@ let g:airline_statusline_ontop = 1
 let g:airline_powerline_fonts = 1
 let g:airline_section_warning = ''
 let g:airline_theme = 'onedark'
-let g:airline_section_z = '%l%#__restore__#%#__accent_bold#/%L%\(%p%%)%\:%v%#__restore__#'
+let g:airline_section_z = '%l%#__restore__#%#__accent_bold#/%L%\(%2p%%)%\:%2v%#__restore__#'
 let g:bufferline_show_bufnr = 0
 
 colorscheme onehalfdark
