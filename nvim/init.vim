@@ -132,21 +132,21 @@ nmap <Tab>n :tabnew<CR>
 nmap <Tab>c :tabclose<CR>
 
 command VS execute 'vs' | norm <C-e><C-l>
-cabbrev vs VS
+cnoreabbrev <expr> vs (getcmdtype() == ':' && getcmdline() == 'vs') ? 'VS' : 'vs'
 
 command SP execute 'sp' | norm <C-e><C-j>
-cabbrev sp SP
+cnoreabbrev <expr> sp (getcmdtype() == ':' && getcmdline() == 'sp') ? 'SP' : 'sp'
 
 " #########################################################
 "   CUSTOM COMMANDS
 " #########################################################
 " force write file
 command SUDO execute 'w !sudo tee %'
-cabbrev sudo SUDO
+cnoreabbrev <expr> sudo (getcmdtype() == ':' && getcmdline() == 'sudo') ? 'SUDO' : 'sudo'
 
 " generate new ctag file
 command CTAGS execute '!ctags -R'
-cabbrev ctags CTAGS
+cnoreabbrev <expr> ctags (getcmdtype() == ':' && getcmdline() == 'ctags') ? 'CTAGS' : 'ctags'
 
 " change git diff base
 command -nargs=1 G let g:gitgutter_diff_base = '<args>' | GitGutterAll
@@ -160,19 +160,25 @@ vnoremap <C-h> "hy:%s/<C-r>h//gc<left><left><left>
 " repeat macro with space
 nnoremap <Space> @q
 
-cabbrev so so ~/.vimrc
-cabbrev en enew
+cnoreabbrev <expr> en (getcmdtype() == ':' && getcmdline() == 'en') ? 'enew' : 'en'
+
+cnoreabbrev <expr> vimrc (getcmdtype() == ':' && getcmdline() == 'vimrc') ? 'e ~/.config/nvim/init.vim' : 'vimrc'
+cnoreabbrev <expr> zshrc (getcmdtype() == ':' && getcmdline() == 'zshrc') ? 'e ~/.zshrc' : 'zshrc'
+cnoreabbrev <expr> machinerc (getcmdtype() == ':' && getcmdline() == 'machinerc') ? 'e ~/.machine.zsh' : 'machinerc'
+cnoreabbrev <expr> cmd (getcmdtype() == ':' && getcmdline() == 'cmd') ? 'e ~/dotfiles/scripts/rtworks/commands.sh' : 'cmd'
 
 
 " #########################################################
 "   TERMINALS
 " #########################################################
 " open shell window
-command -nargs=? TERM execute 'bo sp | resize ' . (empty(<q-args>) ? 20 : <q-args>) . ' | terminal' | startinsert
-cabbrev term TERM
+command -nargs=? TERMINAL execute 'bo sp | resize ' . (empty(<q-args>) ? 20 : <q-args>) . ' | terminal' | startinsert
+cnoreabbrev <expr> te (getcmdtype() == ':' && getcmdline() == 'te') ? 'TERMINAL' : 'te'
+
 autocmd BufWinEnter,WinEnter term://* startinsert | redraw
 autocmd BufLeave term://* stopinsert | redraw
 
+cnoreabbrev <expr> sh (getcmdtype() == ':' && getcmdline() == 'sh') ? 'normal <C-z>' : 'sh'
 
 " #########################################################
 "   SCRIPTS
