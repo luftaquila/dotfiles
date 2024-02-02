@@ -1,46 +1,22 @@
 #!/bin/bash
 
-common_packages=(
-  "curl" "bat" "eza" "htop" "ripgrep" "thefuck"
-  "tmux" "universal-ctags" "zsh"
-)
-linux_packages=( "cmake" "fd-find" "libncurses-dev" )
-macos_packages=( "fd" )
-rust_packages=( "git-delta" "du-dust" )
-
-backups=( ".gitconfig" ".p10k.zsh" ".tmux.conf" ".zshrc" ".vimrc" )
-
-stages=(
-  "system packages"
-  "Oh My Zsh"
-  "Rust"
-  "dotfiles"
-  "NeoVim"
-)
-
+###############################################################################
+#  stage definitions
+###############################################################################
+stages=( "system packages" "Oh My Zsh" "Rust" "dotfiles" "NeoVim" )
+stages_confirm=( true true true true true )
 stages_function=(
   fn_install_system_packages
-  fn_install_ohmyzsh
   fn_install_rust
-  fn_install_dotfiles
   fn_install_neovim
+  fn_install_ohmyzsh
+  fn_install_dotfiles
 )
 
-stages_confirm=( true true true true true )
 
-function fn_cmd() {
-  echo "[CMD] $1"
-  eval $1
-
-  if [[ "$?" -ne 0 ]]; then
-    echo "[ERR]: command failed. terminating..."
-    exit 1
-  fi
-}
-
-#########################################################
+################################################################################
 #  detect OS
-#########################################################
+################################################################################
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   platform='linux'
   package_cmd='sudo apt-get'
@@ -56,9 +32,98 @@ fi
 
 echo "[INF] target OS: $platform"
 
-#########################################################
+
+################################################################################
+#  functions
+################################################################################
+function fn_cmd() {
+  echo "[CMD] $1"
+  eval $1
+
+  if [[ "$?" -ne 0 ]]; then
+    echo "[ERR] command failed. terminating..."
+    exit 1
+  fi
+}
+
+function fn_install_system_packages() {
+  echo "[INF] installing system packages..."
+
+  common_packages=(
+    "curl" "bat" "eza" "htop" "ripgrep" "thefuck" "tmux" "universal-ctags"
+  )
+  linux_packages=( "cmake" "fd-find" "libncurses-dev" )
+  macos_packages=( "fd" )
+
+  fn_cmd "$package_cmd update && $package_cmd upgrade"
+
+  if [[ $platform == "linux" ]]; then
+    fn_cmd "$package_cmd install ${linux_packages[*]}"
+
+    echo "[INF] creating executable symbolic links..."
+
+    fn_cmd "mkdir -p $HOME/.local/bin"
+    fn_cmd "ln -s $(which fdfind) ~/.local/bin/fd"
+    fn_cmd "ln -s $(which batcat) ~/.local/bin/bat"
+  elif [[ $platform == "macos" ]]; then
+    fn_cmd "$package_cmd install ${macos_packages[*]}"
+  fi
+}
+
+function fn_install_rust() {
+  echo "[INF] installing Rust..."
+
+  rust_packages=( "git-delta" "du-dust" )
+
+  fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh"
+  fn_cmd "source $HOME/.cargo/env"
+
+  echo "[INF] installing Rust Cargo crates..."
+
+  fn_cmd "cargo install ${rust_packages[*]}"
+}
+
+function fn_install_neovim() {
+  echo "[INF] installing NeoVim..."
+
+  # TODO
+}
+
+function fn_install_ohmyzsh() {
+  echo "[INF] installing Oh My Zsh..."
+
+  if ! [[ -x "$(command -v git)" ]]; then
+    echo "[WRN] no zsh detected! installing it first..."
+    fn_cmd "$package_cmd install zsh"
+  fi
+
+  fn_cmd "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
+  fn_cmd "chsh -s `which zsh`"
+
+  # TODO: restart in zsh
+
+  echo "[INF] installing zsh plugins..."
+
+  fn_cmd "git clone https://github.com/supercrabtree/k $ZSH_CUSTOM/plugins/k"
+  fn_cmd "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+
+  echo "[INF] installing powerlevel10k..."
+
+  fn_cmd "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+}
+
+function fn_install_dotfiles() {
+  echo "[INF] installing dotfiles..."
+
+  backups=( ".gitconfig" ".zshrc" ".machine.zsh" ".p10k.zsh" ".tmux.conf" ".vimrc" )
+
+  # TODO
+}
+
+
+################################################################################
 #  check git installation
-#########################################################
+################################################################################
 if ! [[ -x "$(command -v git)" ]]; then
   echo "[ERR] no git detected!"
 
@@ -80,9 +145,10 @@ if ! [[ -x "$(command -v git)" ]]; then
   done
 fi
 
-#########################################################
+
+################################################################################
 #  identify dotfiles repository
-#########################################################
+################################################################################
 echo "[INF] looking for dotfiles..."
 if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
   # check ssh client
@@ -125,9 +191,10 @@ if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
   exec ./init.sh
 fi
 
-#########################################################
+
+################################################################################
 #  configure stages
-#########################################################
+################################################################################
 echo "[INF] configuring stages..."
 
 for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
@@ -153,7 +220,13 @@ for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
 done
 read -p "  Press ENTER to continue..."
 
-#########################################################
-#  do installation stages
-#########################################################
+
+################################################################################
+#  execute stages
+################################################################################
+for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
+  if [[ ${stages_confirm[$i]} == true ]]; then
+    eval ${stages_function[$i]}
+  fi
+done
 
