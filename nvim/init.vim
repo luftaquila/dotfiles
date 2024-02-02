@@ -29,7 +29,7 @@ Plugin 'xolox/vim-session'
 Plugin 'tpope/vim-commentary'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'cohama/lexima.vim'
-Plugin 'yegappan/taglist'
+Plugin 'liuchengxu/vista.vim'
 Plugin 'ycm-core/YouCompleteMe'
 Plugin 'wakatime/vim-wakatime'
 Plugin 'tpope/vim-surround'
@@ -86,7 +86,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline_section_warning = ''
 let g:airline_theme = 'onedark'
-let g:airline_section_z = '%l%#__restore__#%#__accent_bold#/%L%\(%2p%%)%\:%2v%#__restore__#'
+let g:airline_section_z = '%l/%L%\(%2p%%)%\:%2v%'
 
 colorscheme onehalfdark
 hi Normal term=NONE cterm=NONE ctermbg=234 ctermfg=231 gui=NONE guibg=#1D1F21 guifg=#F8F8F2
@@ -167,6 +167,8 @@ cnoreabbrev <expr> zshrc (getcmdtype() == ':' && getcmdline() == 'zshrc') ? 'e ~
 cnoreabbrev <expr> machinerc (getcmdtype() == ':' && getcmdline() == 'machinerc') ? 'e ~/.machine.zsh' : 'machinerc'
 cnoreabbrev <expr> cmd (getcmdtype() == ':' && getcmdline() == 'cmd') ? 'e ~/dotfiles/scripts/rtworks/commands.sh' : 'cmd'
 
+cnoreabbrev <expr> so (getcmdtype() == ':' && getcmdline() == 'so') ? 'so ~/.config/nvim/init.vim' : 'so'
+
 
 " #########################################################
 "   TERMINALS
@@ -201,10 +203,11 @@ nmap tr :NERDTreeToggle<CR>
 
 
 " #########################################################
-"   taglist
+"   Vista
 " #########################################################
-let Tlist_Use_Right_Window = 1
-nmap tl :TlistToggle<CR>
+nmap tl :Vista!!<CR>
+let g:vista_blink = [0, 0]
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
 
 " #########################################################
@@ -257,7 +260,7 @@ let g:session_command_aliases = 1
 " #########################################################
 "   FZF
 " #########################################################
-let fzf_exclude = '**/rtworks_packager/*,**/tags,**/node_modules/*,**/target/debug/*'
+let fzf_exclude = '**/rtworks_packager/*,**/tags,**/node_modules/*,**/target/debug/*,**/test/*'
 
 command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case --glob='!{" . fzf_exclude . "}' -- ".shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)
 
