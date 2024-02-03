@@ -50,7 +50,7 @@ function fn_install_system_packages() {
   echo "[INF] installing system packages..."
 
   common_packages=(
-    "curl" "bat" "eza" "htop" "ripgrep" "thefuck" "tmux" "universal-ctags"
+    "bat" "htop" "ripgrep" "thefuck" "tmux" "universal-ctags"
   )
   linux_packages=( "cmake" "fd-find" "libncurses-dev" )
   macos_packages=( "fd" )
@@ -73,7 +73,7 @@ function fn_install_system_packages() {
 function fn_install_rust() {
   echo "[INF] installing Rust..."
 
-  rust_packages=( "git-delta" "du-dust" )
+  rust_packages=( "eza" "du-dust" "git-delta" )
 
   fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh"
   fn_cmd "source $HOME/.cargo/env"
