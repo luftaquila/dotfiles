@@ -86,7 +86,22 @@ function fn_install_rust() {
 function fn_install_neovim() {
   echo "[INF] installing NeoVim..."
 
-  # TODO
+  if [[ $platform == "linux" ]]; then
+    fn_cmd "$package_cmd install libfuse2"
+    fn_cmd "wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
+    fn_cmd "mv nvim.appimage ~/.local/bin/nvim"
+  elif [[ $platform == "macos" ]]; then
+    fn_cmd "$package_cmd install neovim"
+  fi
+
+  fn_cmd "pip3 install --user neovim"
+
+  fn_cmd "mkdir -p ~/.config"
+  fn_cmd "cp -r nvim ~/.config"
+
+  # TODO: https://github.com/VundleVim/Vundle.vim install?
+
+  fn_cmd "nvim -Es -u ~/.config/nvim/init.vim +PluginInstall +qall"
 }
 
 function fn_install_ohmyzsh() {
@@ -100,24 +115,30 @@ function fn_install_ohmyzsh() {
   fn_cmd "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
   fn_cmd "chsh -s `which zsh`"
 
-  # TODO: restart in zsh
-
   echo "[INF] installing zsh plugins..."
 
-  fn_cmd "git clone https://github.com/supercrabtree/k $ZSH_CUSTOM/plugins/k"
-  fn_cmd "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+  fn_cmd "zsh -c 'git clone https://github.com/supercrabtree/k $ZSH_CUSTOM/plugins/k'"
+  fn_cmd "zsh -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting'"
 
   echo "[INF] installing powerlevel10k..."
 
-  fn_cmd "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+  fn_cmd "zsh -c 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'"
 }
 
 function fn_install_dotfiles() {
   echo "[INF] installing dotfiles..."
 
-  backups=( ".gitconfig" ".zshrc" ".machine.zsh" ".p10k.zsh" ".tmux.conf" ".vimrc" )
+  backups=( ".gitconfig" ".zshrc" ".machine.zsh" ".p10k.zsh" ".tmux.conf" )
 
-  # TODO
+  fn_cmd "rm -rf backups && mkdir backups"
+
+  for obj in "${backups[@]}"; do
+    if [[ -f $obj ]]; then
+      fn_cmd "cp ~/$obj ./backups/$obj"
+      fn_cmd "rm -f ~/$obj"
+      fn_cmd "ln -s `pwd`/$obj ~/$obj"
+    fi
+  done
 }
 
 
@@ -184,8 +205,8 @@ if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
 
   # cloning dotfiles
   echo "[INF] cloning dotfiles..."
-  fn_cmd "git clone git@github.com:luftaquila/dotfiles.git"
-  fn_cmd "cd dotfiles"
+  fn_cmd "git clone git@github.com:luftaquila/dotfiles.git ~/dotfiles"
+  fn_cmd "cd ~/dotfiles"
 
   echo "[INF] restarting in cloned directory..."
   exec ./init.sh
