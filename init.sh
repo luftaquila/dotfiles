@@ -3,8 +3,7 @@
 ###############################################################################
 #  stage definitions
 ###############################################################################
-stages=( "system packages" "Oh My Zsh" "Rust" "dotfiles" "NeoVim" )
-stages_confirm=( true true true true true )
+stages=( "system packages" "Rust" "NeoVim" "Oh My Zsh" "dotfiles" )
 stages_function=(
   fn_install_system_packages
   fn_install_rust
@@ -12,6 +11,7 @@ stages_function=(
   fn_install_ohmyzsh
   fn_install_dotfiles
 )
+stages_confirm=( true true true true true )
 
 
 ################################################################################
@@ -50,12 +50,13 @@ function fn_install_system_packages() {
   echo "[INF] installing system packages..."
 
   common_packages=(
-    "bat" "htop" "ripgrep" "thefuck" "tmux" "universal-ctags" "wget"
+    "bat" "curl" "htop" "ripgrep" "thefuck" "tmux" "universal-ctags" "wget"
   )
-  linux_packages=( "cmake" "fd-find" "libncurses-dev" )
+  linux_packages=( "build-essential" "cmake" "fd-find" "libncurses-dev" )
   macos_packages=( "fd" )
 
   fn_cmd "$package_cmd update && $package_cmd upgrade"
+  fn_cmd "$package_cmd install ${common_packages[*]}"
 
   if [[ $platform == "linux" ]]; then
     fn_cmd "$package_cmd install ${linux_packages[*]}"
@@ -94,7 +95,7 @@ function fn_install_neovim() {
     fn_cmd "$package_cmd install neovim"
   fi
 
-  fn_cmd "pip3 install --user neovim"
+  # fn_cmd "pip3 install --user neovim"
 
   fn_cmd "mkdir -p ~/.config"
   fn_cmd "cp -r nvim ~/.config"
