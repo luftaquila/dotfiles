@@ -88,20 +88,20 @@ function fn_install_neovim() {
   echo "[INF] installing NeoVim..."
 
   if [[ $platform == "linux" ]]; then
-    fn_cmd "$package_cmd install libfuse2"
+    fn_cmd "$package_cmd install fuse3 libfuse2"
     fn_cmd "wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
-    fn_cmd "mv nvim.appimage ~/.local/bin/nvim"
+    fn_cmd "mv nvim.appimage ~/.local/bin/nvim && chmod 744 ~/.local/bin/nvim"
+    fn_cmd 'PATH="$HOME/.local/bin:$PATH"'
+    fn_cmd "$package_cmd install python3-neovim"
   elif [[ $platform == "macos" ]]; then
     fn_cmd "$package_cmd install neovim"
+    fn_cmd "pip3 install pynvim"
   fi
-
-  # fn_cmd "pip3 install --user neovim"
 
   fn_cmd "mkdir -p ~/.config"
   fn_cmd "cp -r nvim ~/.config"
 
-  # TODO: https://github.com/VundleVim/Vundle.vim install?
-
+  fn_cmd "git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
   fn_cmd "nvim -Es -u ~/.config/nvim/init.vim +PluginInstall +qall"
 }
 
