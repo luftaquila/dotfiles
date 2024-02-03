@@ -121,6 +121,7 @@ function fn_install_ohmyzsh() {
 
   echo "[INF] installing zsh plugins..."
 
+  ZSH_CUSTOM=`zsh -ic 'echo $ZSH_CUSTOM'`
   fn_cmd "zsh -c 'git clone https://github.com/supercrabtree/k $ZSH_CUSTOM/plugins/k'"
   fn_cmd "zsh -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting'"
 
