@@ -138,11 +138,11 @@ function fn_install_dotfiles() {
   fn_cmd "rm -rf backups && mkdir backups"
 
   for obj in "${backups[@]}"; do
-    if [[ -f $obj ]]; then
+    if [[ -f ~/$obj ]]; then
       fn_cmd "cp ~/$obj ./backups/$obj"
       fn_cmd "rm -f ~/$obj"
-      fn_cmd "ln -s `pwd`/$obj ~/$obj"
     fi
+    fn_cmd "ln -s `pwd`/$obj ~/$obj"
   done
 }
 
