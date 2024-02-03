@@ -1,6 +1,21 @@
 #!/bin/bash
 
 ###############################################################################
+#  configure options
+###############################################################################
+if [[ $1 == "all" ]]; then
+  auto_install=true
+  auto_confirm=true
+elif [[ $1 == "auto" ]]; then
+  auto_install=false
+  auto_confirm=true
+else
+  auto_install=false
+  auto_confirm=false
+fi
+
+
+###############################################################################
 #  stage definitions
 ###############################################################################
 stages=( "system packages" "Rust" "NeoVim" "Oh My Zsh" "dotfiles" )
@@ -19,7 +34,13 @@ stages_confirm=( true true true true true )
 ################################################################################
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   platform='linux'
-  package_cmd='sudo apt-get'
+
+  if [[ "$auto_confirm" = true ]]; then
+    package_cmd='sudo apt-get -y'
+  else
+    package_cmd='sudo apt-get'
+  fi
+
   openssh_name='openssh-client'
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   platform='macos'
@@ -81,7 +102,12 @@ function fn_install_rust() {
 
   rust_packages=( "eza" "du-dust" "git-delta" )
 
-  fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh"
+  if [[ "$auto_confirm" = true ]]; then
+    fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y"
+  else
+    fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh"
+  fi
+
   fn_cmd "source $HOME/.cargo/env"
 
   echo "[INF] installing Rust Cargo crates..."
@@ -108,6 +134,7 @@ function fn_install_neovim() {
 
   fn_cmd "git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
   fn_cmd "nvim -Es -u ~/.config/nvim/init.vim +PluginInstall +qall" ignore
+  fn_cmd "(cd ~/.vim/bundle/YouCompleteMe; python3 install.py --clang-completer --rust-completer)"
 }
 
 function fn_install_ohmyzsh() {
@@ -119,7 +146,7 @@ function fn_install_ohmyzsh() {
   fi
 
   fn_cmd "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
-  fn_cmd "chsh -s `which zsh`"
+  fn_cmd "sudo chsh -s `which zsh`"
 
   echo "[INF] installing zsh plugins..."
 
@@ -157,7 +184,11 @@ if ! [[ -x "$(command -v git)" ]]; then
 
   while true; do
     input=''
-    read -p "  install git? (Y/n): " input
+
+    if ! [[ "$auto_confirm" = true ]]; then
+      read -p "  install git? (Y/n): " input
+    fi
+
     if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
       echo "[INF] installing git..."
       fn_cmd "$package_cmd update"
@@ -185,7 +216,11 @@ if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
 
     while true; do
       input=''
-      read -p "  install openssh? (Y/n): " input
+
+      if ! [[ "$auto_confirm" = true ]]; then
+        read -p "  install openssh? (Y/n): " input
+      fi
+
       if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
         echo "[INF] installing openssh..."
         fn_cmd "$package_cmd install $openssh_name"
@@ -216,37 +251,39 @@ if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
   fn_cmd "cd ~/dotfiles"
 
   echo "[INF] restarting in cloned directory..."
-  exec ./init.sh
+  exec ./init.sh $1
 fi
 
 
 ################################################################################
 #  configure stages
 ################################################################################
-echo "[INF] configuring stages..."
+if ! [[ "$auto_install" = true ]]; then
+  echo "[INF] configuring stages..."
 
-for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
-  while true; do
-    input=''
-    read -p "  install ${stages[$i]}? (Y/n): " input
-    if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
-      stages_confirm[$i]=true
-      break
-    elif [ $input == 'n' ] || [ $input == 'N' ]; then
-      stages_confirm[$i]=false
-      break
-    else
-      echo "    invalid input"
-    fi
+  for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
+    while true; do
+      input=''
+      read -p "  install ${stages[$i]}? (Y/n): " input
+      if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
+        stages_confirm[$i]=true
+        break
+      elif [ $input == 'n' ] || [ $input == 'N' ]; then
+        stages_confirm[$i]=false
+        break
+      else
+        echo "    invalid input"
+      fi
+    done
   done
-done
 
-echo "[INF] please confirm the configurations:"
+  echo "[INF] please confirm the configurations:"
 
-for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
-  echo "  install ${stages[$i]}...${stages_confirm[$i]}"
-done
-read -p "  Press ENTER to continue..."
+  for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
+    echo "  install ${stages[$i]}...${stages_confirm[$i]}"
+  done
+  read -p "  Press ENTER to continue..."
+fi
 
 
 ################################################################################
@@ -258,3 +295,10 @@ for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
   fi
 done
 
+
+################################################################################
+#  launch
+################################################################################
+echo "[INF] ALL DONE!"
+echo "[INF] starting in new zsh..."
+exec zsh
