@@ -146,7 +146,7 @@ function fn_install_ohmyzsh() {
   fi
 
   fn_cmd "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
-  fn_cmd "sudo chsh -s `which zsh`"
+  fn_cmd "chsh -s `which zsh`"
 
   echo "[INF] installing zsh plugins..."
 
