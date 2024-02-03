@@ -55,7 +55,9 @@ function fn_install_system_packages() {
   common_packages=(
     "bat" "curl" "htop" "ripgrep" "thefuck" "tmux" "universal-ctags" "wget"
   )
-  linux_packages=( "build-essential" "cmake" "fd-find" "libncurses-dev" )
+  linux_packages=(
+    "build-essential" "cmake" "fd-find" "libncurses-dev" "python3" "python3-pip"
+  )
   macos_packages=( "fd" )
 
   fn_cmd "$package_cmd update && $package_cmd upgrade"
@@ -95,7 +97,7 @@ function fn_install_neovim() {
     fn_cmd "wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
     fn_cmd "mv nvim.appimage ~/.local/bin/nvim && chmod 744 ~/.local/bin/nvim"
     fn_cmd 'PATH="$HOME/.local/bin:$PATH"'
-    fn_cmd "$package_cmd install python3-neovim"
+    fn_cmd "pip3 install pynvim --break-system-packages"
   elif [[ $platform == "macos" ]]; then
     fn_cmd "$package_cmd install neovim"
     fn_cmd "pip3 install pynvim"
