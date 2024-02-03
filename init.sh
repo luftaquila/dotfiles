@@ -50,7 +50,7 @@ function fn_install_system_packages() {
   echo "[INF] installing system packages..."
 
   common_packages=(
-    "bat" "htop" "ripgrep" "thefuck" "tmux" "universal-ctags"
+    "bat" "htop" "ripgrep" "thefuck" "tmux" "universal-ctags" "wget"
   )
   linux_packages=( "cmake" "fd-find" "libncurses-dev" )
   macos_packages=( "fd" )
