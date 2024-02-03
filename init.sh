@@ -41,8 +41,11 @@ function fn_cmd() {
   eval $1
 
   if [[ "$?" -ne 0 ]]; then
-    echo "[ERR] command failed. terminating..."
-    exit 1
+    echo "[ERR] command failed."
+    if ! [[ $2 == "ignore" ]]; then
+      echo "[INF] terminating..."
+      exit 1
+    fi
   fi
 }
 
@@ -102,13 +105,13 @@ function fn_install_neovim() {
   fn_cmd "cp -r nvim ~/.config"
 
   fn_cmd "git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
-  fn_cmd "nvim -Es -u ~/.config/nvim/init.vim +PluginInstall +qall"
+  fn_cmd "nvim -Es -u ~/.config/nvim/init.vim +PluginInstall +qall" ignore
 }
 
 function fn_install_ohmyzsh() {
   echo "[INF] installing Oh My Zsh..."
 
-  if ! [[ -x "$(command -v git)" ]]; then
+  if ! [[ -x "$(command -v zsh)" ]]; then
     echo "[WRN] no zsh detected! installing it first..."
     fn_cmd "$package_cmd install zsh"
   fi
