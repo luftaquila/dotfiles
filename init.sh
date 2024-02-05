@@ -14,19 +14,21 @@ else
   auto_confirm=false
 fi
 
+package_cmd_update=false
 
 ###############################################################################
 #  stage definitions
 ###############################################################################
-stages=( "system packages" "Rust" "NeoVim" "Oh My Zsh" "dotfiles" )
+stages=( "system packages" "tmux" "Rust" "NeoVim" "Oh My Zsh" "dotfiles" )
 stages_function=(
   fn_install_system_packages
+  fn_install_tmux
   fn_install_rust
   fn_install_neovim
   fn_install_ohmyzsh
   fn_install_dotfiles
 )
-stages_confirm=( true true true true true )
+stages_confirm=( true true true true true true )
 
 
 ################################################################################
@@ -70,18 +72,25 @@ function fn_cmd() {
   fi
 }
 
+function fn_update() {
+  if [[ "$package_cmd_update" = false ]]; then
+    fn_cmd "$package_cmd update && $package_cmd upgrade"
+    package_cmd_update=true
+  fi
+}
+
 function fn_install_system_packages() {
   echo "[INF] installing system packages..."
 
   common_packages=(
-    "bat" "curl" "htop" "ripgrep" "thefuck" "tmux" "universal-ctags" "wget"
+    "bat" "curl" "htop" "ripgrep" "thefuck" "universal-ctags" "wget"
   )
   linux_packages=(
     "build-essential" "cmake" "fd-find" "libncurses-dev" "python3" "python3-pip"
   )
   macos_packages=( "fd" )
 
-  fn_cmd "$package_cmd update && $package_cmd upgrade"
+  fn_update
   fn_cmd "$package_cmd install ${common_packages[*]}"
 
   if [[ $platform == "linux" ]]; then
@@ -95,6 +104,15 @@ function fn_install_system_packages() {
   elif [[ $platform == "macos" ]]; then
     fn_cmd "$package_cmd install ${macos_packages[*]}"
   fi
+}
+
+function fn_install_tmux() {
+  echo "[INF] installing tmux..."
+
+  fn_update
+  fn_cmd "$package_cmd install tmux"
+
+  fn_cmd "zsh -c 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'"
 }
 
 function fn_install_rust() {
@@ -118,6 +136,8 @@ function fn_install_rust() {
 function fn_install_neovim() {
   echo "[INF] installing NeoVim..."
 
+  fn_update
+
   if [[ $platform == "linux" ]]; then
     fn_cmd "$package_cmd install fuse3 libfuse2"
     fn_cmd "wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
@@ -139,6 +159,8 @@ function fn_install_neovim() {
 
 function fn_install_ohmyzsh() {
   echo "[INF] installing Oh My Zsh..."
+
+  fn_update
 
   if ! [[ -x "$(command -v zsh)" ]]; then
     echo "[WRN] no zsh detected! installing it first..."
@@ -191,7 +213,7 @@ if ! [[ -x "$(command -v git)" ]]; then
 
     if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
       echo "[INF] installing git..."
-      fn_cmd "$package_cmd update"
+      fn_update
       fn_cmd "$package_cmd install git"
       break
     elif [ $input == 'n' ] || [ $input == 'N' ]; then
@@ -223,6 +245,7 @@ if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
 
       if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
         echo "[INF] installing openssh..."
+        fn_update
         fn_cmd "$package_cmd install $openssh_name"
         break
       elif [ $input == 'n' ] || [ $input == 'N' ]; then
