@@ -113,6 +113,10 @@ function fn_install_tmux() {
   fn_cmd "$package_cmd install tmux"
 
   fn_cmd "zsh -c 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'"
+  fn_cmd "tmux start-server"
+  fn_cmd "tmux new-session -d"
+  fn_cmd "~/.tmux/plugins/tpm/scripts/install_plugins.sh"
+  fn_cmd "tmux kill-server"
 }
 
 function fn_install_rust() {
