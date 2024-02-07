@@ -112,6 +112,16 @@ function fn_install_tmux() {
   fn_update
   fn_cmd "$package_cmd install tmux"
 
+  # rainbarf
+  if [[ $platform == "linux" ]]; then
+    fn_cmd "zsh -c 'git clone https://github.com/creaktive/rainbarf ~/.tmux/plugins/rainbarf'"
+    fn_cmd "mkdir -p $HOME/.local/bin"
+    fn_cmd "cp ~/.tmux/plugins/rainbarf/rainbarf ~/.local/bin"
+  elif [[ $platform == "macos" ]]; then
+    fn_cmd "$package_cmd install rainbarf"
+  fi
+
+  # tpm
   fn_cmd "zsh -c 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'"
   fn_cmd "tmux start-server"
   fn_cmd "tmux new-session -d"
