@@ -164,7 +164,7 @@ function fn_install_neovim() {
   fi
 
   fn_cmd "mkdir -p ~/.config"
-  fn_cmd "cp -r nvim ~/.config"
+  fn_cmd "ln -s ~/dotfiles/nvim ~/.config/nvim"
 
   fn_cmd "git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
   fn_cmd "nvim -Es -u ~/.config/nvim/init.vim +PluginInstall +qall" ignore
