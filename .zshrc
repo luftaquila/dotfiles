@@ -79,6 +79,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  magic-enter
   zsh-syntax-highlighting
   zsh-autosuggestions
 )
@@ -191,6 +192,7 @@ alias v='vi'
 #############################################################################
 alias tm='tmux -2'
 alias ta='tmux attach'
+alias f='fg'
 
 
 #############################################################################
@@ -228,6 +230,35 @@ export FZF_DEFAULT_COMMAND="fd --exclude={.git,.vscode,node_modules,target,debug
 
 
 #############################################################################
+# eza https://github.com/eza-community/eza
+#############################################################################
+alias ls='eza --color-scale --time-style long-iso'
+alias ll='eza --color-scale --time-style long-iso --long'
+alias la='eza --color-scale --time-style long-iso --long --all'
+
+
+#############################################################################
+# thefuck https://github.com/nvbn/thefuck
+#############################################################################
+eval $(thefuck --alias)
+alias fk='fuck'
+
+
+#############################################################################
+# zoxida https://github.com/ajeetdsouza/zoxidee
+#############################################################################
+eval "$(zoxide init zsh)"
+
+
+#############################################################################
+# magic-enter
+#############################################################################
+alias j=z
+MAGIC_ENTER_GIT_COMMAND='gst'
+MAGIC_ENTER_OTHER_COMMAND='ll'
+
+
+#############################################################################
 # toolchains
 #############################################################################
 TOOLCHAIN_ARM_PREFIX="arm-none-eabi"
@@ -256,30 +287,3 @@ fn_dmp() {(
   $TARGET_TOOLCHAIN-objdump -dS $2 | vi - -c 'set filetype=objdump';
 )}
 
-
-#############################################################################
-# custom commands
-#############################################################################
-fn_mkdcd() { mkdir $1 && cd $1; }
-alias mkdcd='fn_mkdcd'
-
-alias f='fg'
-
-
-#############################################################################
-# 3rd-party
-#############################################################################
-# https://github.com/nvbn/thefuck
-eval $(thefuck --alias)
-alias fk='fuck'
-
-# https://github.com/ajeetdsouza/zoxide
-eval "$(zoxide init zsh)"
-
-# https://github.com/supercrabtree/k
-alias k='k -h'
-
-# https://github.com/eza-community/eza
-alias ls='eza --color-scale --time-style long-iso'
-alias ll='eza --color-scale --time-style long-iso --long'
-alias la='eza --color-scale --time-style long-iso --long --all'
