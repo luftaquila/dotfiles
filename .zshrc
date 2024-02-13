@@ -77,9 +77,12 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-plugins+=(k)
-plugins+=(zsh-syntax-highlighting)
+plugins=(
+  git
+  k
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -256,16 +259,23 @@ fn_dmp() {(
 
 
 #############################################################################
-# others
+# custom commands
 #############################################################################
 fn_mkdcd() { mkdir $1 && cd $1; }
 alias mkdcd='fn_mkdcd'
 
 alias f='fg'
 
+
+#############################################################################
+# 3rd-party
+#############################################################################
 # https://github.com/nvbn/thefuck
 eval $(thefuck --alias)
 alias fk='fuck'
+
+# https://github.com/ajeetdsouza/zoxide
+eval "$(zoxide init zsh)"
 
 # https://github.com/supercrabtree/k
 alias k='k -h'

@@ -132,7 +132,7 @@ function fn_install_tmux() {
 function fn_install_rust() {
   echo "[INF] installing Rust..."
 
-  rust_packages=( "eza" "du-dust" "git-delta" )
+  rust_packages=( "eza" "du-dust" "git-delta" "zoxide" )
 
   if [[ "$auto_confirm" = true ]]; then
     fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y"
@@ -188,7 +188,8 @@ function fn_install_ohmyzsh() {
 
   ZSH_CUSTOM=`zsh -ic 'echo $ZSH_CUSTOM'`
   fn_cmd "zsh -c 'git clone https://github.com/supercrabtree/k $ZSH_CUSTOM/plugins/k'"
-  fn_cmd "zsh -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting'"
+  fn_cmd "zsh -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting $ZSH_CUSTOM/plugins/zsh-syntax-highlighting'"
+  fn_cmd "zsh -c 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions'"
 
   echo "[INF] installing powerlevel10k..."
 
