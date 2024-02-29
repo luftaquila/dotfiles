@@ -152,6 +152,7 @@ alias gca='git commit --verbose --amend'
 
 alias gdf='git diff'
 alias gds='git diff --staged'
+alias gdo='fn_git_diff_open'
 
 alias gfh='git fetch'
 
@@ -166,6 +167,7 @@ alias gpf='git push -f'
 
 alias grt='git reset'
 alias grh='git reset HEAD^'
+alias grm='git reset --merge'
 
 alias grr='git restore'
 alias grs='git restore --staged'
@@ -173,8 +175,13 @@ alias grs='git restore --staged'
 alias gsh='git stash'
 alias gsp='git stash pop'
 alias gsl='git stash list'
+alias gsd='git stash drop'
 
 alias gst='git status'
+
+function fn_git_diff_open() {
+  nvim `gdf $1 --name-only` +"G $1"
+}
 
 unalias gp
 unalias gpu
@@ -274,7 +281,7 @@ fn_elf() {(
   else echo "Unknown toolchain $1 for readelf"; exit 1;
   fi
 
-  $TARGET_TOOLCHAIN-readelf -es $2;
+  $TARGET_TOOLCHAIN-readelf -e $2;
 )}
 
 fn_dmp() {(
