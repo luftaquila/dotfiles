@@ -33,6 +33,7 @@ Plugin 'liuchengxu/vista.vim'
 Plugin 'ycm-core/YouCompleteMe'
 Plugin 'wakatime/vim-wakatime'
 Plugin 'tpope/vim-surround'
+Plugin 'wfxr/minimap.vim'
 
 " to learn
 Plugin 'mg979/vim-visual-multi'
@@ -273,6 +274,13 @@ command -complete=tag -nargs=* R execute 'Rg <args>'
 command -complete=tag -nargs=* T execute 'Tags <args>'
 command -complete=file -nargs=* F execute 'Files <args>'
 
+
+" #########################################################
+"   minimap
+" #########################################################
+let g:minimap_auto_start = 1
+let g:minimap_auto_start_win_enter = 1
+let g:minimap_git_colors = 1
 
 " #########################################################
 "   PROJECT SPECIFIC

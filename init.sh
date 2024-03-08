@@ -132,7 +132,7 @@ function fn_install_tmux() {
 function fn_install_rust() {
   echo "[INF] installing Rust..."
 
-  rust_packages=( "eza" "du-dust" "git-delta" "zoxide" )
+  rust_packages=( "code-minimap" "eza" "du-dust" "git-delta" "zoxide" )
 
   if [[ "$auto_confirm" = true ]]; then
     fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y"
