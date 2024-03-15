@@ -20,3 +20,4 @@
 * [KakaoTalkAdBlock](https://github.com/blurfx/KakaoTalkAdBlock)
 * [PowerToys](https://github.com/microsoft/PowerToys)
 * [win-vind](https://github.com/pit-ray/win-vind)
+* [oh-my-posh](https://ohmyposh.dev/)
