@@ -83,7 +83,7 @@ function fn_install_system_packages() {
   echo "[INF] installing system packages..."
 
   common_packages=(
-    "bat" "curl" "htop" "ripgrep" "thefuck" "universal-ctags" "wget"
+    "bat" "curl" "fzf" "htop" "ripgrep" "thefuck" "universal-ctags" "wget"
   )
   linux_packages=(
     "build-essential" "cmake" "fd-find" "libncurses-dev" "python3" "python3-pip"
@@ -99,8 +99,14 @@ function fn_install_system_packages() {
     echo "[INF] creating executable symbolic links..."
 
     fn_cmd "mkdir -p $HOME/.local/bin"
-    fn_cmd "ln -s $(which fdfind) ~/.local/bin/fd"
-    fn_cmd "ln -s $(which batcat) ~/.local/bin/bat"
+
+    if [[ ! -f "$HOME/.local/bin/fd" ]]; then
+      fn_cmd "ln -s $(which fdfind) $HOME/.local/bin/fd"
+    fi
+
+    if [[ ! -f "$HOME/.local/bin/bat" ]]; then
+      fn_cmd "ln -s $(which batcat) $HOME/.local/bin/bat"
+    fi
   elif [[ $platform == "macos" ]]; then
     fn_cmd "$package_cmd install ${macos_packages[*]}"
   fi
@@ -114,18 +120,26 @@ function fn_install_tmux() {
 
   # rainbarf
   if [[ $platform == "linux" ]]; then
-    fn_cmd "zsh -c 'git clone https://github.com/creaktive/rainbarf ~/.tmux/plugins/rainbarf'"
-    fn_cmd "mkdir -p $HOME/.local/bin"
-    fn_cmd "cp ~/.tmux/plugins/rainbarf/rainbarf ~/.local/bin"
+    if [[ ! -d "$HOME/.tmux/plugins/rainbarf" ]]; then
+      fn_cmd "zsh -c 'git clone https://github.com/creaktive/rainbarf $HOME/.tmux/plugins/rainbarf'"
+    fi
+
+    if [[ ! -f "$HOME/.local/bin/rainbarf" ]]; then
+      fn_cmd "mkdir -p $HOME/.local/bin"
+      fn_cmd "ln -s $HOME/.tmux/plugins/rainbarf/rainbarf $HOME/.local/bin/rainbarf"
+    fi
   elif [[ $platform == "macos" ]]; then
     fn_cmd "$package_cmd install rainbarf"
   fi
 
   # tpm
-  fn_cmd "zsh -c 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'"
+  if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+    fn_cmd "zsh -c 'git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm'"
+  fi
+
   fn_cmd "tmux start-server"
   fn_cmd "tmux new-session -d"
-  fn_cmd "~/.tmux/plugins/tpm/scripts/install_plugins.sh"
+  fn_cmd "$HOME/.tmux/plugins/tpm/scripts/install_plugins.sh"
   fn_cmd "tmux kill-server"
 }
 
@@ -134,13 +148,17 @@ function fn_install_rust() {
 
   rust_packages=( "code-minimap" "eza" "du-dust" "git-delta" "zoxide" )
 
-  if [[ "$auto_confirm" = true ]]; then
-    fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y"
-  else
-    fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh"
-  fi
+  if ! [[ -x "$(command -v rustc)" ]]; then
+    if [[ "$auto_confirm" = true ]]; then
+      fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y"
+    else
+      fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh"
+    fi
 
-  fn_cmd "source $HOME/.cargo/env"
+    fn_cmd "source $HOME/.cargo/env"
+  else
+    echo "[INF] Rust is already installed. skipping..."
+  fi
 
   echo "[INF] installing Rust Cargo crates..."
 
@@ -152,23 +170,34 @@ function fn_install_neovim() {
 
   fn_update
 
-  if [[ $platform == "linux" ]]; then
-    fn_cmd "$package_cmd install fuse3 libfuse2"
-    fn_cmd "wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
-    fn_cmd "mv nvim.appimage ~/.local/bin/nvim && chmod 744 ~/.local/bin/nvim"
-    fn_cmd 'PATH="$HOME/.local/bin:$PATH"'
-    fn_cmd "pip3 install pynvim --break-system-packages"
-  elif [[ $platform == "macos" ]]; then
-    fn_cmd "$package_cmd install neovim"
-    fn_cmd "pip3 install pynvim"
+  if ! [[ -x "$(command -v nvim)" ]]; then
+    if [[ $platform == "linux" ]]; then
+      fn_cmd "$package_cmd install fuse3 libfuse2"
+      fn_cmd "wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
+      fn_cmd "mv nvim.appimage $HOME/.local/bin/nvim && chmod 744 $HOME/.local/bin/nvim"
+      fn_cmd 'PATH="$HOME/.local/bin:$PATH"'
+      fn_cmd "pip3 install pynvim --break-system-packages"
+    elif [[ $platform == "macos" ]]; then
+      fn_cmd "$package_cmd install neovim"
+      fn_cmd "pip3 install pynvim"
+    fi
+  else
+    echo "[INF] NeoVim is already installed. skipping..."
   fi
 
-  fn_cmd "mkdir -p ~/.config"
-  fn_cmd "ln -s ~/dotfiles/nvim ~/.config/nvim"
+  echo "[INF] configuring NeoVim..."
 
-  fn_cmd "git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim"
-  fn_cmd "nvim -Es -u ~/.config/nvim/init.vim +PluginInstall +qall" ignore
-  fn_cmd "(cd ~/.vim/bundle/YouCompleteMe; python3 install.py --clang-completer --rust-completer)"
+  if [[ ! -d "$HOME/.config/nvim" ]]; then
+    fn_cmd "mkdir -p $HOME/.config"
+    fn_cmd "ln -s $HOME/dotfiles/nvim $HOME/.config/nvim"
+  fi
+
+  if [[ ! -d "$HOME/.vim/bundle/Vundle.vim" ]]; then
+    fn_cmd "git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim"
+  fi
+
+  fn_cmd "nvim -Es -u $HOME/.config/nvim/init.vim +PluginInstall +qall" ignore
+  fn_cmd "(cd $HOME/.vim/bundle/YouCompleteMe; python3 install.py --clang-completer --rust-completer)"
 }
 
 function fn_install_ohmyzsh() {
@@ -181,18 +210,30 @@ function fn_install_ohmyzsh() {
     fn_cmd "$package_cmd install zsh"
   fi
 
-  fn_cmd "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
-  fn_cmd "chsh -s `which zsh`"
+  if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+    fn_cmd "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
+    fn_cmd "chsh -s `which zsh`"
+  else
+    echo "[INF] Oh My Zsh is already installled. skipping..."
+  fi
 
   echo "[INF] installing zsh plugins..."
 
   ZSH_CUSTOM=`zsh -ic 'echo $ZSH_CUSTOM'`
-  fn_cmd "zsh -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting $ZSH_CUSTOM/plugins/zsh-syntax-highlighting'"
-  fn_cmd "zsh -c 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions'"
+
+  if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]]; then
+    fn_cmd "zsh -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting $ZSH_CUSTOM/plugins/zsh-syntax-highlighting'"
+  fi
+
+  if [[ ! -d "${ZSH_CUSTOM}/plugins/zsh-autosuggestions" ]]; then
+    fn_cmd "zsh -c 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions'"
+  fi
 
   echo "[INF] installing powerlevel10k..."
 
-  fn_cmd "zsh -c 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'"
+  if [[ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]]; then
+    fn_cmd "zsh -c 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'"
+  fi
 }
 
 function fn_install_dotfiles() {
@@ -203,11 +244,11 @@ function fn_install_dotfiles() {
   fn_cmd "rm -rf backups && mkdir backups"
 
   for obj in "${backups[@]}"; do
-    if [[ -f ~/$obj ]]; then
-      fn_cmd "cp ~/$obj ./backups/$obj"
-      fn_cmd "rm -f ~/$obj"
+    if [[ -f $HOME/$obj ]]; then
+      fn_cmd "cp $HOME/$obj ./backups/$obj"
+      fn_cmd "rm -f $HOME/$obj"
     fi
-    fn_cmd "ln -s `pwd`/$obj ~/$obj"
+    fn_cmd "ln -s `pwd`/$obj $HOME/$obj"
   done
 }
 
@@ -245,7 +286,18 @@ fi
 #  identify dotfiles repository
 ################################################################################
 echo "[INF] looking for dotfiles..."
+
+# current directory is not $HOME/dotfiles
 if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
+
+  # if exist
+  if [[ -d "$HOME/dotfiles" ]]; then
+    fn_cmd "cd $HOME/dotfiles"
+
+    echo "[INF] restarting in dotfiles directory..."
+    exec ./init.sh $1
+  fi
+
   # check ssh client
   if ! [[ -x "$(command -v ssh)" ]]; then
     echo "[ERR] no ssh client detected!"
@@ -273,7 +325,7 @@ if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
   fi
 
   # check ssh key
-  ssh_pubkey=~/.ssh/id_ed25519
+  ssh_pubkey=$HOME/.ssh/id_ed25519
   if ! [[ -f $ssh_pubkey ]]; then
     echo "[INF] no ssh key found! generating new..."
     fn_cmd "ssh-keygen -t ed25519 -f $ssh_pubkey -N '' <<< y"
@@ -284,8 +336,8 @@ if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
 
   # cloning dotfiles
   echo "[INF] cloning dotfiles..."
-  fn_cmd "git clone git@github.com:luftaquila/dotfiles.git ~/dotfiles"
-  fn_cmd "cd ~/dotfiles"
+  fn_cmd "git clone git@github.com:luftaquila/dotfiles.git $HOME/dotfiles"
+  fn_cmd "cd $HOME/dotfiles"
 
   echo "[INF] restarting in cloned directory..."
   exec ./init.sh $1
