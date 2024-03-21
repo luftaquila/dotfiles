@@ -110,7 +110,7 @@ nmap <Enter> o<ESC>
 nmap H :bp<CR>
 nmap L :bn<CR>
 
-nmap K :bd<CR>
+nmap K :bp\|bd #<CR>
 command K bd!
 
 nmap Q :q!<CR>
@@ -213,6 +213,7 @@ nmap tr :NERDTreeToggle<CR>
 " #########################################################
 nmap tl :Vista!!<CR>
 let g:vista_blink = [0, 0]
+let g:vista_sidebar_position = 'vertical topleft'
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
 
@@ -244,7 +245,7 @@ map zg/ <Plug>(incsearch-fuzzy-stay)
 " #########################################################
 "   EASYMOTION
 " #########################################################
-let mapleader=','
+let mapleader=']'
 map <Leader> <Plug>(easymotion-prefix)
 map <Leader><Leader> <Plug>(easymotion-repeat)
 nmap <Leader>f <Plug>(easymotion-overwin-f)
