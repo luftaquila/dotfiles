@@ -239,7 +239,7 @@ function fn_install_ohmyzsh() {
 function fn_install_dotfiles() {
   echo "[INF] installing dotfiles..."
 
-  backups=( ".gitconfig" ".zshrc" ".machine.zsh" ".p10k.zsh" ".tmux.conf" )
+  backups=( ".gitconfig" ".zshrc" ".p10k.zsh" ".tmux.conf" )
 
   fn_cmd "rm -rf backups && mkdir backups"
 
@@ -250,6 +250,14 @@ function fn_install_dotfiles() {
     fi
     fn_cmd "ln -s `pwd`/$obj $HOME/$obj"
   done
+
+  echo "[INF] installing per-machine zsh script..."
+
+  if [[ ! -f "$HOME/.machine.zsh" ]]; then
+    fn_cmd "cp ./.machine.zsh.example $HOME/.machine.zsh"
+  else
+    echo "[INF] existing .machine.zsh found! skipping..."
+  fi
 }
 
 
