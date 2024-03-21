@@ -281,7 +281,7 @@ fn_elf() {(
   else echo "Unknown toolchain $1 for readelf"; exit 1;
   fi
 
-  $TARGET_TOOLCHAIN-readelf -e $2;
+  $TARGET_TOOLCHAIN-readelf -e ${@:2};
 )}
 
 fn_dmp() {(
@@ -291,6 +291,6 @@ fn_dmp() {(
   else echo "Unknown toolchain $1 for objdump"; exit 1;
   fi
 
-  $TARGET_TOOLCHAIN-objdump -dS $2 | vi - -c 'set filetype=objdump';
+  $TARGET_TOOLCHAIN-objdump -dS ${@:2} | vi - -c 'set filetype=objdump';
 )}
 
