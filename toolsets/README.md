@@ -2,6 +2,7 @@
 
 ## universal
 * [Barrier](https://github.com/debauchee/barrier)
+* [espanso](https://espanso.org/)
 * [RunCat](https://kyome.io/runcat/index.html?lang=en)
 
 ## macOS
@@ -18,6 +19,7 @@
 ## Windows
 * [Everything](https://www.voidtools.com/)
 * [KakaoTalkAdBlock](https://github.com/blurfx/KakaoTalkAdBlock)
+* [oh-my-posh](https://ohmyposh.dev/)
 * [PowerToys](https://github.com/microsoft/PowerToys)
 * [win-vind](https://github.com/pit-ray/win-vind)
-* [oh-my-posh](https://ohmyposh.dev/)
+
