@@ -7,10 +7,19 @@ local M = {}
 M.ui = {
 	theme = "onedark",
 
-	-- hl_override = {
-	-- 	Comment = { italic = true },
-	-- 	["@comment"] = { italic = true },
-	-- },
+  statusline = {
+    theme = "default",
+    separator_style = "block",
+    order = nil,
+    modules = nil,
+  },
+
+  tabufline = {
+    enabled = true,
+    lazyload = false,
+    order = {"treeOffset", "buffers", "tabs" },
+    modules = nil
+  }
 }
 
 return M

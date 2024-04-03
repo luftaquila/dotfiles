@@ -14,7 +14,8 @@ return {
   			"lua-language-server", "stylua",
   			"html-lsp", "css-lsp" , "prettier",
         "bash-language-server", "clangd", "cmake-language-server",
-        "grammarly-languageserver", "json-lsp", "marksman", "pyright", "rust-analyzer"
+        "grammarly-languageserver", "json-lsp", "marksman", "pyright", "rust-analyzer",
+        "clang-format"
   		},
   	},
   },
