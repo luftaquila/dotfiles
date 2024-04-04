@@ -121,7 +121,7 @@ function fn_install_tmux() {
   # rainbarf
   if [[ $platform == "linux" ]]; then
     if [[ ! -d "$HOME/.tmux/plugins/rainbarf" ]]; then
-      fn_cmd "zsh -c 'git clone https://github.com/creaktive/rainbarf $HOME/.tmux/plugins/rainbarf'"
+      fn_cmd "git clone https://github.com/creaktive/rainbarf $HOME/.tmux/plugins/rainbarf"
     fi
 
     if [[ ! -f "$HOME/.local/bin/rainbarf" ]]; then
@@ -134,7 +134,7 @@ function fn_install_tmux() {
 
   # tpm
   if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
-    fn_cmd "zsh -c 'git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm'"
+    fn_cmd "git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm"
   fi
 
   fn_cmd "tmux start-server"
