@@ -1,3 +1,5 @@
 backups/
 *.swp
 porkbun.secret.sh
+private.sh
+lazy-lock.json
