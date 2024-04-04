@@ -49,12 +49,23 @@ return {
 
   {
     "xolox/vim-misc",
-    event = 'VimEnter'
+    event = "VeryLazy",
   },
 
   {
     "xolox/vim-session",
-    event = 'VimEnter'
+    event = "VeryLazy",
+  },
+
+  {
+    "kylechui/nvim-surround",
+    version = "*", -- for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({
+        -- Configuration here, or leave empty to use defaults
+      })
+    end
   },
 
   -- {
@@ -67,5 +78,4 @@ return {
 }
 
 -- easymotion/vim-easymotion
--- tpope/vim-surround
 -- liuchengxu/vista.vim
