@@ -64,11 +64,31 @@ function fn_cmd() {
 
   if [[ "$?" -ne 0 ]]; then
     echo "[ERR] command failed."
-    if ! [[ $2 == "ignore" ]]; then
+    if [[ $2 == "retry" ]]; then
+      echo "[INF] retrying..."
+      fn_cmd "$1" $2
+    elif [[ $2 == "ignore" ]]; then
+      :
+    else
       echo "[INF] terminating..."
       exit 1
     fi
   fi
+}
+
+function fn_install_dotfile() {
+  target=$1
+
+  echo "[INF] installing $target..."
+
+  fn_cmd "mkdir -p backups"
+
+  if [[ -f $HOME/$target ]]; then
+    fn_cmd "cp $HOME/$target ./backups/$target"
+    fn_cmd "rm -f $HOME/$target"
+  fi
+
+  fn_cmd "ln -s `pwd`/$target $HOME/$target"
 }
 
 function fn_update() {
@@ -117,7 +137,7 @@ function fn_install_tmux() {
   fn_update
   fn_cmd "$package_cmd install tmux"
 
-  install_dotfile ".tmux.conf"
+  fn_install_dotfile ".tmux.conf"
 
   # rainbarf
   if [[ $platform == "linux" ]]; then
@@ -208,7 +228,6 @@ function fn_install_ohmyzsh() {
 
   if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
     fn_cmd "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
-    fn_cmd "sudo chsh -s `which zsh`"
   else
     echo "[INF] Oh My Zsh is already installled. skipping..."
   fi
@@ -231,8 +250,8 @@ function fn_install_ohmyzsh() {
     fn_cmd "zsh -c 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'"
   fi
 
-  install_dotfile ".zshrc"
-  install_dotfile ".p10k.zsh"
+  fn_install_dotfile ".zshrc"
+  fn_install_dotfile ".p10k.zsh"
 
   echo "[INF] installing per-machine zsh script..."
 
@@ -241,21 +260,11 @@ function fn_install_ohmyzsh() {
   else
     echo "[INF] existing .machine.zsh found! skipping..."
   fi
-}
 
-function install_dotfile() {
-  target=$1
-
-  echo "[INF] installing $target..."
-
-  fn_cmd "mkdir -p backups"
-
-  if [[ -f $HOME/$target ]]; then
-    fn_cmd "cp $HOME/$target ./backups/$target"
-    fn_cmd "rm -f $HOME/$target"
+  if ! [[ $SHELL == *'zsh'* ]]; then
+    echo "[INF] replacing default shell to zsh..."
+    fn_cmd "chsh -s `which zsh`" retry
   fi
-
-  fn_cmd "ln -s `pwd`/$target $HOME/$target"
 }
 
 
@@ -349,7 +358,7 @@ if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
   exec ./init.sh $1
 fi
 
-install_dotfile ".gitconfig"
+fn_install_dotfile ".gitconfig"
 
 
 ################################################################################
