@@ -21,7 +21,7 @@ M.ui = {
       file = function()
         local utils = require "nvchad.stl.utils"
         local x = utils.file()
-        x[2] = vim.fn.expand('%')
+        x[2] = vim.fn.fnamemodify(vim.fn.expand('%'), ":.")
         return gen_block(x[1], x[2], "%#St_file_sep#", "%#St_file_bg#", "%#St_file_txt#")
       end,
 
