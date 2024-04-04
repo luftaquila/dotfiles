@@ -26,7 +26,7 @@ return {
       ensure_installed = {
         "asm", "disassembly", "objdump",
         "c", "cpp", "java", "javascript", "lua", "python", "rust", "verilog",
-        "html", "css", "csv", "doxygen", "json", "latex", "markdown_inline", "regex", "rst", "toml", "xml", "yaml",
+        "html", "css", "csv", "doxygen", "json", "markdown_inline", "regex", "rst", "toml", "xml", "yaml",
         "arduino", "bash", "diff", "make", "cmake", "llvm", "t32", "tmux", "vim", "vimdoc",
         "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore",
       },

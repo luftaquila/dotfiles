@@ -208,7 +208,7 @@ function fn_install_ohmyzsh() {
 
   if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
     fn_cmd "curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
-    fn_cmd "chsh -s `which zsh`"
+    fn_cmd "sudo chsh -s `which zsh`"
   else
     echo "[INF] Oh My Zsh is already installled. skipping..."
   fi
