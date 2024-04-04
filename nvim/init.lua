@@ -37,3 +37,30 @@ require "nvchad.autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+
+-- Restore cursor position
+vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+    pattern = { "*" },
+    callback = function()
+        vim.api.nvim_exec('silent! normal! g`"zv', false)
+    end,
+})
+
+-- highlight whitespaces
+vim.opt.list = true
+vim.opt.listchars = { eol = ' ', trail = '█', tab = '>-', nbsp = '␣' }
+
+-- session.vim
+vim.opt.sessionoptions:remove("buffers")
+
+vim.g.session_autosave = 'yes'
+vim.g.session_autoload = 'no'
+vim.g.session_autosave_periodic = 1
+vim.g.session_autosave_silent = 1
+vim.g.session_default_overwrite = 1
+vim.g.session_command_aliases = 1
+
+vim.api.nvim_create_user_command('O', function()
+  vim.cmd('OpenSession')
+end, {})
+
