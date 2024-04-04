@@ -19,16 +19,15 @@ package_cmd_update=false
 ###############################################################################
 #  stage definitions
 ###############################################################################
-stages=( "system packages" "tmux" "Rust" "NeoVim" "Oh My Zsh" "dotfiles" )
+stages=( "system packages" "tmux" "Rust" "NeoVim" "Oh My Zsh" )
 stages_function=(
   fn_install_system_packages
   fn_install_tmux
   fn_install_rust
   fn_install_neovim
   fn_install_ohmyzsh
-  fn_install_dotfiles
 )
-stages_confirm=( true true true true true true )
+stages_confirm=( true true true true true )
 
 
 ################################################################################
@@ -117,6 +116,8 @@ function fn_install_tmux() {
 
   fn_update
   fn_cmd "$package_cmd install tmux"
+
+  install_dotfile ".tmux.conf"
 
   # rainbarf
   if [[ $platform == "linux" ]]; then
@@ -229,22 +230,9 @@ function fn_install_ohmyzsh() {
   if [[ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]]; then
     fn_cmd "zsh -c 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'"
   fi
-}
 
-function fn_install_dotfiles() {
-  echo "[INF] installing dotfiles..."
-
-  backups=( ".gitconfig" ".zshrc" ".p10k.zsh" ".tmux.conf" )
-
-  fn_cmd "rm -rf backups && mkdir backups"
-
-  for obj in "${backups[@]}"; do
-    if [[ -f $HOME/$obj ]]; then
-      fn_cmd "cp $HOME/$obj ./backups/$obj"
-      fn_cmd "rm -f $HOME/$obj"
-    fi
-    fn_cmd "ln -s `pwd`/$obj $HOME/$obj"
-  done
+  install_dotfile ".zshrc"
+  install_dotfile ".p10k.zsh"
 
   echo "[INF] installing per-machine zsh script..."
 
@@ -253,6 +241,21 @@ function fn_install_dotfiles() {
   else
     echo "[INF] existing .machine.zsh found! skipping..."
   fi
+}
+
+function install_dotfile() {
+  target=$1
+
+  echo "[INF] installing $target..."
+
+  fn_cmd "mkdir -p backups"
+
+  if [[ -f $HOME/$target ]]; then
+    fn_cmd "cp $HOME/$target ./backups/$target"
+    fn_cmd "rm -f $HOME/$target"
+  fi
+
+  fn_cmd "ln -s `pwd`/$target $HOME/$target"
 }
 
 
@@ -345,6 +348,8 @@ if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
   echo "[INF] restarting in cloned directory..."
   exec ./init.sh $1
 fi
+
+install_dotfile ".gitconfig"
 
 
 ################################################################################
