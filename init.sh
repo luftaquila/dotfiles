@@ -192,12 +192,7 @@ function fn_install_neovim() {
     fn_cmd "ln -s $HOME/dotfiles/nvim $HOME/.config/nvim"
   fi
 
-  if [[ ! -d "$HOME/.vim/bundle/Vundle.vim" ]]; then
-    fn_cmd "git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim"
-  fi
-
-  fn_cmd "nvim -Es -u $HOME/.config/nvim/init.vim +PluginInstall +qall" ignore
-  fn_cmd "(cd $HOME/.vim/bundle/YouCompleteMe; python3 install.py --clang-completer --rust-completer)"
+  fn_cmd "nvim -Es +MasonInstallAll +qall" ignore
 }
 
 function fn_install_ohmyzsh() {
