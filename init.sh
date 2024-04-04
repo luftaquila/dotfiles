@@ -212,8 +212,6 @@ function fn_install_neovim() {
     fn_cmd "mkdir -p $HOME/.config"
     fn_cmd "ln -s $HOME/dotfiles/nvim $HOME/.config/nvim"
   fi
-
-  fn_cmd "nvim -Es +MasonInstallAll +qall" ignore
 }
 
 function fn_install_ohmyzsh() {
