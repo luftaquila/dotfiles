@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 export PATH="$PATH:/opt/rtst/arm-none-eabi/bin:/opt/rtst/powerpc-unknown-elf/bin"
 
 alias bsp=fn_bsp
@@ -43,6 +45,8 @@ function fn_rtworks_build() {(
 
   cd "$RTWORKS_DIR/builder";
   ./build.py -adg$RTWORKS_OPTION;
+
+  fn_patch_compile_commands;
 )}
 autoload fn_rtworks_build
 
@@ -116,3 +120,11 @@ function fn_patch_autostart_delay() {(
   fi
 )}
 autoload fn_patch_autostart_delay
+
+function fn_patch_compile_commands() {(
+  set -e;
+
+  sed -i '' -E 's/e6500/ppc/g' $HOME/rtworks/builder/build.partition1/lib_test/compile_commands.json;
+  sed -i '' -E 's/e6500/ppc/g' $HOME/rtworks/builder/build.kernel/compile_commands.json;
+)}
+autoload fn_patch_compile_commands
