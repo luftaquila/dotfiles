@@ -64,3 +64,6 @@ vim.api.nvim_create_user_command('O', function()
   vim.cmd('OpenSession')
 end, {})
 
+-- abbreviabtions
+require('configs.abbrev')
+

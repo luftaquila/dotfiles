@@ -55,10 +55,17 @@ return {
   {
     "xolox/vim-session",
     event = 'VimEnter'
-  }
+  },
+
+  -- {
+  --   "lewis6991/satellite.nvim",
+  --   event = 'VimEnter',
+  --   config = function ()
+  --     require('satellite').setup()
+  --   end
+  -- }
 }
 
 -- easymotion/vim-easymotion
 -- tpope/vim-surround
 -- liuchengxu/vista.vim
--- lewis6991/satellite.nvim
