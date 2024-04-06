@@ -14,13 +14,17 @@ alias les=fn_rtworks_local_execute
 alias rr=fn_rtworks_remote_run
 alias re=fn_rtworks_remote_execute
 
+alias tt=fn_t32
+
 alias qq='RELAY=`cat ~/rtworks/relay`; push-return $RELAY;'
 alias cons='tio `cat ~/rtworks/console` -b 115200'
 
 function fn_bsp() {(
-  vim ~/rtworks/bsp.sh;
+  nvim ~/rtworks/bsp.sh;
+
+  source ~/rtworks/bsp.sh;
   cd ~/rtworks/builder;
-  ./init.py -b `~/rtworks/bsp.sh`
+  ./init.py -b $BSP
 )}
 autoload fn_bsp
 
@@ -51,7 +55,7 @@ autoload fn_rtworks_build
 
 function fn_rtworks_misra() {(
   set -e;
-  BSP=`~/rtworks/bsp.sh`;
+  source ~/rtworks/bsp.sh;
   TARGET=$1;
 
   if   [[ "$TARGET" == "p" ]]; then TARGET="partition";
@@ -66,7 +70,7 @@ autoload fn_rtworks_misra
 
 function fn_rtworks_local_run() {(
   set -e;
-  BSP=`~/rtworks/bsp.sh`;
+  source ~/rtworks/bsp.sh;
   RELAY=`cat ~/rtworks/relay`
 
   if   [[ "$BSP" == "t2080rdb" ]];      then push-return $RELAY;
@@ -120,3 +124,11 @@ function fn_patch_autostart_delay() {(
 )}
 autoload fn_patch_autostart_delay
 
+function fn_t32() {(
+  set -e;
+  source ~/rtworks/bsp.sh;
+
+  sed -i '' -E "s/^(SYStem.CPU )(.*)/\1$CPU/" ~/.trace32/cpu.cmm
+
+  ~/t32/bin/macosx64/t32m$ARCH-qt -c ~/t32/config_usb.t32
+)}

@@ -1,0 +1,16 @@
+// this script must be linked into ~/.trace32/user-settings.cmm
+// ln -s ~/dotfiles/scripts/rtworks/t32.cmm ~/.trace32/user-settings.cmm
+
+// set SYStem.CPU
+DO ~/.trace32/cpu.cmm
+
+// load elfs
+Data.Load.ELF /private/tftpboot/rtworks_merged.elf /NoCode
+Data.Load.ELF ~/rtworks/builder/build.partition1/rtworks_partition.elf /nocode /noclear
+
+WAIT 100ms
+
+SYStem.Attach
+
+Break
+

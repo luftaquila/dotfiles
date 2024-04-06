@@ -152,7 +152,7 @@ alias gca='git commit --verbose --amend'
 
 alias gdf='git diff'
 alias gds='git diff --staged'
-alias gdo='fn_git_diff_open'
+alias gdo='nvim `gdf $1 --name-only`'
 
 alias gfh='git fetch'
 
@@ -178,10 +178,6 @@ alias gsl='git stash list'
 alias gsd='git stash drop'
 
 alias gst='git status'
-
-function fn_git_diff_open() {
-  nvim `gdf $1 --name-only` +"G $1"
-}
 
 unalias gp
 unalias gpu

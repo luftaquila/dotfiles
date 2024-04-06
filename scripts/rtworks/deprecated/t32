@@ -1,5 +1,0 @@
-#!/bin/zsh
-
-# ~/t32/bin/macosx64/t32mppc64-qt -c ~/t32/config_usb.t32
-
-~/t32/bin/macosx64/t32marm-qt -c ~/t32/config_usb.t32
