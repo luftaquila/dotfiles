@@ -76,6 +76,17 @@ return {
   {
     "easymotion/vim-easymotion",
     event = "VeryLazy"
+  },
+
+  {
+    'bitc/vim-bad-whitespace',
+    event = "VeryLazy",
+    config = function()
+      vim.cmd('ShowBadWhitespace')
+      -- this plugin replaces:
+      -- vim.opt.list = true
+      -- vim.opt.listchars = { eol = ' ', trail = '█', tab = '>-', nbsp = '␣' }
+    end
   }
 
   -- {

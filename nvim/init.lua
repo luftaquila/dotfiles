@@ -46,13 +46,8 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
     end,
 })
 
--- highlight whitespaces
-vim.opt.list = true
-vim.opt.listchars = { eol = ' ', trail = '█', tab = '>-', nbsp = '␣' }
-
 -- session.vim
 vim.opt.sessionoptions:remove("buffers")
-
 vim.g.session_autosave = 'yes'
 vim.g.session_autoload = 'no'
 vim.g.session_autosave_periodic = 1
