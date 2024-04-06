@@ -68,6 +68,16 @@ return {
     end
   },
 
+  {
+    "unblevable/quick-scope",
+    event = "VeryLazy"
+  },
+
+  {
+    "easymotion/vim-easymotion",
+    event = "VeryLazy"
+  }
+
   -- {
   --   "lewis6991/satellite.nvim",
   --   event = 'VimEnter',
@@ -77,5 +87,5 @@ return {
   -- }
 }
 
--- easymotion/vim-easymotion
 -- liuchengxu/vista.vim
+

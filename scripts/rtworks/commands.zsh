@@ -14,7 +14,8 @@ alias les=fn_rtworks_local_execute
 alias rr=fn_rtworks_remote_run
 alias re=fn_rtworks_remote_execute
 
-alias qq='MODEM=`cat ~/rtworks/modem`; push-return $MODEM;'
+alias qq='RELAY=`cat ~/rtworks/relay`; push-return $RELAY;'
+alias cons='tio `cat ~/rtworks/console` -b 115200'
 
 function fn_bsp() {(
   vim ~/rtworks/bsp.sh;
@@ -66,11 +67,11 @@ autoload fn_rtworks_misra
 function fn_rtworks_local_run() {(
   set -e;
   BSP=`~/rtworks/bsp.sh`;
-  MODEM=`cat ~/rtworks/modem`
+  RELAY=`cat ~/rtworks/relay`
 
-  if   [[ "$BSP" == "t2080rdb" ]];      then push-return $MODEM;
-  elif [[ "$BSP" == "ima_fcc-t2080" ]]; then push-toggle $MODEM;
-  else push-return $MODEM;
+  if   [[ "$BSP" == "t2080rdb" ]];      then push-return $RELAY;
+  elif [[ "$BSP" == "ima_fcc-t2080" ]]; then push-toggle $RELAY;
+  else push-return $RELAY;
   fi
 )}
 autoload fn_rtworks_local_run
