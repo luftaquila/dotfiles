@@ -1,5 +1,21 @@
+# dotfile backup directory
 backups/
+
+# vim swap files
 *.swp
+
+# ssl-renew secret
 porkbun.secret.sh
+
+# setup secret
 private.sh
+
+# nvim-lazy lockfile
 lazy-lock.json
+
+# toolsets
+keyset.exe
+.env
+
+# desktopinfo
+DesktopInfo64.exe

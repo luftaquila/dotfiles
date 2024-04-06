@@ -39,18 +39,6 @@ Tab & Space::VK15
 ~LButton & RButton Up::Send("{XButton2}")
 ~RButton & LButton Up::Send("{XButton1}")
 
-/*
-; Win + z to toggle taskbar
-#z:: HideShowTaskbar(hide := !hide)
-HideShowTaskbar(action) {
-   static ABM_SETSTATE := 0xA, ABS_AUTOHIDE := 0x1, ABS_ALWAYSONTOP := 0x2
-   APPBARDATA := Buffer(size := 2*A_PtrSize + 2*4 + 16 + A_PtrSize, 0) ; V1toV2: if 'APPBARDATA' is a UTF-16 string, use 'VarSetStrCapacity(&APPBARDATA, size := 2*A_PtrSize + 2*4 + 16 + A_PtrSize)'
-   NumPut("UPtr", size, APPBARDATA), NumPut(A_PtrSize, WinExist("ahk_class Shell_TrayWnd"), APPBARDATA)
-   NumPut(size - A_PtrSize, action ? ABS_AUTOHIDE : ABS_ALWAYSONTOP, APPBARDATA)
-   DllCall("Shell32\SHAppBarMessage", "UInt", ABM_SETSTATE, "Ptr", APPBARDATA)
-}
-*/
-
 ; ESC to english mode for VIM
 $Esc::
 { ; V1toV2: Added bracket
@@ -171,16 +159,9 @@ Return
 Return
 }
 
-; Toggle light
-~/ & Enter::
-AppsKey::
+:*R:lin`n::
 {
-  jwt := EnvGet("jwtData")
-
-  Http := ComObject("WinHttp.WinHttpRequest.5.1")
-  Http.Open("POST", "https://iot.luftaquila.io/api/device/lightSwitch0", 0)
-  Http.SetRequestHeader("content-type", "application/x-www-form-urlencoded; Charset=UTF-8")
-  Http.SetRequestHeader("jwt", jwt)
-  Http.Send("toggle=test")
+  pw := EnvGet("linuxPassword")
+  Send("{Raw}" pw)
 Return
 }
