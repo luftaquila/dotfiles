@@ -17,7 +17,7 @@ brew update && brew install curl
 ## Download
 
 ```sh
-curl -L https://dl.luftaquila.io/init.sh > init.sh && chmod 744 init.sh
+curl -L https://raw.githubusercontent.com/luftaquila/dotfiles/main/init.sh > init.sh && chmod +x init.sh
 ```
 
 ## Run
