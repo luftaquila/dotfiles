@@ -17,12 +17,21 @@ M.ui = {
   statusline = {
     theme = "minimal",
     separator_style = "block",
+    order = { "mode", "file", "git", "%=", "lsp_msg", "%=", "diagnostics", "lsp", "filetype", "cursor" },
     modules = {
       file = function()
-        local utils = require "nvchad.stl.utils"
-        local x = utils.file()
-        x[2] = vim.fn.fnamemodify(vim.fn.expand('%'), ":.")
-        return gen_block(x[1], x[2], "%#St_file_sep#", "%#St_file_bg#", "%#St_file_txt#")
+        local cwd = vim.loop.cwd()
+        cwd = cwd:match "([^/\\]+)[/\\]*$" or cwd
+
+        local file = vim.fn.fnamemodify(vim.fn.expand('%'), ":.")
+        file = (string.find(file, "NvimTree") and '' or file)
+
+        local path = cwd .. (file ~= '' and '/' or '') .. file
+        return gen_block('', path, "%#St_file_sep#", "%#St_file_bg#", "%#St_file_txt#")
+      end,
+
+      filetype = function()
+        return gen_block('', vim.bo.filetype, "%#St_cwd_sep#", "%#St_cwd_bg#", "%#St_cwd_txt#")
       end,
 
       lsp = function()

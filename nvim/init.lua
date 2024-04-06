@@ -79,3 +79,5 @@ end, {})
 -- abbreviabtions
 require('configs.abbrev')
 
+-- highlight groups
+require('configs.highlights')
