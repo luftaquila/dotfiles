@@ -1,4 +1,3 @@
--- EXAMPLE 
 local on_attach = require("nvchad.configs.lspconfig").on_attach
 local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
@@ -15,3 +14,13 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+vim.api.nvim_create_user_command('LspFormat', function()
+  -- Use null-ls if present
+  if vim.fn.exists(':NullFormat') == 2 then
+    vim.cmd('NullFormat')
+    return
+  end
+
+  -- Fallback to whatever lsp server has formatting capabilities
+  vim.lsp.buf.format()
+end, { desc = 'Format current buffer' })
