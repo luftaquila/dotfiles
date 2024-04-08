@@ -51,6 +51,13 @@ map('n', '<leader>a', function()
   require("nvchad.term").toggle { pos = "float", id = "floating" }
 end, { desc = "Terminal Toggle Floating terminal" })
 
+map('t', '<C-w>', function()
+  local win = vim.api.nvim_get_current_win()
+  vim.api.nvim_win_close(win, true)
+end, { desc = "Terminal Close term in terminal mode" })
+
+map("t", "<ESC>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
+
 -- Ctrl + P to previous window
 map('n', '<C-p>', '<C-w>p', { desc = "Jump to previous window" })
 map('t', '<C-p>', '<C-\\><C-o><C-w>p', { desc = "Jump to previous window" })
