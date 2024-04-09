@@ -260,33 +260,3 @@ alias j=z
 MAGIC_ENTER_GIT_COMMAND='gst'
 MAGIC_ENTER_OTHER_COMMAND='ll'
 
-
-#############################################################################
-# toolchains
-#############################################################################
-TOOLCHAIN_ARM_PREFIX="arm-none-eabi"
-TOOLCHAIN_PPC_PREFIX="powerpc-unknown-elf"
-
-alias elf=fn_elf
-alias dmp=fn_dmp
-
-fn_elf() {(
-  set -e;
-  if   [[ $1 == "arm" ]]; then TARGET_TOOLCHAIN=$TOOLCHAIN_ARM_PREFIX;
-  elif [[ $1 == "ppc" ]]; then TARGET_TOOLCHAIN=$TOOLCHAIN_PPC_PREFIX;
-  else echo "Unknown toolchain $1 for readelf"; exit 1;
-  fi
-
-  $TARGET_TOOLCHAIN-readelf -e ${@:2};
-)}
-
-fn_dmp() {(
-  set -e;
-  if   [[ $1 == "arm" ]]; then TARGET_TOOLCHAIN=$TOOLCHAIN_ARM_PREFIX;
-  elif [[ $1 == "ppc" ]]; then TARGET_TOOLCHAIN=$TOOLCHAIN_PPC_PREFIX;
-  else echo "Unknown toolchain $1 for objdump"; exit 1;
-  fi
-
-  $TARGET_TOOLCHAIN-objdump -dS ${@:2} | vi - -c 'set filetype=objdump';
-)}
-

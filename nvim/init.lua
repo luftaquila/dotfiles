@@ -81,3 +81,6 @@ require('configs.abbrev')
 
 -- highlight groups
 require('configs.highlights')
+
+-- configs
+vim.api.nvim_command('set modeline')
