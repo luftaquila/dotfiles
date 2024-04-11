@@ -44,7 +44,7 @@ map('n', '<leader>v', function()
 end, { desc = "Terminal Toggle vertical terminal" })
 
 map('n', '<leader>h', function()
-  require("nvchad.term").toggle { pos = "sp", id = "horizontal" }
+  require("nvchad.term").toggle { pos = "sp" }
 end, { desc = "Terminal Toggle horizontal terminal" })
 
 map('n', '<leader>a', function()
