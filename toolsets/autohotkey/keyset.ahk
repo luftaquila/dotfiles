@@ -49,8 +49,15 @@ $Esc::
 } ; Added bracket before function
 
 IME_CHECK(WinTitle) {
-  hWnd := WinGetID(WinTitle)
-  Return Send_ImeControl(ImmGetDefaultIMEWnd(hWnd),0x001,"") 
+  try
+  {
+    hWnd := WinGetID(WinTitle)
+    Return Send_ImeControl(ImmGetDefaultIMEWnd(hWnd),0x001,"")
+  }
+  catch TargetError
+  {
+    Return False
+  }
 }
 
 Send_ImeControl(DefaultIMEWnd, wParam, lParam) {
