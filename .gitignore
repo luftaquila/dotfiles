@@ -13,9 +13,10 @@ private.sh
 # nvim-lazy lockfile
 lazy-lock.json
 
-# toolsets
+# autohotkey
 keyset.exe
 .env
 
 # desktopinfo
 DesktopInfo64.exe
+desktopinfo.ini
