@@ -8,6 +8,7 @@ function fn_wol() {(
   local cmd=$1
   local tgt=$2
   local device=''
+  local sleepcmd="%windir%\System32\rundll32.exe powrprof.dll,SetSuspendState 0,1,0"
 
   # set target device
   case $tgt in
@@ -26,6 +27,7 @@ function fn_wol() {(
       wakeonlan $device
       ;;
     sleep)
+      ssh $LUFTHEIM_ID@$LUFTHEIM_IP -p $LUFTHEIM_PORT $sleepcmd
       ;;
     *)
       echo "wol: unknown command $cmd"
