@@ -1,6 +1,8 @@
 require "nvchad.mappings"
 
 local map = vim.keymap.set
+local term = require("nvchad.term")
+local telescope = require('telescope.builtin')
 
 -- utils
 local function opts_to_id(id)
@@ -15,10 +17,10 @@ local function terminal_launch(mode, cmd, id, size)
   local ch
 
   if (id) then
-    require("nvchad.term").toggle { pos = mode, size = size and size or 0.25, id = id }
+    term.toggle { pos = mode, size = size and size or 0.25, id = id }
     ch = vim.b[opts_to_id(id).buf].terminal_job_id
   else
-    require("nvchad.term").new { pos = mode, size = size and size or 0.25 }
+    term.new { pos = mode, size = size and size or 0.25 }
     ch = vim.b[vim.api.nvim_get_current_buf()].terminal_job_id
   end
 
@@ -27,7 +29,11 @@ local function terminal_launch(mode, cmd, id, size)
 end
 
 -- Telescope
-map('n', '<leader>ft', require('telescope.builtin').tags, { desc = "Telescope find tags" })
+map('n', '<leader>fr', telescope.lsp_references, { desc = "Telescope find LSP references" })
+map('n', '<leader>fs', telescope.lsp_workspace_symbols, { desc = "Telescope find LSP symbols" })
+map('n', '<leader>fi', telescope.lsp_implementations, { desc = "Telescope find LSP implementations" })
+map('n', '<leader>fd', telescope.lsp_definitions, { desc = "Telescope find LSP definitions" })
+map('n', '<leader>fp', telescope.diagnostics, { desc = "Telescope find LSP diagnostics" })
 
 -- macro
 map('n', '<CR>', '@q', { desc = "Macro play @q" })
@@ -40,15 +46,15 @@ map('n', 'th', ':tabprev<CR>', { desc = "Tab prev" })
 
 -- terminals
 map('n', '<leader>v', function()
-  require("nvchad.term").toggle { pos = "vsp", id = "vertical", size = 0.25 }
+  term.toggle { pos = "vsp", id = "vertical", size = 0.25 }
 end, { desc = "Terminal Toggle vertical terminal" })
 
 map('n', '<leader>h', function()
-  require("nvchad.term").toggle { pos = "sp" }
+  term.toggle { pos = "sp" }
 end, { desc = "Terminal Toggle horizontal terminal" })
 
 map('n', '<leader>a', function()
-  require("nvchad.term").toggle { pos = "float", id = "floating" }
+  term.toggle { pos = "float", id = "floating" }
 end, { desc = "Terminal Toggle Floating terminal" })
 
 map('t', '<C-w>', function()
