@@ -29,6 +29,7 @@ local function terminal_launch(mode, cmd, id, size)
 end
 
 -- Telescope
+map('n', '<leader>br', telescope.git_branches, { desc = "Telescope Git Branches" })
 map('n', '<leader>fr', telescope.lsp_references, { desc = "Telescope find LSP references" })
 map('n', '<leader>fs', telescope.lsp_workspace_symbols, { desc = "Telescope find LSP symbols" })
 map('n', '<leader>fi', telescope.lsp_implementations, { desc = "Telescope find LSP implementations" })
