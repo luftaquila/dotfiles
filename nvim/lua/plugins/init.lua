@@ -13,9 +13,8 @@ return {
       ensure_installed = {
         "lua-language-server", "stylua",
         "html-lsp", "css-lsp" , "prettier",
-        "bash-language-server", "clangd", "cmake-language-server",
-        "grammarly-languageserver", "json-lsp", "marksman", "pyright", "rust-analyzer",
-        "clang-format"
+        "asm-lsp", "clangd", "clang-format", "cmake-language-server", "rust-analyzer",
+        "bash-language-server", "json-lsp", "marksman", "pyright",
       },
     },
   },
