@@ -93,6 +93,10 @@ map('n', '<leader>le', function ()
   terminal_launch("sp", "le")
 end, { desc = "RTWORKS local build and execute" })
 
+map('n', '<leader>ll', function ()
+  terminal_launch("sp", "le l4")
+end, { desc = "RTWORKS local build and execute verbose" })
+
 map('n', '<leader>lr', function ()
   local cmd = 'source ~/dotfiles/scripts/rtworks/commands.zsh;'
   vim.cmd('echom system(' .. "'zsh -c " .. '"' .. cmd .. 'fn_rtworks_local_run"' .. "')")
