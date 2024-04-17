@@ -163,7 +163,7 @@ function fn_t32_launch() {(
   set -e;
   source ~/rtworks/bsp.sh;
 
-  sed -i '' -E "s/^(SYStem.CPU )(.*)/\1$CPU/" ~/.trace32/cpu.cmm
+  echo "GLOBAL &CPU\n&CPU=\"$CPU\"" > ~/.trace32/cpu.cmm
 
   ~/t32/bin/macosx64/t32m$ARCH-qt -c ~/t32/config_usb.t32
 )}

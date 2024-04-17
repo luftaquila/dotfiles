@@ -1,0 +1,10 @@
+SYStem.CPU STM32H743ZI
+SYStem.CONFIG.DEBUGPORTTYPE SWD
+SYStem.Option DUALPORT ON
+SYStem.MemAccess DAP
+SYStem.JtagClock CTCK 10MHz
+; Avoid trying to set software breakpoints in the flash area,
+; because it generates an error in the flash controller
+MAP.BO 0x08000000--0x08FFFFFF
+Trace.DISable
+SYStem.Up
