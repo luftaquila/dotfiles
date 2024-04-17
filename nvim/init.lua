@@ -1,7 +1,7 @@
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/nvchad/base46/"
 vim.g.mapleader = " "
 
--- bootstrap lazy and all plugins
+-- bootstrap lazy and all plugins ---------------------------------------------
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
@@ -13,7 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 
 local lazy_config = require "configs.lazy"
 
--- load plugins
+-- load plugins ---------------------------------------------------------------
 require("lazy").setup({
   {
     "NvChad/NvChad",
@@ -28,7 +28,7 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
--- load theme
+-- load theme -----------------------------------------------------------------
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
 
@@ -38,7 +38,22 @@ vim.schedule(function()
   require "mappings"
 end)
 
--- Restore cursor position
+-- highlight groups -----------------------------------------------------------
+require('configs.highlights')
+
+-- utils ----------------------------------------------------------------------
+local utils = require('configs.utils')
+
+-- abbreviabtions -------------------------------------------------------------
+utils.cabbrev('sh', 'suspend')
+
+-- filetypes ------------------------------------------------------------------
+utils.set_filetype("*.cmm", "t32")
+
+-- configs --------------------------------------------------------------------
+vim.api.nvim_command('set modeline')
+
+-- restore cursor position
 vim.api.nvim_create_autocmd({ "BufReadPost" }, {
   pattern = { "*" },
   callback = function()
@@ -63,24 +78,3 @@ vim.api.nvim_create_autocmd("BufLeave", {
   end
 })
 
--- session.vim
-vim.opt.sessionoptions:remove("buffers")
-vim.g.session_autosave = 'yes'
-vim.g.session_autoload = 'no'
-vim.g.session_autosave_periodic = 1
-vim.g.session_autosave_silent = 1
-vim.g.session_default_overwrite = 1
-vim.g.session_command_aliases = 1
-
-vim.api.nvim_create_user_command('O', function()
-  vim.cmd('OpenSession')
-end, {})
-
--- abbreviabtions
-require('configs.abbrev')
-
--- highlight groups
-require('configs.highlights')
-
--- configs
-vim.api.nvim_command('set modeline')

@@ -11,10 +11,20 @@ return {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
-        "lua-language-server", "stylua",
-        "html-lsp", "css-lsp" , "prettier",
-        "asm-lsp", "clangd", "clang-format", "cmake-language-server", "rust-analyzer",
-        "bash-language-server", "json-lsp", "marksman", "pyright",
+        "lua-language-server",
+        "stylua",
+        "html-lsp",
+        "css-lsp",
+        "prettier",
+        "asm-lsp",
+        "clangd",
+        "clang-format",
+        "cmake-language-server",
+        "rust-analyzer",
+        "bash-language-server",
+        "json-lsp",
+        "marksman",
+        "pyright",
       },
     },
   },
@@ -23,11 +33,43 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = {
       ensure_installed = {
-        "asm", "disassembly", "objdump",
-        "c", "cpp", "java", "javascript", "lua", "python", "rust", "verilog",
-        "html", "css", "csv", "doxygen", "json", "markdown_inline", "regex", "rst", "toml", "xml", "yaml",
-        "arduino", "bash", "diff", "make", "cmake", "llvm", "t32", "tmux", "vim", "vimdoc",
-        "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore",
+        "asm",
+        "disassembly",
+        "objdump",
+        "c",
+        "cpp",
+        "java",
+        "javascript",
+        "lua",
+        "python",
+        "rust",
+        "verilog",
+        "html",
+        "css",
+        "csv",
+        "doxygen",
+        "json",
+        "markdown_inline",
+        "regex",
+        "rst",
+        "toml",
+        "xml",
+        "yaml",
+        "arduino",
+        "bash",
+        "diff",
+        "make",
+        "cmake",
+        "llvm",
+        "t32",
+        "tmux",
+        "vim",
+        "vimdoc",
+        "git_config",
+        "git_rebase",
+        "gitattributes",
+        "gitcommit",
+        "gitignore",
       },
     },
   },
@@ -43,7 +85,7 @@ return {
   -- custom plugins
   {
     "wakatime/vim-wakatime",
-    event = 'VimEnter'
+    event = "VimEnter",
   },
 
   {
@@ -54,6 +96,19 @@ return {
   {
     "xolox/vim-session",
     event = "VeryLazy",
+    config = function()
+      vim.opt.sessionoptions:remove "buffers"
+      vim.g.session_autosave = "yes"
+      vim.g.session_autoload = "no"
+      vim.g.session_autosave_periodic = 1
+      vim.g.session_autosave_silent = 1
+      vim.g.session_default_overwrite = 1
+      vim.g.session_command_aliases = 1
+
+      vim.api.nvim_create_user_command("O", function()
+        vim.cmd "OpenSession"
+      end, {})
+    end,
   },
 
   {
@@ -61,32 +116,32 @@ return {
     version = "*", -- for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
-      require("nvim-surround").setup({
+      require("nvim-surround").setup {
         -- Configuration here, or leave empty to use defaults
-      })
-    end
+      }
+    end,
   },
 
   {
     "unblevable/quick-scope",
-    event = "VeryLazy"
+    event = "VeryLazy",
   },
 
   {
     "easymotion/vim-easymotion",
-    event = "VeryLazy"
+    event = "VeryLazy",
   },
 
   {
-    'bitc/vim-bad-whitespace',
+    "bitc/vim-bad-whitespace",
     event = "VeryLazy",
     config = function()
-      vim.cmd('ShowBadWhitespace')
+      vim.cmd "ShowBadWhitespace"
       -- this plugin replaces:
       -- vim.opt.list = true
       -- vim.opt.listchars = { eol = ' ', trail = '█', tab = '>-', nbsp = '␣' }
-    end
-  }
+    end,
+  },
 
   -- {
   --   "lewis6991/satellite.nvim",
@@ -98,4 +153,3 @@ return {
 }
 
 -- liuchengxu/vista.vim
-

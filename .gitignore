@@ -20,3 +20,6 @@ keyset.exe
 # desktopinfo
 DesktopInfo64.exe
 desktopinfo.ini
+
+# TRACE32
+*.bak
