@@ -35,13 +35,14 @@ map('n', '<leader>fs', telescope.lsp_workspace_symbols, { desc = "Telescope find
 map('n', '<leader>fi', telescope.lsp_implementations, { desc = "Telescope find LSP implementations" })
 map('n', '<leader>fd', telescope.lsp_definitions, { desc = "Telescope find LSP definitions" })
 map('n', '<leader>fp', telescope.diagnostics, { desc = "Telescope find LSP diagnostics" })
+map('n', '<leader>fu', telescope.grep_string , { desc = "Telescope grep string under cursor" })
 
 -- macro
 map('n', '<CR>', '@q', { desc = "Macro play @q" })
 
 -- Tabs
 map('n', 'tn', ':tabnew<CR>', { desc = "Tab create new" })
-map('n', 'tc', ':tabclose<CR>', { desc = "Tab close" })
+map('n', 'tx', ':tabclose<CR>', { desc = "Tab close" })
 map('n', 'tl', ':tabnext<CR>', { desc = "Tab next" })
 map('n', 'th', ':tabprev<CR>', { desc = "Tab prev" })
 
