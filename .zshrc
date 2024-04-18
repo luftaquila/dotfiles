@@ -168,6 +168,7 @@ alias gpf='git push -f'
 alias grt='git reset'
 alias grh='git reset HEAD^'
 alias grm='git reset --merge'
+alias gro='git reset --hard "@{u}"'
 
 alias grr='git restore'
 alias grs='git restore --staged'
