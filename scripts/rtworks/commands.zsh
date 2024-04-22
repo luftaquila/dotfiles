@@ -17,7 +17,7 @@ alias re=fn_rtworks_remote_execute
 alias tt=fn_t32_launch
 
 alias qq='RELAY=`cat ~/rtworks/relay`; push-return $RELAY;'
-alias cons='tio `cat ~/rtworks/console` -b 115200'
+alias cons='source ~/rtworks/bsp.sh; tio $CONSOLE -b 115200'
 
 alias elf=fn_elf
 alias dmp=fn_dmp
