@@ -14,13 +14,22 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-vim.api.nvim_create_user_command('LspFormat', function()
+vim.api.nvim_create_user_command("LspFormat", function()
   -- Use null-ls if present
-  if vim.fn.exists(':NullFormat') == 2 then
-    vim.cmd('NullFormat')
+  if vim.fn.exists ":NullFormat" == 2 then
+    vim.cmd "NullFormat"
     return
   end
 
   -- Fallback to whatever lsp server has formatting capabilities
   vim.lsp.buf.format()
-end, { desc = 'Format current buffer' })
+end, { desc = "Format current buffer" })
+
+-- disable default lsp code action keymap
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    vim.schedule(function()
+      vim.keymap.del({ "n", "v" }, "<leader>ca", { buffer = args.buf })
+    end)
+  end,
+})

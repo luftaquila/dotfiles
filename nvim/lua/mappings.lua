@@ -36,6 +36,8 @@ map('n', '<leader>fi', telescope.lsp_implementations, { desc = "Telescope find L
 map('n', '<leader>fd', telescope.lsp_definitions, { desc = "Telescope find LSP definitions" })
 map('n', '<leader>fp', telescope.diagnostics, { desc = "Telescope find LSP diagnostics" })
 map('n', '<leader>fu', telescope.grep_string , { desc = "Telescope grep string under cursor" })
+map('n', '<leader>fk', telescope.keymaps, { desc = "Telescope find keymaps" })
+map('n', '<leader>ca', require("actions-preview").code_actions, { desc = "Telescope LSP code action preview" })
 
 -- macro
 map('n', '<CR>', '@q', { desc = "Macro play @q" })
