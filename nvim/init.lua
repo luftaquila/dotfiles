@@ -78,3 +78,14 @@ vim.api.nvim_create_autocmd("BufLeave", {
   end
 })
 
+-- gitsigns
+local gitsigns = require("gitsigns")
+
+gitsigns.setup {
+  numhl = true,
+  current_line_blame = true,
+  current_line_blame_opts = {
+    delay = 1500
+  },
+  current_line_blame_formatter = '<abbrev_sha>: <author> (<author_time:%Y-%m-%d>) - <summary>'
+}
