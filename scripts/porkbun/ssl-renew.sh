@@ -1,6 +1,10 @@
 #!/bin/bash
 
-source ./porkbun.secret.sh
+# load $APIKEY and $SECRET
+source ./porkbun-secret.sh
+
+# get keys from API
+res=`curl -X POST -H "Content-Type: application/json" -d "{\"apikey\": \"$APIKEY\", \"secretapikey\": \"$SECRET\"}" https://porkbun.com/api/json/v3/ssl/retrieve/luftaquila.io`
 
 jq -r '.intermediatecertificate' <<< "$res" > intermediate.cert.pem
 jq -r '.certificatechain' <<< "$res" > domain.cert.pem

@@ -5,7 +5,7 @@ backups/
 *.swp
 
 # ssl-renew secret
-porkbun.secret.sh
+porkbun-secret.sh
 
 # setup secret
 private.sh
