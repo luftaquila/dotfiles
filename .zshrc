@@ -152,7 +152,7 @@ alias gca='git commit --verbose --amend'
 
 alias gdf='git diff'
 alias gds='git diff --staged'
-alias gdo='nvim `gdf $1 --name-only`'
+alias gdo=fn_git_diff_open
 
 alias gfh='git fetch'
 
@@ -182,6 +182,17 @@ alias gst='git status'
 
 unalias gp
 unalias gpu
+
+function fn_git_diff_open() {(
+  set -e;
+  local BRANCH=$1;
+
+  if [ -z $BRANCH ]; then
+    nvim `git diff --name-only`
+  else
+    nvim "+Gitsigns change_base $BRANCH true" `git diff --merge-base $BRANCH --name-only`
+  fi
+)}
 
 
 #############################################################################
