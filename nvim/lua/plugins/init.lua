@@ -137,17 +137,6 @@ return {
     event = "VeryLazy",
   },
 
-  -- {
-  --   "bitc/vim-bad-whitespace",
-  --   event = "VeryLazy",
-  --   config = function()
-  --     vim.cmd "ShowBadWhitespace"
-  --     -- this plugin replaces:
-  --     -- vim.opt.list = true
-  --     -- vim.opt.listchars = { eol = ' ', trail = '█', tab = '>-', nbsp = '␣' }
-  --   end,
-  -- },
-
   {
     "aznhe21/actions-preview.nvim",
     event = "VeryLazy",
@@ -173,6 +162,27 @@ return {
       }
     end,
   },
+
+  {
+    "shortcuts/no-neck-pain.nvim",
+    event = "VeryLazy",
+    config = function ()
+      require('no-neck-pain').setup {
+        width = 120
+      }
+    end
+  }
+
+  -- {
+  --   "bitc/vim-bad-whitespace",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     vim.cmd "ShowBadWhitespace"
+  --     -- this plugin replaces:
+  --     -- vim.opt.list = true
+  --     -- vim.opt.listchars = { eol = ' ', trail = '█', tab = '>-', nbsp = '␣' }
+  --   end,
+  -- },
 
   -- {
   --   "lewis6991/satellite.nvim",

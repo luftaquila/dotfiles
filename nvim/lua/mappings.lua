@@ -42,6 +42,9 @@ map('n', '<leader>ca', require("actions-preview").code_actions, { desc = "Telesc
 -- Gitsigns
 map('n', '<leader>df', require("gitsigns").diffthis, { desc = "Git diff" })
 
+-- No Neck Pain
+map('n', 'cn', ':NoNeckPain<CR>', { desc = "NoNeckPain toggle" })
+
 -- macro
 map('n', '<CR>', '@q', { desc = "Macro play @q" })
 
