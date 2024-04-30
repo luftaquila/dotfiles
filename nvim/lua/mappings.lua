@@ -39,6 +39,9 @@ map('n', '<leader>fu', telescope.grep_string , { desc = "Telescope grep string u
 map('n', '<leader>fk', telescope.keymaps, { desc = "Telescope find keymaps" })
 map('n', '<leader>ca', require("actions-preview").code_actions, { desc = "Telescope LSP code action preview" })
 
+-- Gitsigns
+map('n', '<leader>df', require("gitsigns").diffthis, { desc = "Git diff" })
+
 -- macro
 map('n', '<CR>', '@q', { desc = "Macro play @q" })
 
