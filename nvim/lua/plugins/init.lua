@@ -171,6 +171,16 @@ return {
         width = 120
       }
     end
+  },
+
+  {
+    "liuchengxu/vista.vim",
+    event = "VeryLazy",
+    config = function ()
+      vim.cmd("let g:vista_blink = [0, 0]")
+      vim.cmd("let g:vista_sidebar_position = 'vertical topleft'")
+      vim.cmd("let g:vista_default_executive = 'nvim_lsp'")
+    end
   }
 
   -- {

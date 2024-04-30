@@ -45,6 +45,10 @@ map('n', '<leader>df', require("gitsigns").diffthis, { desc = "Git diff" })
 -- No Neck Pain
 map('n', 'cn', ':NoNeckPain<CR>', { desc = "NoNeckPain toggle" })
 
+-- Vista
+map('n', 'tt', ':Vista!!<CR>', { desc = "Vista toggle tag window" })
+map('n', '<leader>i', ':Vista focus<CR>', { desc = "Vista focus tag window" })
+
 -- macro
 map('n', '<CR>', '@q', { desc = "Macro play @q" })
 
