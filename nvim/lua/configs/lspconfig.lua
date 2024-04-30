@@ -29,7 +29,8 @@ end, { desc = "Format current buffer" })
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     vim.schedule(function()
-      vim.keymap.del({ "n", "v" }, "<leader>ca", { buffer = args.buf })
+      -- ignore error despite failure
+      pcall(vim.keymap.del, { "n", "v" }, "<leader>ca", { buffer = args.buf })
     end)
   end,
 })
