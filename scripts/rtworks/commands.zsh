@@ -125,10 +125,15 @@ autoload fn_rtworks_local_execute_fast
 ############################## LAUNCH REMOTE ##############################
 function fn_rtworks_remote_run() {(
   set -e;
-  BSP=t2080rdb;
+  BSP=t2080rdb
+  TIMEOUT=""
+
+  if [[ ! -z $1 ]]; then
+    TIMEOUT="-t $1"
+  fi
 
   cd ~/rtworks/remote;
-  ruby remote.rb -b $BSP -u ~/rtworks/builder/load.scr;
+  ruby remote.rb -b $BSP -u ~/rtworks/builder/load.scr $TIMEOUT;
 )}
 autoload fn_rtworks_remote_run
 
