@@ -107,7 +107,7 @@ function fn_install_system_packages() {
   linux_packages=(
     "build-essential" "cmake" "fd-find" "libncurses-dev" "python3" "python3-pip"
   )
-  macos_packages=( "fd" )
+  macos_packages=( "fd" "superfile" )
 
   fn_update
   fn_cmd "$package_cmd install ${common_packages[*]}"
@@ -167,7 +167,7 @@ function fn_install_tmux() {
 function fn_install_rust() {
   echo "[INF] installing Rust..."
 
-  rust_packages=( "code-minimap" "eza" "du-dust" "git-delta" "zoxide" )
+  rust_packages=( "bottom" "code-minimap" "eza" "du-dust" "git-delta" "zoxide" )
 
   if ! [[ -x "$(command -v rustc)" ]]; then
     if [[ "$auto_confirm" = true ]]; then
