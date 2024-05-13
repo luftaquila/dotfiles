@@ -308,7 +308,7 @@ if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
     fn_cmd "cd $HOME/dotfiles"
 
     echo "[INF] restarting in dotfiles directory..."
-    exec ./init.sh $1
+    exec ./install.sh $1
   fi
 
   # check ssh client
@@ -353,7 +353,7 @@ if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
   fn_cmd "cd $HOME/dotfiles"
 
   echo "[INF] restarting in cloned directory..."
-  exec ./init.sh $1
+  exec ./install.sh $1
 fi
 
 fn_install_dotfile ".gitconfig"
