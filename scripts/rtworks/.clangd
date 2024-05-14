@@ -1,6 +1,4 @@
 # RTWORKS clangd config file
-# ln -s ~/dotfiles/scripts/rtworks/config.yaml ~/.config/clangd/config.yaml             # Linux
-# ln -s ~/dotfiles/scripts/rtworks/config.yaml ~/Library/Preferences/clangd/config.yaml # macOS
 
 CompileFlags:
   Remove: [
