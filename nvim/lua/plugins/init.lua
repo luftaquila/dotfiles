@@ -166,21 +166,36 @@ return {
   {
     "shortcuts/no-neck-pain.nvim",
     event = "VeryLazy",
-    config = function ()
-      require('no-neck-pain').setup {
-        width = 140
+    config = function()
+      require("no-neck-pain").setup {
+        width = 140,
       }
-    end
+    end,
   },
 
   {
     "liuchengxu/vista.vim",
     event = "VeryLazy",
-    config = function ()
-      vim.cmd("let g:vista_blink = [0, 0]")
-      vim.cmd("let g:vista_sidebar_position = 'vertical topleft'")
-      vim.cmd("let g:vista_default_executive = 'nvim_lsp'")
-    end
+    config = function()
+      vim.cmd "let g:vista_blink = [0, 0]"
+      vim.cmd "let g:vista_sidebar_position = 'vertical topleft'"
+      vim.cmd "let g:vista_default_executive = 'nvim_lsp'"
+    end,
+  },
+
+  {
+    "abecodes/tabout.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("tabout").setup {
+        act_as_tab = false;
+      }
+    end,
+  },
+
+  {
+    "mg979/vim-visual-multi",
+    event = "VeryLazy",
   }
 
   -- {
