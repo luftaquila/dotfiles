@@ -186,36 +186,25 @@ return {
   {
     "abecodes/tabout.nvim",
     event = "VeryLazy",
-    config = function()
-      require("tabout").setup {
-        act_as_tab = false;
-      }
-    end,
   },
 
   {
     "mg979/vim-visual-multi",
     event = "VeryLazy",
+    init = function()
+      vim.g.VM_maps = {
+        ["Find Under"] = "<C-g>",
+      }
+    end,
+  },
+
+  {
+    "lewis6991/satellite.nvim",
+    event = 'VimEnter',
+    config = function ()
+      require('satellite').setup()
+    end
   }
-
-  -- {
-  --   "bitc/vim-bad-whitespace",
-  --   event = "VeryLazy",
-  --   config = function()
-  --     vim.cmd "ShowBadWhitespace"
-  --     -- this plugin replaces:
-  --     -- vim.opt.list = true
-  --     -- vim.opt.listchars = { eol = ' ', trail = '█', tab = '>-', nbsp = '␣' }
-  --   end,
-  -- },
-
-  -- {
-  --   "lewis6991/satellite.nvim",
-  --   event = 'VimEnter',
-  --   config = function ()
-  --     require('satellite').setup()
-  --   end
-  -- }
 }
 
 -- liuchengxu/vista.vim
