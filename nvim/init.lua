@@ -38,6 +38,9 @@ vim.schedule(function()
   require "mappings"
 end)
 
+-- options --------------------------------------------------------------------
+vim.o.scrolloff = 5
+
 -- highlight groups -----------------------------------------------------------
 require('configs.highlights')
 
