@@ -41,8 +41,10 @@ end)
 -- options --------------------------------------------------------------------
 vim.o.scrolloff = 5
 
--- highlight groups -----------------------------------------------------------
+-- highlights -----------------------------------------------------------------
 require('configs.highlights')
+vim.cmd('highlight Search ctermfg=white ctermbg=gray guifg=white guibg=gray')
+vim.cmd('highlight CurSearch ctermfg=black ctermbg=lightgray guifg=black guibg=lightgray')
 
 -- utils ----------------------------------------------------------------------
 local utils = require('configs.utils')
