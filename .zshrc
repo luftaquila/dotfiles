@@ -187,24 +187,24 @@ function fn_git_diff_open() {(
   set -e;
   local BRANCH=$1;
 
-  if [ -z $BRANCH ]; then
-    local diff=`git diff --name-only`
+  if [[ -z $BRANCH ]]; then
+    local diff=($(git diff --name-only))
 
-    if [[ -z $diff ]]; then
+    if [[ ${#diff[@]} -eq 0 ]]; then
       >&2 echo "no diff found!"
       return -1
     fi
 
-    nvim $diff
+    nvim ${diff[@]}
   else
-    local diff=`git diff --merge-base $BRANCH --name-only`
+    local diff=($(git diff --merge-base $BRANCH --name-only))
 
-    if [[ -z $diff ]]; then
+    if [[ ${#diff[@]} -eq 0 ]]; then
       >&2 echo "no diff found!"
       return -1
     fi
 
-    nvim "+Gitsigns change_base $BRANCH true" $diff
+    nvim "+Gitsigns change_base $BRANCH true" ${diff[@]}
   fi
 )}
 
