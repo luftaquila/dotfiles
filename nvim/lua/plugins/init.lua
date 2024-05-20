@@ -87,7 +87,7 @@ return {
     end,
   },
 
-  -- custom plugins
+  -- custom plugins -----------------------------------------------------------
   {
     "wakatime/vim-wakatime",
     event = "VimEnter",
@@ -208,6 +208,15 @@ return {
     event = "VimEnter",
     config = function()
       require("nvim-cursorline").setup {}
+    end,
+  },
+
+  {
+    "MysticalDevil/inlay-hints.nvim",
+    event = "LspAttach",
+    dependencies = { "neovim/nvim-lspconfig" },
+    config = function()
+      require("inlay-hints").setup()
     end,
   },
 }
