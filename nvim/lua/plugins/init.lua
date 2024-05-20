@@ -118,12 +118,9 @@ return {
 
   {
     "kylechui/nvim-surround",
-    version = "*", -- for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
-      require("nvim-surround").setup {
-        -- Configuration here, or leave empty to use defaults
-      }
+      require("nvim-surround").setup {}
     end,
   },
 
@@ -200,11 +197,17 @@ return {
 
   {
     "lewis6991/satellite.nvim",
-    event = 'VimEnter',
-    config = function ()
-      require('satellite').setup()
-    end
-  }
-}
+    event = "VimEnter",
+    config = function()
+      require("satellite").setup()
+    end,
+  },
 
--- liuchengxu/vista.vim
+  {
+    "yamatsum/nvim-cursorline",
+    event = "VeryLazy",
+    config = function()
+      require("nvim-cursorline").setup {}
+    end,
+  },
+}
