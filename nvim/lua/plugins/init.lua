@@ -204,8 +204,8 @@ return {
   },
 
   {
-    "yamatsum/nvim-cursorline",
-    event = "VeryLazy",
+    "luftaquila/nvim-cursorline",
+    event = "VimEnter",
     config = function()
       require("nvim-cursorline").setup {}
     end,
