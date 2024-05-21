@@ -1,8 +1,15 @@
 #!/bin/zsh
 
-export PATH="$PATH:/opt/rtst/arm-none-eabi/bin:/opt/rtst/powerpc-unknown-elf/bin:/opt/rtst/powerpc-unknown-eabispe/bin"
+CONF_BSP="$HOME/rtworks/bsp.sh"
+CONF_GENERAL="$HOME/rtworks/config.sh"
+RTWORKS_DIR="$HOME/rtworks"
+
+export PATH="$PATH:/opt/rtst/arm-none-eabi/bin"
+export PATH="$PATH:/opt/rtst/powerpc-unknown-elf/bin"
+export PATH="$PATH:/opt/rtst/powerpc-unknown-eabispe/bin"
 
 alias bsp=fn_bsp
+alias rtworksconf="nvim $CONF_GENERAL"
 
 alias bb=fn_rtworks_build
 alias mm=fn_rtworks_misra
@@ -16,30 +23,30 @@ alias re=fn_rtworks_remote_execute
 
 alias tt=fn_t32_launch
 
-alias qq='RELAY=`cat ~/rtworks/relay`; push-return $RELAY;'
-alias cons='source ~/rtworks/bsp.sh; tio $CONSOLE -b 115200'
+alias qq="source $CONF_BSP;"'push-return $RELAY;'
+alias cons="source $CONF_BSP;"'tio $CONSOLE -b 115200'
 
 alias elf=fn_elf
 alias dmp=fn_dmp
 
 
-############################## BSP CONFIG ##############################
+##### BSP CONFIG ##############################################################
 function fn_bsp() {(
-  nvim ~/rtworks/bsp.sh;
+  nvim $CONF_BSP;
 
-  source ~/rtworks/bsp.sh;
-  cd ~/rtworks/builder;
+  source $CONF_BSP;
+  cd "$RTWORKS_DIR/builder";
   ./init.py -b $BSP
 )}
 autoload fn_bsp
 
 
-############################## BUILD ##############################
+##### BUILD ###################################################################
 function fn_rtworks_build() {(
   set -e;
-  RTWORKS_DIR=~/rtworks
 
-  fn_patch_autostart_delay 0;
+  source $CONF_GENERAL;
+  fn_patch_autostart_delay $AUTOSTART_DELAY;
 
   while [[ $# -gt 0 ]]; do
     case $1 in
@@ -59,7 +66,7 @@ function fn_rtworks_build() {(
   ./build.py -adg$RTWORKS_OPTION;
 
   # transfer elf objects to remote for t32 debugging
-  # fn_transfer_t32_objects "wolke.luftaquila.io"
+  fn_transfer_t32_objects $T32_OBJ_DEST;
 )}
 autoload fn_rtworks_build
 
@@ -67,7 +74,7 @@ function fn_patch_autostart_delay() {(
   set -e;
   local delay=$1;
 
-  cd ~/rtworks/builder/build.kernel;
+  cd "$RTWORKS_DIR/builder/build.kernel";
 
   if [ -f CMakeCache.txt ]; then
     sed -i '' -E "s/^(CONFIG_AUTOSTART_DELAY:STRING=)(.*)/\1$delay/" CMakeCache.txt;
@@ -76,28 +83,28 @@ function fn_patch_autostart_delay() {(
 autoload fn_patch_autostart_delay
 
 
-############################## MISRA ##############################
+##### MISRA ###################################################################
 function fn_rtworks_misra() {(
   set -e;
-  source ~/rtworks/bsp.sh;
+  source $CONF_BSP;
   TARGET=$1;
 
   if   [[ "$TARGET" == "p" ]]; then TARGET="partition";
   elif [[ "$TARGET" == "k" ]]; then TARGET="kernel";
   fi
 
-  cd ~/rtworks/$TARGET/build;
+  cd "$RTWORKS_DIR/$TARGET/build";
   cmake -DBSP=$BSP -DUSE_MISRA_CHECKER=1 ..;
   ../misc/scripts/report_misra.sh | bat --language=c;
 )}
 autoload fn_rtworks_misra
 
 
-############################## LAUNCH LOCAL ##############################
+##### LAUNCH LOCAL ############################################################
 function fn_rtworks_local_run() {(
   set -e;
-  source ~/rtworks/bsp.sh;
-  RELAY=`cat ~/rtworks/relay`
+  source $CONF_BSP;
+  source $CONF_GENERAL;
 
   if   [[ "$BSP" == "t2080rdb" ]];      then push-return $RELAY;
   elif [[ "$BSP" == "ima_fcc-t2080" ]]; then push-toggle $RELAY;
@@ -123,7 +130,7 @@ function fn_rtworks_local_execute_fast() {(
 autoload fn_rtworks_local_execute_fast
 
 
-############################## LAUNCH REMOTE ##############################
+##### LAUNCH REMOTE ###########################################################
 function fn_rtworks_remote_run() {(
   set -e;
   BSP=t2080rdb
@@ -133,8 +140,8 @@ function fn_rtworks_remote_run() {(
     TIMEOUT="-t $1"
   fi
 
-  cd ~/rtworks/remote;
-  ruby remote.rb -b $BSP -u ~/rtworks/builder/load.scr $TIMEOUT;
+  cd "$RTWORKS_DIR/remote";
+  ruby remote.rb -b $BSP -u $RTWORKS_DIR/builder/load.scr $TIMEOUT;
 )}
 autoload fn_rtworks_remote_run
 
@@ -147,27 +154,27 @@ function fn_rtworks_remote_execute() {(
 autoload fn_rtworks_remote_execute
 
 
-############################## binutils ##############################
+##### binutils ################################################################
 fn_elf() {(
   set -e;
-  source ~/rtworks/bsp.sh;
+  source $CONF_BSP;
 
   $TOOLCHAIN-readelf -e ${@:1}; # pass all options
 )}
 
 fn_dmp() {(
   set -e;
-  source ~/rtworks/bsp.sh;
+  source $CONF_BSP;
 
   $TOOLCHAIN-objdump -dS ${@:1} > '/tmp/objdump';
   sed -i '' -E '1 s/^.*$/# vim: set filetype=objdump:/' /tmp/objdump
 )}
 
 
-############################## TRACE32 ##############################
+##### TRACE32 #################################################################
 function fn_t32_launch() {(
   set -e;
-  source ~/rtworks/bsp.sh;
+  source $CONF_BSP;
 
   echo "GLOBAL &CPU\n&CPU=\"$CPU\"" > ~/.trace32/cpu.cmm
 
@@ -176,14 +183,19 @@ function fn_t32_launch() {(
 autoload fn_t32_launch
 
 function fn_transfer_t32_objects() {(
+  local target=$1
+
+  if [[ -z $target ]]; then
+    return;
+  fi
+  
   echo '[INF] transferring ELF and changed files to remote...'
 
-  local target=$1
   scp /private/tftpboot/rtworks_merged.elf $target:.trace32
-  scp $HOME/rtworks/builder/build.partition1/rtworks_partition.elf $target:.trace32
+  scp $RTWORKS_DIR/builder/build.partition1/rtworks_partition.elf $target:.trace32
 
-  fn_scp_git_diff "$HOME/rtworks/kernel" "rtworks/kernel" "$target"
-  fn_scp_git_diff "$HOME/rtworks/partition" "rtworks/partition" "$target"
+  fn_scp_git_diff "$RTWORKS_DIR/kernel" "rtworks/kernel" "$target"
+  fn_scp_git_diff "$RTWORKS_DIR/partition" "rtworks/partition" "$target"
 )}
 autoload fn_transfer_diff_for_remote_t32
 
