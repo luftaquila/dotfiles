@@ -9,7 +9,7 @@ export PATH="$PATH:/opt/rtst/powerpc-unknown-elf/bin"
 export PATH="$PATH:/opt/rtst/powerpc-unknown-eabispe/bin"
 
 alias bsp=fn_bsp
-alias rtworksconf="nvim $CONF_GENERAL"
+alias rtworksconf=fn_rtworksconf
 
 alias bb=fn_rtworks_build
 alias mm=fn_rtworks_misra
@@ -30,7 +30,7 @@ alias elf=fn_elf
 alias dmp=fn_dmp
 
 
-##### BSP CONFIG ##############################################################
+##### CONFIG ##################################################################
 function fn_bsp() {(
   nvim $CONF_BSP;
 
@@ -39,6 +39,16 @@ function fn_bsp() {(
   ./init.py -b $BSP
 )}
 autoload fn_bsp
+
+function fn_rtworksconf() {(
+  nvim $CONF_GENERAL;
+
+  source $CONF_GENERAL;
+  cd "$RTWORKS_DIR/builder";
+  rm rtworks.json build_config.json;
+  ln -s "$RTWORKS_DIR/configs/rtworks-$CONFIG_JSON.json" rtworks.json;
+  ln -s "$RTWORKS_DIR/configs/build_config-$CONFIG_JSON.json" build_config.json;
+)}
 
 
 ##### BUILD ###################################################################
