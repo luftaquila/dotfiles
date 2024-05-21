@@ -23,7 +23,7 @@ alias re=fn_rtworks_remote_execute
 
 alias tt=fn_t32_launch
 
-alias qq="source $CONF_BSP;"'push-return $RELAY;'
+alias qq="source $CONF_GENERAL;"'push-return $RELAY;'
 alias cons="source $CONF_BSP;"'tio $CONSOLE -b 115200'
 
 alias elf=fn_elf
