@@ -39,7 +39,7 @@ function fn_rtworks_build() {(
   set -e;
   RTWORKS_DIR=~/rtworks
 
-  fn_patch_autostart_delay;
+  fn_patch_autostart_delay 0;
 
   while [[ $# -gt 0 ]]; do
     case $1 in
@@ -65,11 +65,12 @@ autoload fn_rtworks_build
 
 function fn_patch_autostart_delay() {(
   set -e;
+  local delay=$1;
 
   cd ~/rtworks/builder/build.kernel;
 
   if [ -f CMakeCache.txt ]; then
-    sed -i '' -E 's/^(CONFIG_AUTOSTART_DELAY:STRING=)(.*)/\10/' CMakeCache.txt;
+    sed -i '' -E "s/^(CONFIG_AUTOSTART_DELAY:STRING=)(.*)/\1$delay/" CMakeCache.txt;
   fi
 )}
 autoload fn_patch_autostart_delay
