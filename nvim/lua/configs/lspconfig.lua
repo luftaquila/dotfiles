@@ -3,7 +3,21 @@ local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
 
 local lspconfig = require "lspconfig"
-local servers = { "asm_lsp", "bashls", "clangd", "cssls", "cmake", "html", "jsonls", "marksman", "pyright", "rust_analyzer" }
+local servers = {
+  "asm_lsp",
+  "bashls",
+  "clangd",
+  "cmake",
+  "cssls",
+  "harper_ls",
+  "html",
+  "jsonls",
+  "lua_ls",
+  "marksman",
+  "pyright",
+  "rust_analyzer",
+  "taplo",
+}
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -35,7 +49,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-require("lspconfig").clangd.setup({
+lspconfig.clangd.setup {
   settings = {
     clangd = {
       InlayHints = {
@@ -46,10 +60,10 @@ require("lspconfig").clangd.setup({
       },
       fallbackFlags = { "-std=c++20" },
     },
-  }
-})
+  },
+}
 
-require("lspconfig").rust_analyzer.setup({
+lspconfig.rust_analyzer.setup {
   settings = {
     ["rust-analyzer"] = {
       inlayHints = {
@@ -84,6 +98,16 @@ require("lspconfig").rust_analyzer.setup({
           hideNamedConstructor = false,
         },
       },
-    }
-  }
-})
+    },
+  },
+}
+
+lspconfig.harper_ls.setup {
+  settings = {
+    ["harper-ls"] = {
+      linters = {
+        sentence_capitalization = false,
+      },
+    },
+  },
+}
