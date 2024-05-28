@@ -17,6 +17,7 @@ local servers = {
   "pyright",
   "rust_analyzer",
   "taplo",
+  "tsserver",
 }
 
 -- lsps with default config

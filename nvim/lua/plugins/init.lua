@@ -29,6 +29,7 @@ return {
         "rust-analyzer",
         "stylua",
         "taplo",
+        "typescript-language-server",
         "write-good",
       },
     },
