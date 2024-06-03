@@ -17,6 +17,21 @@ local servers = {
   "rust_analyzer",
   "taplo",
   "tsserver",
+  "korean_ls", -- npm i -g korean-ls
+}
+
+-- custom lsp servers
+local configs = require "lspconfig.configs"
+
+configs.korean_ls = {
+  default_config = {
+    cmd = { "korean-ls", "--stdio" },
+    filetypes = { "text" },
+    root_dir = function()
+      return vim.loop.cwd()
+    end,
+    settings = {},
+  },
 }
 
 -- lsps with default config
