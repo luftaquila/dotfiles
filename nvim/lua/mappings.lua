@@ -29,7 +29,7 @@ local function terminal_launch(mode, cmd, id, size)
 end
 
 -- LSP
-map('n', 'F', vim.diagnostic.open_float, { desc = "Show diagnostics under cursor" })
+map('n', '<leader>lf', vim.diagnostic.open_float, { desc = "Show diagnostics under cursor" })
 
 -- Telescope
 map('n', '<leader>br', telescope.git_branches, { desc = "Telescope Git Branches" })
