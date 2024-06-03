@@ -42,55 +42,55 @@ end)
 vim.o.scrolloff = 5
 
 -- highlights -----------------------------------------------------------------
-require('configs.highlights')
-vim.cmd('highlight Search ctermfg=white ctermbg=gray guifg=white guibg=gray')
-vim.cmd('highlight CurSearch ctermfg=black ctermbg=lightgray guifg=black guibg=lightgray')
+require "configs.highlights"
+vim.cmd "highlight Search ctermfg=white ctermbg=gray guifg=white guibg=gray"
+vim.cmd "highlight CurSearch ctermfg=black ctermbg=lightgray guifg=black guibg=lightgray"
 
 -- utils ----------------------------------------------------------------------
-local utils = require('configs.utils')
+local utils = require "configs.utils"
 
 -- abbreviabtions -------------------------------------------------------------
-utils.cabbrev('sh', 'suspend')
+utils.cabbrev("sh", "suspend")
 
 -- filetypes ------------------------------------------------------------------
 utils.set_filetype("*.cmm", "t32")
 
 -- configs --------------------------------------------------------------------
-vim.api.nvim_command('set modeline')
+vim.api.nvim_command "set modeline"
 
 -- restore cursor position
 vim.api.nvim_create_autocmd({ "BufReadPost" }, {
   pattern = { "*" },
   callback = function()
-    vim.cmd('silent! normal! g`"zv')
+    vim.cmd 'silent! normal! g`"zv'
   end,
 })
 
 -- auto enter/leave insert mode on terminal buffers
-vim.api.nvim_create_autocmd({"BufWinEnter", "WinEnter", "TermOpen"}, {
+vim.api.nvim_create_autocmd({ "BufWinEnter", "WinEnter", "TermOpen" }, {
   pattern = "term://*",
   callback = function()
-    vim.cmd("startinsert")
+    vim.cmd "startinsert"
     -- vim.cmd('HideBadWhitespace')
-  end
+  end,
 })
 
 vim.api.nvim_create_autocmd("BufLeave", {
   pattern = "term://*",
   callback = function()
-    vim.cmd("stopinsert")
+    vim.cmd "stopinsert"
     -- vim.cmd('ShowBadWhitespace')
-  end
+  end,
 })
 
 -- gitsigns
-local gitsigns = require("gitsigns")
+local gitsigns = require "gitsigns"
 
 gitsigns.setup {
   numhl = true,
   current_line_blame = true,
   current_line_blame_opts = {
-    delay = 1500
+    delay = 1500,
   },
-  current_line_blame_formatter = '<abbrev_sha>: <author> (<author_time:%Y-%m-%d>) - <summary>'
+  current_line_blame_formatter = "<abbrev_sha>: <author> (<author_time:%Y-%m-%d>) - <summary>",
 }
