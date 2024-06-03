@@ -19,7 +19,6 @@ return {
         "clangd",
         "cmake-language-server",
         "css-lsp",
-        "harper-ls",
         "html-lsp",
         "json-lsp",
         "lua-language-server",

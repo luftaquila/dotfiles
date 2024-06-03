@@ -9,7 +9,6 @@ local servers = {
   "clangd",
   "cmake",
   "cssls",
-  "harper_ls",
   "html",
   "jsonls",
   "lua_ls",
@@ -98,16 +97,6 @@ lspconfig.rust_analyzer.setup {
           hideClosureInitialization = false,
           hideNamedConstructor = false,
         },
-      },
-    },
-  },
-}
-
-lspconfig.harper_ls.setup {
-  settings = {
-    ["harper-ls"] = {
-      linters = {
-        sentence_capitalization = false,
       },
     },
   },
