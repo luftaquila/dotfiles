@@ -40,6 +40,7 @@ end)
 
 -- options --------------------------------------------------------------------
 vim.o.scrolloff = 5
+vim.o.modeline = true
 
 -- highlights -----------------------------------------------------------------
 require "configs.highlights"
@@ -55,10 +56,16 @@ utils.cabbrev("sh", "suspend")
 -- filetypes ------------------------------------------------------------------
 utils.set_filetype("*.cmm", "t32")
 
--- configs --------------------------------------------------------------------
-vim.api.nvim_command "set modeline"
+-- autocmds -------------------------------------------------------------------
+----- activate write-good linter
+local lint = require "lint"
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
+  callback = function()
+    lint.try_lint "write_good"
+  end,
+})
 
--- restore cursor position
+----- restore cursor position
 vim.api.nvim_create_autocmd({ "BufReadPost" }, {
   pattern = { "*" },
   callback = function()
@@ -66,7 +73,7 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
   end,
 })
 
--- auto enter/leave insert mode on terminal buffers
+----- auto enter/leave insert mode on terminal buffers
 vim.api.nvim_create_autocmd({ "BufWinEnter", "WinEnter", "TermOpen" }, {
   pattern = "term://*",
   callback = function()

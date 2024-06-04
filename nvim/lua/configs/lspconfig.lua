@@ -26,7 +26,7 @@ local configs = require "lspconfig.configs"
 configs.korean_ls = {
   default_config = {
     cmd = { "korean-ls", "--stdio" },
-    filetypes = { "text" },
+    filetypes = { "", "text" },
     root_dir = function()
       return vim.loop.cwd()
     end,

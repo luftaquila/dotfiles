@@ -89,6 +89,11 @@ return {
 
   -- custom plugins -----------------------------------------------------------
   {
+    "mfussenegger/nvim-lint",
+    event = "VimEnter",
+  },
+
+  {
     "wakatime/vim-wakatime",
     event = "VimEnter",
   },
@@ -217,18 +222,6 @@ return {
     dependencies = { "neovim/nvim-lspconfig" },
     config = function()
       require("inlay-hints").setup()
-    end,
-  },
-
-  {
-    "mfussenegger/nvim-lint",
-    event = "VimEnter",
-    config = function()
-      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
-        callback = function()
-          require("lint").try_lint("write_good")
-        end,
-      })
     end,
   },
 }
