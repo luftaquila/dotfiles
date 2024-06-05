@@ -115,9 +115,19 @@ return {
       vim.g.session_default_overwrite = 1
       vim.g.session_command_aliases = 1
 
-      vim.api.nvim_create_user_command("O", function()
-        vim.cmd "OpenSession"
-      end, {})
+      vim.api.nvim_create_user_command("O", "OpenSession default", {})
+
+      vim.api.nvim_create_user_command("SS", function(opts)
+        vim.cmd("SaveSession " .. opts.args)
+      end, { nargs = 1 })
+
+      vim.api.nvim_create_user_command("OS", function(opts)
+        vim.cmd("OpenSession " .. opts.args)
+      end, { nargs = 1 })
+
+      vim.api.nvim_create_user_command("DS", function(opts)
+        vim.cmd("DeleteSession " .. opts.args)
+      end, { nargs = 1 })
     end,
   },
 
