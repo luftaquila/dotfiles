@@ -89,8 +89,11 @@ return {
 
   -- custom plugins -----------------------------------------------------------
   {
-    "mfussenegger/nvim-lint",
+    "luftaquila/nvim-cursorline",
     event = "VimEnter",
+    config = function()
+      require("nvim-cursorline").setup {}
+    end,
   },
 
   {
@@ -99,43 +102,24 @@ return {
   },
 
   {
-    "xolox/vim-misc",
+    "mfussenegger/nvim-lint",
     event = "VimEnter",
   },
 
   {
-    "xolox/vim-session",
-    event = "VeryLazy",
+    "lewis6991/satellite.nvim",
+    event = "VimEnter",
     config = function()
-      vim.opt.sessionoptions:remove "buffers"
-      vim.g.session_autosave = "yes"
-      vim.g.session_autoload = "no"
-      vim.g.session_autosave_periodic = 1
-      vim.g.session_autosave_silent = 1
-      vim.g.session_default_overwrite = 1
-      vim.g.session_command_aliases = 1
-
-      vim.api.nvim_create_user_command("O", "OpenSession default", {})
-
-      vim.api.nvim_create_user_command("SS", function(opts)
-        vim.cmd("SaveSession " .. opts.args)
-      end, { nargs = 1 })
-
-      vim.api.nvim_create_user_command("OS", function(opts)
-        vim.cmd("OpenSession " .. opts.args)
-      end, { nargs = 1 })
-
-      vim.api.nvim_create_user_command("DS", function(opts)
-        vim.cmd("DeleteSession " .. opts.args)
-      end, { nargs = 1 })
+      require("satellite").setup()
     end,
   },
 
   {
-    "kylechui/nvim-surround",
-    event = "VeryLazy",
+    "MysticalDevil/inlay-hints.nvim",
+    event = "LspAttach",
+    dependencies = { "neovim/nvim-lspconfig" },
     config = function()
-      require("nvim-surround").setup {}
+      require("inlay-hints").setup()
     end,
   },
 
@@ -147,6 +131,50 @@ return {
   {
     "easymotion/vim-easymotion",
     event = "VeryLazy",
+  },
+
+  {
+    "folke/ts-comments.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
+
+  {
+    "kylechui/nvim-surround",
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup {}
+    end,
+  },
+
+  {
+    "shortcuts/no-neck-pain.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("no-neck-pain").setup {
+        width = 140,
+      }
+    end,
+  },
+
+  {
+    "mg979/vim-visual-multi",
+    event = "VeryLazy",
+    init = function()
+      vim.g.VM_maps = {
+        ["Find Under"] = "<C-g>",
+      }
+    end,
+  },
+
+  {
+    "liuchengxu/vista.vim",
+    event = "VeryLazy",
+    config = function()
+      vim.cmd "let g:vista_blink = [0, 0]"
+      vim.cmd "let g:vista_sidebar_position = 'vertical topleft'"
+      vim.cmd "let g:vista_default_executive = 'nvim_lsp'"
+    end,
   },
 
   {
@@ -176,62 +204,33 @@ return {
   },
 
   {
-    "shortcuts/no-neck-pain.nvim",
+    "xolox/vim-session",
     event = "VeryLazy",
+    dependencies = {
+      "xolox/vim-misc",
+    },
     config = function()
-      require("no-neck-pain").setup {
-        width = 140,
-      }
-    end,
-  },
+      vim.opt.sessionoptions:remove "buffers"
+      vim.g.session_autosave = "yes"
+      vim.g.session_autoload = "no"
+      vim.g.session_autosave_periodic = 1
+      vim.g.session_autosave_silent = 1
+      vim.g.session_default_overwrite = 1
+      vim.g.session_command_aliases = 1
 
-  {
-    "liuchengxu/vista.vim",
-    event = "VeryLazy",
-    config = function()
-      vim.cmd "let g:vista_blink = [0, 0]"
-      vim.cmd "let g:vista_sidebar_position = 'vertical topleft'"
-      vim.cmd "let g:vista_default_executive = 'nvim_lsp'"
-    end,
-  },
+      vim.api.nvim_create_user_command("O", "OpenSession default", {})
 
-  {
-    "abecodes/tabout.nvim",
-    event = "VeryLazy",
-  },
+      vim.api.nvim_create_user_command("SS", function(opts)
+        vim.cmd("SaveSession " .. opts.args)
+      end, { nargs = 1 })
 
-  {
-    "mg979/vim-visual-multi",
-    event = "VeryLazy",
-    init = function()
-      vim.g.VM_maps = {
-        ["Find Under"] = "<C-g>",
-      }
-    end,
-  },
+      vim.api.nvim_create_user_command("OS", function(opts)
+        vim.cmd("OpenSession " .. opts.args)
+      end, { nargs = 1 })
 
-  {
-    "lewis6991/satellite.nvim",
-    event = "VimEnter",
-    config = function()
-      require("satellite").setup()
-    end,
-  },
-
-  {
-    "luftaquila/nvim-cursorline",
-    event = "VimEnter",
-    config = function()
-      require("nvim-cursorline").setup {}
-    end,
-  },
-
-  {
-    "MysticalDevil/inlay-hints.nvim",
-    event = "LspAttach",
-    dependencies = { "neovim/nvim-lspconfig" },
-    config = function()
-      require("inlay-hints").setup()
+      vim.api.nvim_create_user_command("DS", function(opts)
+        vim.cmd("DeleteSession " .. opts.args)
+      end, { nargs = 1 })
     end,
   },
 }
