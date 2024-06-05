@@ -47,48 +47,15 @@ require "configs.highlights"
 vim.cmd "highlight Search ctermfg=white ctermbg=gray guifg=white guibg=gray"
 vim.cmd "highlight CurSearch ctermfg=black ctermbg=lightgray guifg=black guibg=lightgray"
 
--- utils ----------------------------------------------------------------------
-local utils = require "configs.utils"
+-- autocmds -------------------------------------------------------------------
+require "configs.autocmds"
 
 -- abbreviabtions -------------------------------------------------------------
-utils.cabbrev("sh", "suspend")
+require "configs.abbreviations"
 
 -- filetypes ------------------------------------------------------------------
+local utils = require "configs.utils"
 utils.set_filetype("*.cmm", "t32")
-
--- autocmds -------------------------------------------------------------------
------ activate write-good linter
-local lint = require "lint"
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
-  callback = function()
-    lint.try_lint "write_good"
-  end,
-})
-
------ restore cursor position
-vim.api.nvim_create_autocmd({ "BufReadPost" }, {
-  pattern = { "*" },
-  callback = function()
-    vim.cmd 'silent! normal! g`"zv'
-  end,
-})
-
------ auto enter/leave insert mode on terminal buffers
-vim.api.nvim_create_autocmd({ "BufWinEnter", "WinEnter", "TermOpen" }, {
-  pattern = "term://*",
-  callback = function()
-    vim.cmd "startinsert"
-    -- vim.cmd('HideBadWhitespace')
-  end,
-})
-
-vim.api.nvim_create_autocmd("BufLeave", {
-  pattern = "term://*",
-  callback = function()
-    vim.cmd "stopinsert"
-    -- vim.cmd('ShowBadWhitespace')
-  end,
-})
 
 -- gitsigns
 local gitsigns = require "gitsigns"
