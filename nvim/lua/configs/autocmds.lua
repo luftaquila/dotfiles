@@ -1,12 +1,3 @@
-local lint = require "lint"
-
------ activate write-good linter
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
-  callback = function()
-    lint.try_lint "write_good"
-  end,
-})
-
 ----- restore cursor position
 vim.api.nvim_create_autocmd({ "BufReadPost" }, {
   pattern = { "*" },
