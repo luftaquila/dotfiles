@@ -64,6 +64,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+lspconfig.lua_ls.setup {
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { "vim" },
+      },
+    },
+  },
+}
+
 lspconfig.clangd.setup {
   settings = {
     clangd = {
