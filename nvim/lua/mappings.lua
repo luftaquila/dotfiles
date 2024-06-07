@@ -91,12 +91,24 @@ map('n', '<leader>sm', function ()
 end, { desc = "Serial monitor open" })
 
 map('n', '<leader>bb', function ()
-  terminal_launch("sp", "bb")
+  terminal_launch("float", "bb")
 end, { desc = "RTWORKS build" })
 
 map('n', '<leader>bl', function ()
-  terminal_launch("sp", "bb l4")
+  terminal_launch("float", "bb l4")
 end, { desc = "RTWORKS build verbose" })
+
+map('n', '<leader>le', function ()
+  terminal_launch("float", "le")
+end, { desc = "RTWORKS local build and execute" })
+
+map('n', '<leader>ll', function ()
+  terminal_launch("float", "le l4")
+end, { desc = "RTWORKS local build and execute verbose" })
+
+map('n', '<leader>ls', function ()
+  terminal_launch("float", "les l4")
+end, { desc = "RTWORKS local build and execute verbose serialized" })
 
 map('n', '<leader>mk', function ()
   terminal_launch("sp", "mm k")
@@ -105,14 +117,6 @@ end, { desc = "RTWORKS misra kernel" })
 map('n', '<leader>mp', function ()
   terminal_launch("sp", "mm p")
 end, { desc = "RTWORKS misra partition" })
-
-map('n', '<leader>le', function ()
-  terminal_launch("sp", "le")
-end, { desc = "RTWORKS local build and execute" })
-
-map('n', '<leader>ll', function ()
-  terminal_launch("sp", "le l4")
-end, { desc = "RTWORKS local build and execute verbose" })
 
 map('n', '<leader>lr', function ()
   local cmd = 'source ~/dotfiles/scripts/rtworks/commands.zsh;'
