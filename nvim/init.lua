@@ -58,13 +58,21 @@ local utils = require "configs.utils"
 utils.set_filetype("*.cmm", "t32")
 
 -- gitsigns
-local gitsigns = require "gitsigns"
-
-gitsigns.setup {
+require("gitsigns").setup {
   numhl = true,
   current_line_blame = true,
   current_line_blame_opts = {
     delay = 1500,
   },
   current_line_blame_formatter = "<abbrev_sha>: <author> (<author_time:%Y-%m-%d>) - <summary>",
+}
+
+-- nvim-tree
+require("nvim-tree").setup {
+  diagnostics = {
+    enable = true,
+  },
+  filters = {
+    git_ignored = false,
+  },
 }
