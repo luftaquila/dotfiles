@@ -11,7 +11,8 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "WinEnter", "TermOpen" }, {
   pattern = "term://*",
   callback = function()
     vim.cmd "startinsert"
-    -- vim.cmd('HideBadWhitespace')
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
   end,
 })
 
@@ -19,7 +20,5 @@ vim.api.nvim_create_autocmd("BufLeave", {
   pattern = "term://*",
   callback = function()
     vim.cmd "stopinsert"
-    -- vim.cmd('ShowBadWhitespace')
   end,
 })
-
