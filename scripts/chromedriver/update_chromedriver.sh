@@ -7,4 +7,4 @@ chmod 755 /usr/bin/chromedriver
 chown luftaquila:luftaquila /usr/bin/chromedriver
 rm chromedriver_linux64.zip
 echo DONE
-
+rm LICENSE.*
