@@ -77,3 +77,12 @@ require("nvim-tree").setup {
     git_ignored = false,
   },
 }
+
+-- Telescope
+require("telescope").setup {
+  pickers = {
+    find_files = {
+      hidden = true,
+    },
+  },
+}
