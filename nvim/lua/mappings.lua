@@ -71,12 +71,12 @@ map("n", "tl", ":tabnext<CR>", { desc = "Tab next" })
 map("n", "th", ":tabprev<CR>", { desc = "Tab prev" })
 
 -- terminals
-  term.toggle { pos = "vsp", id = "vertical", size = 0.25 }
 map("n", "<leader>v", function()
+  term.toggle { pos = "bo vsp", id = "vertical", size = 0.25 }
 end, { desc = "Terminal Toggle vertical terminal" })
 
-  term.toggle { pos = "sp" }
 map("n", "<leader>h", function()
+  term.toggle { pos = "bo sp", id = "horizontal" }
 end, { desc = "Terminal Toggle horizontal terminal" })
 
 map("n", "<leader>a", function()
@@ -96,7 +96,7 @@ map("t", "<C-p>", "<C-\\><C-o><C-w>p", { desc = "Jump to previous window" })
 
 -- RTWORKS
 map("n", "<leader>sm", function()
-  terminal_launch("vsp", "cons", "serial")
+  terminal_launch("bo vsp", "cons", "serial")
 end, { desc = "Serial monitor open" })
 
 map("n", "<leader>bb", function()
