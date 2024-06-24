@@ -122,6 +122,12 @@ return {
   },
 
   {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    event = "VimEnter",
+    build = "make",
+  },
+
+  {
     "MysticalDevil/inlay-hints.nvim",
     event = "LspAttach",
     dependencies = { "neovim/nvim-lspconfig" },
@@ -238,6 +244,22 @@ return {
       vim.api.nvim_create_user_command("DS", function(opts)
         vim.cmd("DeleteSession " .. opts.args)
       end, { nargs = 1 })
+    end,
+  },
+
+  {
+    "junegunn/fzf",
+    build = "./install --bin",
+  },
+
+  {
+    "ibhagwan/fzf-lua",
+    -- optional for icon support
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      -- calling `setup` is optional for customization
+      require("fzf-lua").setup {
+      }
     end,
   },
 }

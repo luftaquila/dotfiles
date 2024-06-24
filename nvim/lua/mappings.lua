@@ -42,14 +42,14 @@ map("n", "<leader>fl", telescope.diagnostics, { desc = "Telescope find LSP diagn
 map("n", "<leader>fr", telescope.registers, { desc = "Telescope find registers" })
 map("n", "<leader>fu", telescope.grep_string, { desc = "Telescope grep string under cursor" })
 map("n", "<leader>fz", telescope.current_buffer_fuzzy_find, { desc = "Telescope find current buffer" })
-map("n", "<leader>fw", function()
-  telescope.grep_string { shorten_path = true, word_match = "-w", search = "" }
-end, { desc = "Telescope grep string under cursor" })
 
 map("n", "<leader>fk", telescope.keymaps, { desc = "Telescope find keymaps" })
 map("n", "<leader>fj", telescope.marks, { desc = "Telescope find marks" })
 map("n", "<leader>ft", telescope.filetypes, { desc = "Telescope find filetypes" })
 map("n", "<leader>fs", telescope.spell_suggest, { desc = "Telescope spell suggestion" })
+
+-- fzf
+map("n", "<leader>fw", require("fzf-lua").files, { desc = "Fzf find word" })
 
 -- Gitsigns
 map("n", "<leader>df", require("gitsigns").diffthis, { desc = "Git diff" })
