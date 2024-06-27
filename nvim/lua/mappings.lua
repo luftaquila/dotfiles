@@ -48,8 +48,9 @@ map("n", "<leader>fj", telescope.marks, { desc = "Telescope find marks" })
 map("n", "<leader>ft", telescope.filetypes, { desc = "Telescope find filetypes" })
 map("n", "<leader>fs", telescope.spell_suggest, { desc = "Telescope spell suggestion" })
 
--- fzf
-map("n", "<leader>fw", require("fzf-lua").files, { desc = "Fzf find word" })
+map("n", "<leader>fw", function()
+  telescope.grep_string { search = "" }
+end, { desc = "Telescope fuzzy grep string" })
 
 -- Gitsigns
 map("n", "<leader>df", require("gitsigns").diffthis, { desc = "Git diff" })

@@ -122,12 +122,6 @@ return {
   },
 
   {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    event = "VimEnter",
-    build = "make",
-  },
-
-  {
     "MysticalDevil/inlay-hints.nvim",
     event = "LspAttach",
     dependencies = { "neovim/nvim-lspconfig" },
@@ -157,6 +151,20 @@ return {
     event = "VeryLazy",
     config = function()
       require("nvim-surround").setup {}
+    end,
+  },
+
+  {
+    "roobert/surround-ui.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "kylechui/nvim-surround",
+      "folke/which-key.nvim",
+    },
+    config = function()
+      require("surround-ui").setup {
+        root_key = "S",
+      }
     end,
   },
 
@@ -248,18 +256,56 @@ return {
   },
 
   {
-    "junegunn/fzf",
-    build = "./install --bin",
+    "kosayoda/nvim-lightbulb",
+    event = "VeryLazy",
+    config = function()
+      require("nvim-lightbulb").setup {
+        autocmd = { enabled = true },
+        sign = { enabled = false },
+        virtual_text = { enabled = true },
+      }
+    end,
   },
 
   {
-    "ibhagwan/fzf-lua",
-    -- optional for icon support
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    "nvim-telescope/telescope-fzf-native.nvim",
+    event = "VeryLazy",
+    build = "make",
+  },
+
+  {
+    "cxwx/specs.nvim",
+    event = "VeryLazy",
     config = function()
-      -- calling `setup` is optional for customization
-      require("fzf-lua").setup {
+      require("specs").setup {
+        show_jumps = true,
+        min_jump = 10,
+        popup = {
+          delay_ms = 0,
+          inc_ms = 10,
+          blend = 10,
+          width = 20,
+          winhl = "PMenuSel",
+          fader = require("specs").pulse_fader,
+          resizer = require("specs").shrink_resizer,
+        },
+        click_to_move = true,
+        move_to_insert = true,
+        ignore_filetypes = {},
+        ignore_buftypes = {
+          nofile = true,
+        },
       }
+
+      require("specs").show_specs()
+    end,
+  },
+
+  {
+    "ggandor/leap.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("leap").create_default_mappings()
     end,
   },
 }
