@@ -62,6 +62,11 @@ map("n", "cn", ":NoNeckPain<CR>", { desc = "NoNeckPain toggle" })
 map("n", "tt", ":Vista!!<CR>", { desc = "Vista toggle tag window" })
 map("n", "<leader>i", ":Vista focus<CR>", { desc = "Vista focus tag window" })
 
+-- Leap
+map("n", "s", "<Plug>(leap-forward)")
+map("n", "S", "<Plug>(leap-backward)")
+map("n", "gs", "<Plug>(leap-from-window)")
+
 -- macro
 map("n", "<CR>", "@q", { desc = "Macro play @q" })
 
@@ -70,6 +75,10 @@ map("n", "tn", ":tabnew<CR>", { desc = "Tab create new" })
 map("n", "tx", ":tabclose<CR>", { desc = "Tab close" })
 map("n", "tl", ":tabnext<CR>", { desc = "Tab next" })
 map("n", "th", ":tabprev<CR>", { desc = "Tab prev" })
+
+-- Ctrl + P to previous window
+map("n", "<C-p>", "<C-w>p", { desc = "Jump to previous window" })
+map("t", "<C-p>", "<C-\\><C-o><C-w>p", { desc = "Jump to previous window" })
 
 -- terminals
 map("n", "<leader>v", function()
@@ -90,10 +99,6 @@ map("t", "<C-f>", function()
 end, { desc = "Terminal Close term in terminal mode" })
 
 map("t", "<ESC>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
-
--- Ctrl + P to previous window
-map("n", "<C-p>", "<C-w>p", { desc = "Jump to previous window" })
-map("t", "<C-p>", "<C-\\><C-o><C-w>p", { desc = "Jump to previous window" })
 
 -- RTWORKS
 map("n", "<leader>sm", function()
