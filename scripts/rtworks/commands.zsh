@@ -5,8 +5,10 @@ CONF_GENERAL="$HOME/rtworks/config.sh"
 RTWORKS_DIR="$HOME/rtworks"
 
 export PATH="$PATH:/opt/rtst/arm-none-eabi/bin"
+export PATH="$PATH:/opt/rtst/arm-none-eabi-13.2.0/bin"
 export PATH="$PATH:/opt/rtst/powerpc-unknown-elf/bin"
-export PATH="$PATH:/opt/rtst/powerpc-unknown-eabispe/bin"
+export PATH="$PATH:/opt/rtst/powerpc-unknown-elf-13.2.0/bin"
+export PATH="$PATH:/opt/rtst/riscv64-unknown-elf-13.2.0/bin"
 
 alias bsp=fn_bsp
 alias rtworksconf=fn_rtworksconf
