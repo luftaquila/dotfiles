@@ -136,11 +136,6 @@ return {
   },
 
   {
-    "easymotion/vim-easymotion",
-    event = "VeryLazy",
-  },
-
-  {
     "folke/ts-comments.nvim",
     event = "VeryLazy",
     opts = {},
@@ -279,11 +274,11 @@ return {
     config = function()
       require("specs").setup {
         show_jumps = true,
-        min_jump = 10,
+        min_jump = 3,
         popup = {
           delay_ms = 0,
           inc_ms = 10,
-          blend = 10,
+          blend = 30,
           width = 20,
           winhl = "PMenuSel",
           fader = require("specs").pulse_fader,
