@@ -25,6 +25,8 @@ alias re=fn_rtworks_remote_execute
 
 alias tt=fn_t32_launch
 
+alias gg="source $CONF_BSP;"'$TOOLCHAIN-gdb -x '"$HOME/dotfiles/scripts/rtworks/rtworks.gdb"
+
 alias qq="source $CONF_GENERAL;"'push-return $RELAY;'
 alias cons="source $CONF_BSP;"'tio $CONSOLE -b 115200'
 

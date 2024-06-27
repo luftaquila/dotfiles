@@ -286,4 +286,3 @@ eval "$(zoxide init zsh)"
 alias j=z
 MAGIC_ENTER_GIT_COMMAND='gst'
 MAGIC_ENTER_OTHER_COMMAND='ll'
-

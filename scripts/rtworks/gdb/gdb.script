@@ -1,5 +1,0 @@
-target extended-remote localhost:3333
-set output-radix 16
-add-symbol-file build.kernel/bootloader.elf
-add-symbol-file build.kernel/rtworks.elf
-add-symbol-file build.partition1/rtworks_partition.elf
