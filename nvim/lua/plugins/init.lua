@@ -306,4 +306,17 @@ return {
     "ggandor/leap.nvim",
     event = "VeryLazy",
   },
+
+  {
+    "rcarriga/nvim-dap-ui",
+    event = "VeryLazy",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      "nvim-neotest/nvim-nio",
+    },
+    config = function()
+      require "configs.debug"
+      require("dapui").setup()
+    end,
+  },
 }
