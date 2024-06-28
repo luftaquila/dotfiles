@@ -45,8 +45,6 @@ vim.o.modelines = 3
 
 -- highlights -----------------------------------------------------------------
 require "configs.highlights"
-vim.cmd "highlight Search ctermfg=white ctermbg=gray guifg=white guibg=gray"
-vim.cmd "highlight CurSearch ctermfg=black ctermbg=lightgray guifg=black guibg=lightgray"
 
 -- autocmds -------------------------------------------------------------------
 require "configs.autocmds"
