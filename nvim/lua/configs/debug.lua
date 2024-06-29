@@ -14,7 +14,7 @@ function os.capture(cmd, raw)
 end
 
 local toolchain = os.capture("source $HOME/rtworks/bsp.sh && echo $TOOLCHAIN", false)
-local home = os.getenv "HOME"
+local home = os.getenv "HOME" or ""
 
 dap.adapters.gdb = {
   type = "executable",
