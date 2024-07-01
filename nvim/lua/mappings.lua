@@ -2,7 +2,6 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 local term = require "nvchad.term"
-local telescope = require "telescope.builtin"
 
 -- utils
 local function opts_to_id(id)
@@ -32,6 +31,8 @@ end
 map("n", "<leader>lf", vim.diagnostic.open_float, { desc = "Diagnostics under cursor" })
 
 -- Telescope
+local telescope = require "telescope.builtin"
+
 map("n", "<leader>br", telescope.git_branches, { desc = "Telescope Git Branches" })
 map("n", "<leader>gs", telescope.git_status, { desc = "Telescope Git Status" })
 map("n", "<leader>gt", telescope.git_stash, { desc = "Telescope Git Stash" })
@@ -66,6 +67,30 @@ map("n", "<leader>i", ":Vista focus<CR>", { desc = "Vista focus tag window" })
 map("n", "s", "<Plug>(leap-forward)")
 map("n", "S", "<Plug>(leap-backward)")
 map("n", "gs", "<Plug>(leap-from-window)")
+
+-- Debug
+local dap = require "dap"
+
+map("n", "<leader>gg", require("dapui").toggle, { desc = "Debug open UI" })
+map("n", "g?", dap.status, { desc = "Debug DAP status" })
+
+map("n", "<F1>", dap.continue, { desc = "Debug continue" }) -- C
+map("n", "<F2>", dap.pause, { desc = "Debug pause" }) -- P
+
+map("n", "<F3>", dap.run_last, { desc = "Debug run last configuration" }) -- R
+map("n", "<F4>", dap.restart, { desc = "Debug restart current session" }) -- T
+
+map("n", "<F5>", dap.toggle_breakpoint, { desc = "Debug toggle breakpoint" }) -- B
+map("n", "<F6>", dap.clear_breakpoints, { desc = "Debug clear all breakpoints" }) -- W
+map("n", "<F7>", dap.run_to_cursor, { desc = "Debug run to the current cursor" }) -- H
+
+map("n", "<F8>", dap.step_over, { desc = "Debug step over (next)" }) -- N
+map("n", "<F9>", dap.step_into, { desc = "Debug step into (step)" }) -- S
+map("n", "<F10>", dap.step_out, { desc = "Debug step out (finish)" }) -- F
+
+map("n", "<F11>", function()
+  dap.repl.execute "target extended-remote localhost:3333"
+end, { desc = "Debug attach" }) -- A
 
 -- macro
 map("n", "<CR>", "@q", { desc = "Macro play @q" })
