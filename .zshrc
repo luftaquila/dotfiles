@@ -284,5 +284,5 @@ eval "$(zoxide init zsh)"
 # magic-enter
 #############################################################################
 alias j=z
-MAGIC_ENTER_GIT_COMMAND='gst'
+MAGIC_ENTER_GIT_COMMAND='ll && echo && gst'
 MAGIC_ENTER_OTHER_COMMAND='ll'
