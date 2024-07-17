@@ -14,7 +14,7 @@ return {
         "asm-lsp",
         "asmfmt",
         "bash-language-server",
-        "black",
+        "biome",
         "clang-format",
         "clangd",
         "cmake-language-server",
@@ -24,12 +24,14 @@ return {
         "lua-language-server",
         "marksman",
         "prettier",
-        "pyright",
+        "ruff",
+        "ruff-lsp",
         "rust-analyzer",
         "stylua",
         "taplo",
         "typescript-language-server",
-        "write-good",
+        "vale",
+        "vale_ls",
       },
     },
   },
@@ -99,18 +101,6 @@ return {
   {
     "wakatime/vim-wakatime",
     event = "VimEnter",
-  },
-
-  {
-    "mfussenegger/nvim-lint",
-    event = "VimEnter",
-    config = function()
-      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
-        callback = function()
-          require("lint").try_lint "write_good"
-        end,
-      })
-    end,
   },
 
   {

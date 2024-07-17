@@ -6,6 +6,7 @@ local lspconfig = require "lspconfig"
 local servers = {
   "asm_lsp",
   "bashls",
+  "biome",
   "clangd",
   "cmake",
   "cssls",
@@ -13,11 +14,11 @@ local servers = {
   "jsonls",
   "lua_ls",
   "marksman",
-  "pyright",
+  "ruff_lsp",
   "rust_analyzer",
   "taplo",
   "tsserver",
-  "korean_ls", -- npm i -g korean-ls
+  "vale_ls",
 }
 
 -- custom lsp servers
