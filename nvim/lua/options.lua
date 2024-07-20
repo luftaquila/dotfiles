@@ -1,6 +1,8 @@
 require "nvchad.options"
 
--- add yours here!
+vim.o.scrolloff = 5
+vim.o.modeline = true
+vim.o.modelines = 3
 
--- local o = vim.o
--- o.cursorlineopt ='both' -- to enable cursorline!
+vim.o.winfixwidth = true
+vim.o.winfixheight = true

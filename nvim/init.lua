@@ -38,11 +38,6 @@ vim.schedule(function()
   require "mappings"
 end)
 
--- options --------------------------------------------------------------------
-vim.o.scrolloff = 5
-vim.o.modeline = true
-vim.o.modelines = 3
-
 -- highlights -----------------------------------------------------------------
 require "configs.highlights"
 
