@@ -174,7 +174,6 @@ function fn_install_lang() {
   fn_cmd 'eval "$(~/.local/bin/mise activate zsh)"' ignore
   fn_cmd 'eval "$(~/.local/bin/mise activate bash)"' ignore
 
-
   echo "[INF] installing Python..."
   fn_cmd 'mise use -g python'
 

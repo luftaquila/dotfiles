@@ -246,12 +246,6 @@ eval "$(~/.local/bin/mise activate zsh)"
 
 
 #############################################################################
-# ctags
-#############################################################################
-alias pytags="ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./tags . $(python -c "import os, sys; print(' '.join('{}'.format(d) for d in sys.path if os.path.isdir(d)))")"
-
-
-#############################################################################
 # fzf
 #############################################################################
 export FZF_DEFAULT_COMMAND="fd --exclude={.git,.vscode,node_modules,target,debug} --type f"
@@ -262,7 +256,8 @@ export FZF_DEFAULT_COMMAND="fd --exclude={.git,.vscode,node_modules,target,debug
 #############################################################################
 alias ls='eza --color-scale --time-style long-iso'
 alias ll='eza --color-scale --time-style long-iso --long'
-alias la='eza --color-scale --time-style long-iso --group --long --all --total-size --git'
+alias la='eza --color-scale --time-style long-iso --group --long --all'
+alias lf='eza --color-scale --time-style long-iso --group --long --all --total-size'
 
 
 #############################################################################
