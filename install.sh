@@ -171,8 +171,18 @@ function fn_install_lang() {
   fn_cmd "curl https://mise.run | sh"
 
   echo "[INF] activating mise..."
-  fn_cmd 'eval "$(~/.local/bin/mise activate zsh)"' ignore
-  fn_cmd 'eval "$(~/.local/bin/mise activate bash)"' ignore
+
+  if ! [[ -x "$(command -v mise)" ]]; then
+    if [[ $SHELL == *zsh* ]]; then
+      fn_cmd 'eval "$(~/.local/bin/mise activate zsh)"'
+    elif [[ $SHELL == *bash* ]]; then
+      fn_cmd 'eval "$(~/.local/bin/mise activate bash)"'
+    else
+      echo "[ERR] $SHELL is not supported"
+    fi
+  else
+    echo "[INF] mise is already loaded. skipping..."
+  fi
 
   echo "[INF] installing Python..."
   fn_cmd 'mise use -g python'
@@ -196,12 +206,18 @@ function fn_install_lang() {
 
   echo "[INF] installing Rust Cargo crates..."
 
-  fn_cmd "cargo install ${packages_rust_common[*]}"
+  if [[ ${#packages_rust_common[@]} -ne 0 ]]; then
+    fn_cmd "cargo install ${packages_rust_common[*]}"
+  fi
 
   if [[ $platform == "linux" ]]; then
-    fn_cmd "cargo install ${packages_rust_linux[*]}"
+    if [[ ${#packages_rust_linux[@]} -ne 0 ]]; then
+      fn_cmd "cargo install ${packages_rust_linux[*]}"
+    fi
   elif [[ $platform == "macos" ]]; then
-    fn_cmd "cargo install ${packages_rust_macos[*]}"
+    if [[ ${#packages_rust_macos[@]} -ne 0 ]]; then
+      fn_cmd "cargo install ${packages_rust_macos[*]}"
+    fi
   fi
 }
 
@@ -399,11 +415,14 @@ if ! [[ "$auto_install" = true ]]; then
     done
   done
 
+  echo
   echo "[INF] please confirm the configurations:"
 
   for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
-    echo "  install ${stages[$i]}...${stages_confirm[$i]}"
+    echo -e "  ${stages[$i]}\033[20G${stages_confirm[$i]}"
   done
+
+  echo
   read -p "  Press ENTER to continue..."
 fi
 
