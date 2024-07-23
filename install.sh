@@ -19,16 +19,26 @@ package_cmd_update=false
 ###############################################################################
 #  stage definitions
 ###############################################################################
-stages=( "system packages" "tmux" "Rust" "NeoVim" "Oh My Zsh" )
+stages=( "system packages" "tmux" "Languages" "NeoVim" "Oh My Zsh" )
 stages_function=(
   fn_install_system_packages
   fn_install_tmux
-  fn_install_rust
+  fn_install_lang
   fn_install_neovim
   fn_install_ohmyzsh
 )
 stages_confirm=( true true true true true )
 
+###############################################################################
+#  package definitions
+###############################################################################
+packages_common=( "bat" "curl" "fzf" "htop" "ripgrep" "thefuck" "universal-ctags" "wget")
+packages_linux=( "build-essential" "cmake" "fd-find" "libncurses-dev")
+packages_macos=( "bottom" "code-minimap" "dust" "eza" "fd" "git-delta" "superfile" "zoxide")
+
+packages_rust_common=( )
+packages_rust_linux=( "bottom" "code-minimap" "eza" "du-dust" "git-delta" "zoxide" )
+packages_rust_macos=( )
 
 ################################################################################
 #  detect OS
@@ -101,19 +111,11 @@ function fn_update() {
 function fn_install_system_packages() {
   echo "[INF] installing system packages..."
 
-  common_packages=(
-    "bat" "curl" "fzf" "htop" "ripgrep" "thefuck" "universal-ctags" "wget"
-  )
-  linux_packages=(
-    "build-essential" "cmake" "fd-find" "libncurses-dev" "python3" "python3-pip"
-  )
-  macos_packages=( "fd" "superfile" )
-
   fn_update
-  fn_cmd "$package_cmd install ${common_packages[*]}"
+  fn_cmd "$package_cmd install ${packages_common[*]}"
 
   if [[ $platform == "linux" ]]; then
-    fn_cmd "$package_cmd install ${linux_packages[*]}"
+    fn_cmd "$package_cmd install ${packages_linux[*]}"
 
     echo "[INF] creating executable symbolic links..."
 
@@ -127,7 +129,7 @@ function fn_install_system_packages() {
       fn_cmd "ln -s $(which batcat) $HOME/.local/bin/bat"
     fi
   elif [[ $platform == "macos" ]]; then
-    fn_cmd "$package_cmd install ${macos_packages[*]}"
+    fn_cmd "$package_cmd install ${packages_macos[*]}"
   fi
 }
 
@@ -164,10 +166,22 @@ function fn_install_tmux() {
   fn_cmd "tmux kill-server"
 }
 
-function fn_install_rust() {
-  echo "[INF] installing Rust..."
+function fn_install_lang() {
+  echo "[INF] installing mise..."
+  fn_cmd "curl https://mise.run | sh"
 
-  rust_packages=( "bottom" "code-minimap" "eza" "du-dust" "git-delta" "zoxide" )
+  echo "[INF] activating mise..."
+  fn_cmd 'eval "$(~/.local/bin/mise activate zsh)"' ignore
+  fn_cmd 'eval "$(~/.local/bin/mise activate bash)"' ignore
+
+
+  echo "[INF] installing Python..."
+  fn_cmd 'mise use -g python'
+
+  echo "[INF] installing Node.js..."
+  fn_cmd 'mise use -g node'
+
+  echo "[INF] installing Rust..."
 
   if ! [[ -x "$(command -v rustc)" ]]; then
     if [[ "$auto_confirm" = true ]]; then
@@ -183,7 +197,13 @@ function fn_install_rust() {
 
   echo "[INF] installing Rust Cargo crates..."
 
-  fn_cmd "cargo install ${rust_packages[*]}"
+  fn_cmd "cargo install ${packages_rust_common[*]}"
+
+  if [[ $platform == "linux" ]]; then
+    fn_cmd "cargo install ${packages_rust_linux[*]}"
+  elif [[ $platform == "macos" ]]; then
+    fn_cmd "cargo install ${packages_rust_macos[*]}"
+  fi
 }
 
 function fn_install_neovim() {
@@ -197,11 +217,10 @@ function fn_install_neovim() {
       fn_cmd "wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
       fn_cmd "mv nvim.appimage $HOME/.local/bin/nvim && chmod 744 $HOME/.local/bin/nvim"
       fn_cmd 'PATH="$HOME/.local/bin:$PATH"'
-      fn_cmd "pip3 install pynvim --break-system-packages"
     elif [[ $platform == "macos" ]]; then
       fn_cmd "$package_cmd install neovim"
-      fn_cmd "pip3 install pynvim"
     fi
+    fn_cmd "pip install pynvim"
   else
     echo "[INF] NeoVim is already installed. skipping..."
   fi
