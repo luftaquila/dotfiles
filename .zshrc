@@ -264,7 +264,7 @@ export FZF_DEFAULT_COMMAND="fd --exclude={.git,.vscode,node_modules,target,debug
 #############################################################################
 alias ls='eza --color-scale --time-style long-iso'
 alias ll='eza --color-scale --time-style long-iso --long'
-alias la='eza --color-scale --time-style long-iso --long --all'
+alias la='eza --color-scale --time-style long-iso --group --long --all --total-size --git'
 
 
 #############################################################################
