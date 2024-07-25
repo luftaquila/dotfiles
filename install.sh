@@ -20,6 +20,11 @@ package_cmd_update=false
 #  stage definitions
 ###############################################################################
 stages=( "system packages" "tmux" "Languages" "NeoVim" "Oh My Zsh" )
+stages_confirm=( true true true true true )
+
+stages_language=( "Python" "Node.js" "Rust" )
+stages_language_confirm=( true true true )
+
 stages_function=(
   fn_install_system_packages
   fn_install_tmux
@@ -27,7 +32,6 @@ stages_function=(
   fn_install_neovim
   fn_install_ohmyzsh
 )
-stages_confirm=( true true true true true )
 
 ###############################################################################
 #  package definitions
@@ -184,41 +188,51 @@ function fn_install_lang() {
     echo "[INF] mise is already loaded. skipping..."
   fi
 
-  echo "[INF] installing Python..."
-  fn_cmd 'mise use -g python'
+  for i in `seq 0 $(( ${#stages_language[@]} - 1 ))`; do
+    if [[ ${stages_language_confirm[$i]} == true ]]; then
+      if [[ ${stages_language[$i]} == "Python" ]]; then
+        echo "[INF] installing Python..."
+        fn_cmd 'mise use -g python'
+      fi
 
-  echo "[INF] installing Node.js..."
-  fn_cmd 'mise use -g node'
+      if [[ ${stages_language[$i]} == "Node.js" ]]; then
+        echo "[INF] installing Node.js..."
+        fn_cmd 'mise use -g node'
+      fi
 
-  echo "[INF] installing Rust..."
+      if [[ ${stages_language[$i]} == "Rust" ]]; then
+        echo "[INF] installing Rust..."
 
-  if ! [[ -x "$(command -v rustc)" ]]; then
-    if [[ "$auto_confirm" = true ]]; then
-      fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y"
-    else
-      fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh"
+        if ! [[ -x "$(command -v rustc)" ]]; then
+          if [[ "$auto_confirm" = true ]]; then
+            fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y"
+          else
+            fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh"
+          fi
+
+          fn_cmd "source $HOME/.cargo/env"
+        else
+          echo "[INF] Rust is already installed. skipping..."
+        fi
+
+        echo "[INF] installing Rust Cargo crates..."
+
+        if [[ ${#packages_rust_common[@]} -ne 0 ]]; then
+          fn_cmd "cargo install ${packages_rust_common[*]}"
+        fi
+
+        if [[ $platform == "linux" ]]; then
+          if [[ ${#packages_rust_linux[@]} -ne 0 ]]; then
+            fn_cmd "cargo install ${packages_rust_linux[*]}"
+          fi
+        elif [[ $platform == "macos" ]]; then
+          if [[ ${#packages_rust_macos[@]} -ne 0 ]]; then
+            fn_cmd "cargo install ${packages_rust_macos[*]}"
+          fi
+        fi
+      fi
     fi
-
-    fn_cmd "source $HOME/.cargo/env"
-  else
-    echo "[INF] Rust is already installed. skipping..."
-  fi
-
-  echo "[INF] installing Rust Cargo crates..."
-
-  if [[ ${#packages_rust_common[@]} -ne 0 ]]; then
-    fn_cmd "cargo install ${packages_rust_common[*]}"
-  fi
-
-  if [[ $platform == "linux" ]]; then
-    if [[ ${#packages_rust_linux[@]} -ne 0 ]]; then
-      fn_cmd "cargo install ${packages_rust_linux[*]}"
-    fi
-  elif [[ $platform == "macos" ]]; then
-    if [[ ${#packages_rust_macos[@]} -ne 0 ]]; then
-      fn_cmd "cargo install ${packages_rust_macos[*]}"
-    fi
-  fi
+  done
 }
 
 function fn_install_neovim() {
@@ -403,12 +417,35 @@ if ! [[ "$auto_install" = true ]]; then
     while true; do
       input=''
       read -p "  install ${stages[$i]}? (Y/n): " input
+
       if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
         stages_confirm[$i]=true
+
+        # configure languages support
+        if [[ ${stages[$i]} == "Languages" ]]; then
+          for i in `seq 0 $(( ${#stages_language[@]} - 1 ))`; do
+            while true; do
+              input=''
+              read -p "    install ${stages_language[$i]}? (Y/n): " input
+
+              if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
+                stages_language_confirm[$i]=true
+                break
+              elif [ $input == 'n' ] || [ $input == 'N' ]; then
+                stages_language_confirm[$i]=false
+                break
+              else
+                echo "    invalid input"
+              fi
+            done
+          done
+        fi
         break
+
       elif [ $input == 'n' ] || [ $input == 'N' ]; then
         stages_confirm[$i]=false
         break
+
       else
         echo "    invalid input"
       fi
@@ -420,6 +457,12 @@ if ! [[ "$auto_install" = true ]]; then
 
   for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
     echo -e "  ${stages[$i]}\033[20G${stages_confirm[$i]}"
+
+    if [[ ${stages[$i]} == "Languages" && ${stages_confirm[$i]} == true ]]; then
+      for i in `seq 0 $(( ${#stages_language[@]} - 1 ))`; do
+        echo -e "    ${stages_language[$i]}\033[20G${stages_language_confirm[$i]}"
+      done
+    fi
   done
 
   echo
