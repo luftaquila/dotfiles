@@ -112,6 +112,14 @@ return {
   },
 
   {
+    "lambdalisue/vim-suda",
+    event = "VimEnter",
+    config = function()
+      vim.g.suda_smart_edit = 1
+    end
+  },
+
+  {
     "MysticalDevil/inlay-hints.nvim",
     event = "LspAttach",
     dependencies = { "neovim/nvim-lspconfig" },
