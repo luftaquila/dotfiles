@@ -172,11 +172,16 @@ function fn_install_tmux() {
 
 function fn_install_lang() {
   echo "[INF] installing mise..."
-  fn_cmd "curl https://mise.run | sh"
-
-  echo "[INF] activating mise..."
 
   if ! [[ -x "$(command -v mise)" ]]; then
+    if ! [ -f "$HOME/.local/bin/mise" ]; then
+      fn_cmd "curl https://mise.run | sh"
+    else
+      echo "[INF] mise is already installed, but not activated yet"
+    fi
+
+    echo "[INF] activating mise..."
+
     if [[ $SHELL == *zsh* ]]; then
       fn_cmd 'eval "$(~/.local/bin/mise activate zsh)"'
     elif [[ $SHELL == *bash* ]]; then
@@ -185,7 +190,7 @@ function fn_install_lang() {
       echo "[ERR] $SHELL is not supported"
     fi
   else
-    echo "[INF] mise is already loaded. skipping..."
+    echo "[INF] mise is already installed. skipping..."
   fi
 
   for i in `seq 0 $(( ${#stages_language[@]} - 1 ))`; do
@@ -460,7 +465,7 @@ if ! [[ "$auto_install" = true ]]; then
 
     if [[ ${stages[$i]} == "Languages" && ${stages_confirm[$i]} == true ]]; then
       for i in `seq 0 $(( ${#stages_language[@]} - 1 ))`; do
-        echo -e "    ${stages_language[$i]}\033[20G${stages_language_confirm[$i]}"
+        echo -e "    ${stages_language[$i]}\033[22G${stages_language_confirm[$i]}"
       done
     fi
   done
