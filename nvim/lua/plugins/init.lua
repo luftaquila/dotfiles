@@ -168,7 +168,7 @@ return {
     event = "VeryLazy",
     config = function()
       require("no-neck-pain").setup {
-        width = 140,
+        width = 150,
       }
     end,
   },
