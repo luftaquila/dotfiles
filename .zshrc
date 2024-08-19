@@ -176,7 +176,7 @@ alias grs='git restore --staged'
 alias gsh='git stash'
 alias gsp='git stash pop'
 alias gsd='git stash drop'
-alias gsl='git stash list'
+alias gsl='git stash list -p'
 alias gss='git stash show -p'
 
 alias gst='git status'
