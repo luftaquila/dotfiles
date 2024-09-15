@@ -9,31 +9,6 @@ return {
 
   {
     "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
-        "asm-lsp",
-        "asmfmt",
-        "bash-language-server",
-        "biome",
-        "clang-format",
-        "clangd",
-        "cmake-language-server",
-        "css-lsp",
-        "html-lsp",
-        "json-lsp",
-        "lua-language-server",
-        "marksman",
-        "prettier",
-        "ruff",
-        "ruff-lsp",
-        "rust-analyzer",
-        "stylua",
-        "taplo",
-        "typescript-language-server",
-        "vale",
-        "vale_ls",
-      },
-    },
   },
 
   {
