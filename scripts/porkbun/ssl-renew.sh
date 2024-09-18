@@ -6,7 +6,6 @@ source ./porkbun-secret.sh
 # get keys from API
 res=`curl -X POST -H "Content-Type: application/json" -d "{\"apikey\": \"$APIKEY\", \"secretapikey\": \"$SECRET\"}" https://porkbun.com/api/json/v3/ssl/retrieve/luftaquila.io`
 
-jq -r '.intermediatecertificate' <<< "$res" > intermediate.cert.pem
 jq -r '.certificatechain' <<< "$res" > domain.cert.pem
 jq -r '.privatekey' <<< "$res" > private.key.pem
 jq -r '.publickey' <<< "$res" > public.key.pem
