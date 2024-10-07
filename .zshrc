@@ -196,6 +196,12 @@ function fn_git_diff_open() {(
       return -1
     fi
 
+    local root=($(git rev-parse --show-toplevel))
+
+    for i in "${!diff[@]}"; do
+      diff[$i]="${root}${diff[$i]}"
+    done
+
     nvim ${diff[@]}
   else
     local diff=($(git diff --merge-base $BRANCH --name-only))
@@ -204,6 +210,12 @@ function fn_git_diff_open() {(
       >&2 echo "no diff found!"
       return -1
     fi
+
+    local root=($(git rev-parse --show-toplevel))
+
+    for i in "${!diff[@]}"; do
+      diff[$i]="${root}${diff[$i]}"
+    done
 
     nvim "+Gitsigns change_base $BRANCH true" ${diff[@]}
   fi
