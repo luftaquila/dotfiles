@@ -198,8 +198,9 @@ function fn_git_diff_open() {(
 
     local root=($(git rev-parse --show-toplevel))
 
-    for i in "${!diff[@]}"; do
-      diff[$i]="${root}${diff[$i]}"
+    for ((i = 1; i <= ${#diff[@]}; i++)); do
+      diff[$i]="${root}/${diff[$i]}"
+      echo $diff[$i]
     done
 
     nvim ${diff[@]}
@@ -213,8 +214,8 @@ function fn_git_diff_open() {(
 
     local root=($(git rev-parse --show-toplevel))
 
-    for i in "${!diff[@]}"; do
-      diff[$i]="${root}${diff[$i]}"
+    for ((i = 1; i <= ${#diff[@]}; i++)); do
+      diff[$i]="${root}/${diff[$i]}"
     done
 
     nvim "+Gitsigns change_base $BRANCH true" ${diff[@]}
