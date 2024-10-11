@@ -17,23 +17,12 @@ local servers = {
   "ruff_lsp",
   "rust_analyzer",
   "taplo",
-  "ts_ls",
   "vale_ls",
+  "vtsls",
 }
 
 -- custom lsp servers
 local configs = require "lspconfig.configs"
-
-configs.korean_ls = {
-  default_config = {
-    cmd = { "korean-ls", "--stdio" },
-    filetypes = { "", "text" },
-    root_dir = function()
-      return vim.loop.cwd()
-    end,
-    settings = {},
-  },
-}
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
