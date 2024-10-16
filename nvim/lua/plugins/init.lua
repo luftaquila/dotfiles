@@ -72,7 +72,7 @@ return {
       require("nvim-cursorline").setup {
         cursorline = {
           timeout = 0,
-        }
+        },
       }
     end,
   },
@@ -325,6 +325,26 @@ return {
           inc_rename = false, -- enables an input dialog for inc-rename.nvim
           lsp_doc_border = false, -- add a border to hover docs and signature help
         },
+      }
+    end,
+  },
+
+  {
+    "zbirenbaum/copilot.lua",
+    event = "InsertEnter",
+    lazy = false,
+    cmd = "Copilot",
+    config = function()
+      require("copilot").setup {
+        suggestion = {
+          auto_trigger = true,
+          keymap = {
+            accept = "<Right>",
+            next = "<Down>",
+            prev = "<Up>",
+            dismiss = "<Left>",
+          }
+        }
       }
     end,
   },
