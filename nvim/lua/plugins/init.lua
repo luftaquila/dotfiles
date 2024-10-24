@@ -308,6 +308,13 @@ return {
       "rcarriga/nvim-notify",
     },
     config = function()
+      require("notify").setup {
+        fps = 3,
+        render = "default",
+        stages = "static",
+        timeout = 3000,
+      }
+
       require("noice").setup {
         lsp = {
           -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -343,9 +350,18 @@ return {
             next = "<Down>",
             prev = "<Up>",
             dismiss = "<Left>",
-          }
-        }
+          },
+        },
       }
     end,
   },
+
+  -- {
+  --   "rachartier/tiny-inline-diagnostic.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("tiny-inline-diagnostic").setup()
+  --     vim.diagnostic.config { virtual_text = false }
+  --   end,
+  -- },
 }
