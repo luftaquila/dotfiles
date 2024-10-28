@@ -244,40 +244,6 @@ return {
     build = "make",
   },
 
-  -- {
-  --   "cxwx/specs.nvim",
-  --   event = "VeryLazy",
-  --   config = function()
-  --     require("specs").setup {
-  --       show_jumps = true,
-  --       min_jump = 2,
-  --       popup = {
-  --         delay_ms = 0,
-  --         inc_ms = 8,
-  --         blend = 50,
-  --         width = 8,
-  --         winhl = "PMenuSel",
-  --         fader = require("specs").exp_fader,
-  --         resizer = function(width, ccol, cnt)
-  --           if cnt <= width then
-  --             return { width + cnt + 1, ccol - (width + cnt) / 2 }
-  --           else
-  --             return nil
-  --           end
-  --         end,
-  --       },
-  --       click_to_move = true,
-  --       move_to_insert = true,
-  --       ignore_filetypes = {},
-  --       ignore_buftypes = {
-  --         nofile = true,
-  --       },
-  --     }
-  --
-  --     require("specs").show_specs()
-  --   end,
-  -- },
-
   {
     "ggandor/leap.nvim",
     event = "VeryLazy",
@@ -355,13 +321,4 @@ return {
       }
     end,
   },
-
-  -- {
-  --   "rachartier/tiny-inline-diagnostic.nvim",
-  --   event = "VeryLazy",
-  --   config = function()
-  --     require("tiny-inline-diagnostic").setup()
-  --     vim.diagnostic.config { virtual_text = false }
-  --   end,
-  -- },
 }
