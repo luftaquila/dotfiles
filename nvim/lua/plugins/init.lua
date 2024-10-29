@@ -308,6 +308,23 @@ return {
     lazy = false,
     cmd = "Copilot",
     config = function()
+      -- exclude copilot in certain paths
+      local augroup = vim.api.nvim_create_augroup("copilot-disable-patterns", { clear = true })
+
+      for _, pattern in ipairs { "*/*rtworks*/*" } do
+        vim.api.nvim_create_autocmd("LspAttach", {
+          group = augroup,
+          pattern = pattern,
+          callback = vim.schedule_wrap(function(args)
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+            if client.name == "copilot" then
+              vim.cmd "Copilot detach"
+            end
+          end),
+        })
+      end
+
       require("copilot").setup {
         suggestion = {
           auto_trigger = true,
