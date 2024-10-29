@@ -321,4 +321,14 @@ return {
       }
     end,
   },
+
+  {
+    "luftaquila/nibbler",
+    event = "VeryLazy",
+    config = function()
+      require("nibbler").setup {
+        display_enabled = true,
+      }
+    end,
+  },
 }
