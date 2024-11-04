@@ -36,11 +36,11 @@ stages_function=(
 ###############################################################################
 #  package definitions
 ###############################################################################
-packages_common=( "bat" "curl" "fzf" "htop" "ripgrep" "thefuck" "universal-ctags" "wget")
+packages_common=( "bat" "curl" "fzf" "htop" "ripgrep" "universal-ctags" "wget")
 packages_linux=( "build-essential" "cmake" "fd-find" "libncurses-dev")
 packages_macos=( "bottom" "code-minimap" "dust" "eza" "fd" "git-delta" "superfile" "zoxide")
 
-packages_rust_common=( )
+packages_rust_common=( "pay-respects" )
 packages_rust_linux=( "bottom" "code-minimap" "eza" "du-dust" "git-delta" "zoxide" )
 packages_rust_macos=( )
 

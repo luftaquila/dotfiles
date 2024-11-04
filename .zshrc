@@ -274,10 +274,9 @@ alias lf='eza --color-scale --time-style long-iso --group --long --all --total-s
 
 
 #############################################################################
-# thefuck https://github.com/nvbn/thefuck
+# pay-respects https://github.com/iffse/pay-respects
 #############################################################################
-eval $(thefuck --alias)
-alias fk='fuck'
+alias fk="$(pay-respects zsh)"
 
 
 #############################################################################
