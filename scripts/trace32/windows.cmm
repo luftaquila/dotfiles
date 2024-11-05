@@ -1,31 +1,34 @@
-// t32 Wed Apr 17 19:55:24 2024
+// t32 Thu Oct 31 22:59:33 2024
 
 B::
 
 TOOLBAR   ON
 STATUSBAR ON
-FramePOS 120.0,97.667,,,Maximized
+FramePOS 320.0,0.0,,,Maximized
 WinPAGE.RESet
 
 WinPAGE.Create P000
 WinCLEAR
 
-WinPOS 97.375 25.467 100. 25. 0. 0. W004
+WinPOS 98.75 56.467 100. 25. 0. 0. W004
 PER
 
-WinPOS 53.25 0.0 117. 8. 26. 1. W000
-WinTABS 13. 0. 0. 0. 0. 0. 0. 0. 0. 63.
-Break.List
-
-WinPOS 0.0 6.8667 51. 32. 0. 0. W001
+WinPOS 98.75 20.667 51. 32. 0. 0. W001
 Register.view
 
-WinPOS 0.0 0.0 52. 2. 0. 0. W003
-CD.PEDIT /Users/luftaquila/dotfiles/scripts/trace32/t32.cmm
+WinPOS 134.63 0.0 118. 15. 26. 1. W000
+WinTABS 13. 0. 0. 0. 0. 0. 0. 0. 0. 64.
+Break.List
 
-WinPOS 53.25 14.333 117. 22. 16. 1. W002
+WinPOS 0.0 22.733 94. 55. 16. 1. W002
 WinTABS 10. 10. 25.
 List.auto
+
+WinPOS 152.13 20.6 101. 30. 22. 1. W006
+Data.dump (7fffff0) /DIALOG
+
+WinPOS 0.0 0.0 96. 18. 0. 0. W003
+CD.PEDIT /Users/luftaquila/dotfiles/scripts/trace32/t32.cmm
 
 WinPAGE.select P000
 

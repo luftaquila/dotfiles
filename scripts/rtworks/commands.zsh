@@ -41,6 +41,7 @@ function fn_bsp() {(
   source $CONF_BSP;
   cd "$RTWORKS_DIR/builder";
   ./init.py -b $BSP
+  fn_patch_autostart_delay 1;
 )}
 autoload fn_bsp
 
@@ -60,7 +61,6 @@ function fn_rtworks_build() {(
   set -e;
 
   source $CONF_GENERAL;
-  fn_patch_autostart_delay $AUTOSTART_DELAY;
 
   while [[ $# -gt 0 ]]; do
     case $1 in
@@ -77,7 +77,7 @@ function fn_rtworks_build() {(
   done
 
   cd "$RTWORKS_DIR/builder";
-  ./build.py -adg$RTWORKS_OPTION;
+  ./build.py -ad$RTWORKS_OPTION;
 
   # transfer elf objects to remote for t32 debugging
   fn_transfer_t32_objects $T32_OBJ_DEST;
