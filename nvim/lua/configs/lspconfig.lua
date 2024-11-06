@@ -14,7 +14,7 @@ local servers = {
   "jsonls",
   "lua_ls",
   "marksman",
-  "ruff_lsp",
+  "ruff",
   "rust_analyzer",
   "taplo",
   "vale_ls",
