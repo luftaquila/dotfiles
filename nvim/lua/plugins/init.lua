@@ -340,7 +340,7 @@ return {
   },
 
   {
-    "luftaquila/nibbler",
+    "Skosulor/nibbler",
     event = "VeryLazy",
     config = function()
       require("nibbler").setup {
