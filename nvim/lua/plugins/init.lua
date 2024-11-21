@@ -348,4 +348,21 @@ return {
       }
     end,
   },
+
+  {
+    "folke/todo-comments.nvim",
+    event = "VeryLazy",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("todo-comments").setup {}
+    end
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = "VeryLazy",
+    config = function()
+      require("treesitter-context").setup {}
+    end,
+  }
 }
