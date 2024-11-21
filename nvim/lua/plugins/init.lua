@@ -198,33 +198,15 @@ return {
   },
 
   {
-    "xolox/vim-session",
+    "folke/persistence.nvim",
     event = "VeryLazy",
-    dependencies = {
-      "xolox/vim-misc",
-    },
     config = function()
-      vim.opt.sessionoptions:remove "buffers"
-      vim.g.session_autosave = "yes"
-      vim.g.session_autoload = "no"
-      vim.g.session_autosave_periodic = 1
-      vim.g.session_autosave_silent = 1
-      vim.g.session_default_overwrite = 1
-      vim.g.session_command_aliases = 1
-
-      vim.api.nvim_create_user_command("O", "OpenSession default", {})
-
-      vim.api.nvim_create_user_command("SS", function(opts)
-        vim.cmd("SaveSession " .. opts.args)
-      end, { nargs = 1 })
-
-      vim.api.nvim_create_user_command("OS", function(opts)
-        vim.cmd("OpenSession " .. opts.args)
-      end, { nargs = 1 })
-
-      vim.api.nvim_create_user_command("DS", function(opts)
-        vim.cmd("DeleteSession " .. opts.args)
-      end, { nargs = 1 })
+      local persistence = require "persistence"
+      persistence.setup {}
+      vim.keymap.set("n", "<leader>qs", persistence.load, { desc = "Load session for the current directory" })
+      vim.keymap.set("n", "<leader>qS", persistence.select, { desc = "Load a selected session" })
+      vim.keymap.set("n", "<leader>ql", persistence.load, { desc = "Load last session" })
+      vim.keymap.set("n", "<leader>qd", persistence.stop, { desc = "Do not save session on exit" })
     end,
   },
 
@@ -355,7 +337,7 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       require("todo-comments").setup {}
-    end
+    end,
   },
 
   {
@@ -364,5 +346,5 @@ return {
     config = function()
       require("treesitter-context").setup {}
     end,
-  }
+  },
 }
