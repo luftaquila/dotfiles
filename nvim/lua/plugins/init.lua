@@ -129,20 +129,6 @@ return {
   },
 
   {
-    "roobert/surround-ui.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      "kylechui/nvim-surround",
-      "folke/which-key.nvim",
-    },
-    config = function()
-      require("surround-ui").setup {
-        root_key = "S",
-      }
-    end,
-  },
-
-  {
     "shortcuts/no-neck-pain.nvim",
     event = "VeryLazy",
     config = function()
@@ -152,15 +138,6 @@ return {
     end,
   },
 
-  {
-    "mg979/vim-visual-multi",
-    event = "VeryLazy",
-    init = function()
-      vim.g.VM_maps = {
-        ["Find Under"] = "<C-g>",
-      }
-    end,
-  },
 
   {
     "liuchengxu/vista.vim",
@@ -346,5 +323,17 @@ return {
     config = function()
       require("treesitter-context").setup {}
     end,
+  },
+
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("lspsaga").setup {}
+    end,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
   },
 }
