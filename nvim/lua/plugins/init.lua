@@ -138,7 +138,6 @@ return {
     end,
   },
 
-
   {
     "liuchengxu/vista.vim",
     event = "VeryLazy",
@@ -335,5 +334,10 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons",
     },
+  },
+
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    event = "VeryLazy",
   },
 }
