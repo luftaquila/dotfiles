@@ -354,7 +354,7 @@ fi
 echo "[INF] looking for dotfiles..."
 
 # current directory is not $HOME/dotfiles
-if ! `git remote -v | grep -q 'git@github.com:luftaquila/dotfiles'`; then
+if ! `git remote -v | grep -q 'luftaquila/dotfiles'`; then
 
   # if exist
   if [[ -d "$HOME/dotfiles" ]]; then
