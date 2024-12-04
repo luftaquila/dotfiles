@@ -105,7 +105,10 @@ function fn_rtworks_misra() {(
 
   if   [[ "$TARGET" == "p" ]]; then TARGET="partition";
   elif [[ "$TARGET" == "k" ]]; then TARGET="kernel";
+  else echo "target not specified (p/k)"; exit 1;
   fi
+
+  echo "Target: $TARGET / $BSP"
 
   cd "$RTWORKS_DIR/$TARGET/build";
   cmake -DBSP=$BSP -DUSE_MISRA_CHECKER=1 ..;
