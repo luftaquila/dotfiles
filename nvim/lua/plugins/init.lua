@@ -216,7 +216,46 @@ return {
     },
     config = function()
       require "configs.debug"
-      require("dapui").setup()
+      require("dapui").setup {
+        layouts = {
+          {
+            elements = {
+              {
+                id = "scopes",
+                size = 0.40,
+              },
+              {
+                id = "breakpoints",
+                size = 0.20,
+              },
+              {
+                id = "stacks",
+                size = 0.20,
+              },
+              {
+                id = "watches",
+                size = 0.20,
+              },
+            },
+            position = "left",
+            size = 40,
+          },
+          {
+            elements = {
+              {
+                id = "repl",
+                size = 1,
+              },
+              -- {
+              --   id = "console",
+              --   size = 0.5,
+              -- },
+            },
+            position = "bottom",
+            size = 20,
+          },
+        },
+      }
     end,
   },
 

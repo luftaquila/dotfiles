@@ -1,6 +1,9 @@
 # dotfile backup directory
 backups/
 
+# gdb launch script
+launch.gdb
+
 # vim swap files
 *.swp
 

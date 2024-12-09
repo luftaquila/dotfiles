@@ -49,6 +49,8 @@ require "configs.abbreviations"
 
 -- filetypes ------------------------------------------------------------------
 local utils = require "configs.utils"
+utils.set_filetype("*.S", "asm")
+utils.set_filetype("*.s", "asm")
 utils.set_filetype("*.cmm", "t32")
 
 -- gitsigns
