@@ -265,6 +265,12 @@ function fn_install_neovim() {
     fn_cmd "mkdir -p $HOME/.config"
     fn_cmd "ln -s $HOME/dotfiles/nvim $HOME/.config/nvim"
   fi
+
+  echo "[INF] installing Vim..."
+
+  fn_cmd "git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim"
+  fn_cmd "ln -s $HOME/dotfiles/.vimrc $HOME/.vimrc"
+  fn_cmd "vim -Es -u $HOME/.vimrc +VundleInstall +qall" ignore
 }
 
 function fn_install_ohmyzsh() {
