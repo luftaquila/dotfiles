@@ -4,12 +4,6 @@ CONF_BSP="$HOME/rtworks/bsp.sh"
 CONF_GENERAL="$HOME/rtworks/config.sh"
 RTWORKS_DIR="$HOME/rtworks"
 
-export PATH="$PATH:/opt/rtst/arm-none-eabi/bin"
-export PATH="$PATH:/opt/rtst/arm-none-eabi-13.2.0/bin"
-export PATH="$PATH:/opt/rtst/powerpc-unknown-elf/bin"
-export PATH="$PATH:/opt/rtst/powerpc-unknown-elf-13.2.0/bin"
-export PATH="$PATH:/opt/rtst/riscv64-unknown-elf-13.2.0/bin"
-
 alias bsp=fn_bsp
 alias rtworksconf=fn_rtworksconf
 
@@ -24,8 +18,6 @@ alias rr=fn_rtworks_remote_run
 alias re=fn_rtworks_remote_execute
 
 alias tt=fn_t32_launch
-
-alias gg="source $CONF_BSP;"'$TOOLCHAIN-gdb -x '"$HOME/dotfiles/scripts/rtworks/rtworks.gdb"
 
 alias qq="source $CONF_GENERAL;"'push-return $RELAY;'
 alias cons="source $CONF_BSP;"'tio $CONSOLE -b 115200'
