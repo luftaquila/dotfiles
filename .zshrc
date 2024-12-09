@@ -280,13 +280,7 @@ alias lf='eza --color-scale --time-style long-iso --group --long --all --total-s
 
 
 #############################################################################
-# pay-respects https://github.com/iffse/pay-respects
-#############################################################################
-alias fk="$(pay-respects zsh)"
-
-
-#############################################################################
-# zoxida https://github.com/ajeetdsouza/zoxidee
+# zoxide https://github.com/ajeetdsouza/zoxidee
 #############################################################################
 eval "$(zoxide init zsh)"
 
