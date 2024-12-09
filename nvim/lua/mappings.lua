@@ -12,21 +12,6 @@ local function opts_to_id(id)
   end
 end
 
-local function terminal_launch(mode, cmd, id, size)
-  local ch
-
-  if id then
-    term.toggle { pos = mode, size = size and size or 0.25, id = id }
-    ch = vim.b[opts_to_id(id).buf].terminal_job_id
-  else
-    term.new { pos = mode, size = size and size or 0.25 }
-    ch = vim.b[vim.api.nvim_get_current_buf()].terminal_job_id
-  end
-
-  -- note: send cmd to toggled channel is not working
-  vim.api.nvim_chan_send(ch, cmd .. "\n")
-end
-
 -- LSP
 map("n", "<leader>lf", vim.diagnostic.open_float, { desc = "Diagnostics under cursor" })
 
@@ -126,37 +111,42 @@ end, { desc = "Terminal Close term in terminal mode" })
 
 map("t", "<ESC>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
 
+map("n", "<leader>gr", function()
+  local cmd = "qemu-system-i386 -kernel ~/rtworks/kernel/build/rtworks.elf -gdb tcp:localhost:3333 -S -nographic -m 4G"
+  term.runner { pos = "bo vsp", id = "gdb", cmd = cmd, kill = "\x01x" }
+end, { desc = "Terminal GDB restart" })
+
 -- RTWORKS
 map("n", "<leader>sm", function()
-  terminal_launch("bo vsp", "cons", "serial")
+  term.runner { pos = "bo vsp", id = "console", cmd = "cons" }
 end, { desc = "Serial monitor open" })
 
 map("n", "<leader>bb", function()
-  terminal_launch("float", "bb")
+  term.runner { pos = "bo sp", id = "build", cmd = "bb" }
 end, { desc = "RTWORKS build" })
 
 map("n", "<leader>bl", function()
-  terminal_launch("float", "bb l4")
+  term.runner { pos = "bo sp", id = "build", cmd = "bb l4" }
 end, { desc = "RTWORKS build verbose" })
 
 map("n", "<leader>le", function()
-  terminal_launch("float", "le")
+  term.runner { pos = "bo sp", id = "build", cmd = "le" }
 end, { desc = "RTWORKS local build and execute" })
 
 map("n", "<leader>ll", function()
-  terminal_launch("float", "le l4")
+  term.runner { pos = "bo sp", id = "build", cmd = "le l4" }
 end, { desc = "RTWORKS local build and execute verbose" })
 
 map("n", "<leader>ls", function()
-  terminal_launch("float", "les l4")
+  term.runner { pos = "bo sp", id = "build", cmd = "les l4" }
 end, { desc = "RTWORKS local build and execute verbose serialized" })
 
 map("n", "<leader>mk", function()
-  terminal_launch("sp", "mm k")
+  term.runner { pos = "bo sp", id = "build", cmd = "mm k" }
 end, { desc = "RTWORKS misra kernel" })
 
 map("n", "<leader>mp", function()
-  terminal_launch("sp", "mm p")
+  term.runner { pos = "bo sp", id = "build", cmd = "mm p" }
 end, { desc = "RTWORKS misra partition" })
 
 map("n", "<leader>lr", function()
@@ -170,9 +160,9 @@ map("t", "<C-l><C-r>", function()
 end, { desc = "RTWORKS local launch" })
 
 map("n", "<leader>re", function()
-  terminal_launch("sp", "re")
+  term.runner { pos = "bo sp", id = "build", cmd = "re" }
 end, { desc = "RTWORKS remote build and execute" })
 
 map("n", "<leader>rr", function()
-  terminal_launch("sp", "rr")
+  term.runner { pos = "bo sp", id = "build", cmd = "rr" }
 end, { desc = "RTWORKS remote launch" })
