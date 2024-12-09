@@ -17,35 +17,23 @@ filetype plugin indent on
 "   DEFAULT SETTINGS
 " #########################################################
 syntax on
-set ruler
 set number
-set encoding=utf-8
-set autoindent
 set smartindent
-set smarttab
 set smartcase
-set ignorecase
-set showcmd
-set cursorline
+
 set hlsearch
 set incsearch
-set autowrite
-set autoread
-set hidden
-set history=1024
+
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set expandtab
 set shiftround
+
 set scrolloff=5
 set clipboard^=unnamed
-set shortmess+=I
 set wildmode=longest:full,full
-set ttyfast
-set lazyredraw
-set completeopt-=preview
-set laststatus=0
+set mouse=a
 
 " #########################################################
 "   THEMES
