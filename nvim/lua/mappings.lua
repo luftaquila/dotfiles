@@ -15,6 +15,9 @@ end
 -- LSP
 map("n", "<leader>lf", vim.diagnostic.open_float, { desc = "Diagnostics under cursor" })
 
+-- Buffer
+map("n", "<leader>bb", "<cmd>enew<CR>", { desc = "buffer new" })
+
 -- Telescope
 local telescope = require "telescope.builtin"
 
@@ -121,7 +124,7 @@ map("n", "<leader>sm", function()
   term.runner { pos = "bo vsp", id = "console", cmd = "cons" }
 end, { desc = "Serial monitor open" })
 
-map("n", "<leader>bb", function()
+map("n", "<leader>b", function()
   term.runner { pos = "bo sp", id = "build", cmd = "bb" }
 end, { desc = "RTWORKS build" })
 
