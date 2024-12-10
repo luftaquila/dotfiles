@@ -9,6 +9,11 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'sonph/onehalf', {'rtp': 'vim/'}
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
+Plugin 'preservim/nerdtree'
+Plugin 'cohama/lexima.vim'
+Plugin 'tpope/vim-commentary'
 Plugin 'wakatime/vim-wakatime'
 call vundle#end()
 filetype plugin indent on
@@ -34,6 +39,32 @@ set scrolloff=5
 set clipboard^=unnamed
 set wildmode=longest:full,full
 set mouse=a
+
+" #########################################################
+"   KEYMAPS
+" #########################################################
+nnoremap <C-k> <C-w>k " Switch window up
+nnoremap <C-j> <C-w>j " Switch window down
+nnoremap <C-h> <C-w>h " Switch window left
+nnoremap <C-l> <C-w>l " Switch window right
+nnoremap <C-p> <C-w>p " Jump to previous window
+
+nnoremap tn :tabnew<CR> " Tab create new
+nnoremap tx :tabclose<CR> " Tab close
+nnoremap tl :tabnext<CR> " Tab next
+nnoremap th :tabprev<CR> " Tab prev
+
+" #########################################################
+"   FZF
+" #########################################################
+let mapleader = " "
+nnoremap <leader>fw :Rg<CR>
+nnoremap <leader>ff :Files<CR>
+
+" #########################################################
+"   NERDTREE
+" #########################################################
+nnoremap <C-n> :NERDTreeToggle<CR>
 
 " #########################################################
 "   THEMES
