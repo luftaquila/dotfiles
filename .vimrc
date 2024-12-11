@@ -55,6 +55,9 @@ nnoremap tx :tabclose<CR> " Tab close
 nnoremap tl :tabnext<CR> " Tab next
 nnoremap th :tabprev<CR> " Tab prev
 
+nnoremap <Tab> :bnext<CR> " next buf
+nnoremap <S-Tab> :bprev<CR> " prev buf
+
 " #########################################################
 "   FZF
 " #########################################################
