@@ -14,6 +14,7 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'preservim/nerdtree'
 Plugin 'cohama/lexima.vim'
 Plugin 'tpope/vim-commentary'
+Plugin 'liuchengxu/vista.vim'
 Plugin 'wakatime/vim-wakatime'
 call vundle#end()
 filetype plugin indent on
@@ -65,6 +66,11 @@ nnoremap <leader>ff :Files<CR>
 "   NERDTREE
 " #########################################################
 nnoremap <C-n> :NERDTreeToggle<CR>
+
+" #########################################################
+"   VISTA
+" #########################################################
+nnoremap tt :Vista!!<CR>
 
 " #########################################################
 "   THEMES
