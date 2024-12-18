@@ -379,4 +379,12 @@ return {
     "HiPhish/rainbow-delimiters.nvim",
     event = "VeryLazy",
   },
+
+  {
+    "fasterius/simple-zoom.nvim",
+    event = "VeryLazy",
+    config = function()
+      vim.keymap.set("n", "<leader>z", require("simple-zoom").toggle_zoom)
+    end,
+  },
 }
