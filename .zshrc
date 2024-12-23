@@ -131,6 +131,12 @@ fi
 
 
 #############################################################################
+# basic
+#############################################################################
+alias c='clear'
+
+
+#############################################################################
 # navigation
 #############################################################################
 bindkey "^H" backward-word
@@ -283,6 +289,7 @@ alias lf='eza --color-scale --time-style long-iso --group --long --all --total-s
 # zoxide https://github.com/ajeetdsouza/zoxidee
 #############################################################################
 eval "$(zoxide init zsh)"
+alias j=z
 alias jk='j kernel'
 alias jp='j partition'
 alias jb='j builder'
@@ -291,6 +298,5 @@ alias jb='j builder'
 #############################################################################
 # magic-enter
 #############################################################################
-alias j=z
 MAGIC_ENTER_GIT_COMMAND='ll && echo && gst'
 MAGIC_ENTER_OTHER_COMMAND='ll'
