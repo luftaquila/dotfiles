@@ -1,44 +1,44 @@
 # set aliases
-function gad { git add }
-function gap { git add -p }
+function gad { git add $args }
+function gap { git add -p $args }
 
-function gck { git checkout }
-function gcb { git checkout -b }
+function gck { git checkout $args }
+function gcb { git checkout -b $args }
 
 del alias:gcm -Force
-function gcm { git commit --verbose }
-function gca { git commit --verbose --amend }
+function gcm { git commit --verbose $args }
+function gca { git commit --verbose --amend $args }
 
-function gdf { git diff }
-function gds { git diff --staged }
+function gdf { git diff $args }
+function gds { git diff --staged $args }
 # Set-Alias -Name gdo
 
-function gfh { git fetch }
+function gfh { git fetch $args }
 
-function glg { git log --graph }
-function glo { git log --oneline }
+function glg { git log --graph $args }
+function glo { git log --oneline $args }
 
-function gpl { git pull }
-function gpr { git pull --rebase }
+function gpl { git pull $args }
+function gpr { git pull --rebase $args }
 
-function gph { git push }
-function gpf { git push -f }
+function gph { git push $args }
+function gpf { git push -f $args }
 
-function grt { git reset }
-function grh { git reset HEAD^ }
-function grm { git reset --merge }
-function gro { git reset --hard "@{u}" }
+function grt { git reset $args }
+function grh { git reset HEAD^ $args }
+function grm { git reset --merge $args }
+function gro { git reset --hard "@{u$args }" }
 
-function grr { git restore }
-function grs { git restore --staged }
+function grr { git restore $args }
+function grs { git restore --staged $args }
 
-function gsh { git stash }
-function gsp { git stash pop }
-function gsd { git stash drop }
-function gsl { git stash list -p }
-function gss { git stash show -p }
+function gsh { git stash $args }
+function gsp { git stash pop $args }
+function gsd { git stash drop $args }
+function gsl { git stash list -p $args }
+function gss { git stash show -p $args }
 
-function gst { git status }
+function gst { git status $args }
 
 Set-Alias -Name vi -Value nvim
 
