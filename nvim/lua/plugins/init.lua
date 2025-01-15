@@ -83,6 +83,14 @@ return {
   },
 
   {
+    "xiyaowong/transparent.nvim",
+    event = "VimEnter",
+    config = function()
+      vim.keymap.set("n", "<leader>tr", ":TransparentToggle<CR>", { desc = "Transparent toggle" })
+    end,
+  },
+
+  {
     "lewis6991/satellite.nvim",
     event = "VimEnter",
     config = function()
@@ -385,6 +393,19 @@ return {
     event = "VeryLazy",
     config = function()
       vim.keymap.set("n", "<leader>z", require("simple-zoom").toggle_zoom)
+    end,
+  },
+
+  {
+    "gorbit99/codewindow.nvim",
+    event = "VeryLazy",
+    config = function()
+      local codewindow = require "codewindow"
+      codewindow.setup {
+        auto_enable = true,
+      }
+      codewindow.apply_default_keybinds()
+      vim.api.nvim_set_hl(0, "CodewindowBorder", { fg = "#1e222a" })
     end,
   },
 }
