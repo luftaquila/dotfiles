@@ -1,3 +1,6 @@
+# import per-machine script
+. "$HOME/.machine.ps1"
+
 # set aliases
 function gad { git add $args }
 function gap { git add -p $args }

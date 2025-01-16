@@ -6,6 +6,9 @@ git clone git@github.com:luftaquila/dotfiles.git
 Remove-Item "$profile"
 New-Item -ItemType SymbolicLink -Path "$profile" -Target "$HOME\dotfiles\MicroSoft.PowerShell_profile.ps1"
 
+# install per-machine powershell script
+"# per-machine setup" > "$HOME"
+
 # install .gitconfig
 Remove-Item "$HOME\.gitconfig"
 New-Item -ItemType SymbolicLink -Path "$HOME\.gitconfig" -Target "$HOME\dotfiles\.gitconfig"
