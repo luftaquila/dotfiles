@@ -115,7 +115,7 @@ end, { desc = "Terminal Close term in terminal mode" })
 map("t", "<ESC>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
 
 map("n", "<leader>gr", function()
-  local cmd = "qemu-system-i386 -kernel ~/rtworks/kernel/build/rtworks.elf -gdb tcp:localhost:3333 -S -nographic -m 4G"
+  local cmd = "qemu-system-x86_64 -gdb tcp::3333 -S -nographic -m 4G -bios ~/Downloads/OVMF.fd -netdev user,id=n1,tftp=/private/tftpboot,bootfile=grubx64.efi -device e1000,netdev=n1"
   term.runner { pos = "bo vsp", id = "gdb", cmd = cmd, kill = "\x01x" }
 end, { desc = "Terminal GDB restart" })
 
