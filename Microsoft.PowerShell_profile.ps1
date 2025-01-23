@@ -47,4 +47,4 @@ Set-Alias -Name vi -Value nvim
 
 Set-PSReadlineKeyHandler -Key Tab -Function Complete
 
-oh-my-posh init pwsh --config $env:POSH_THEMES_PATH/powerlevel10k_lean.omp.json | Invoke-Expression
+oh-my-posh init pwsh --config $HOME/dotfiles/toolsets/terminal/ohmyposh.json | Invoke-Expression
