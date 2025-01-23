@@ -15,3 +15,12 @@ New-Item -ItemType SymbolicLink -Path "$HOME\.gitconfig" -Target "$HOME\dotfiles
 
 # install nvim
 New-Item -ItemType SymbolicLink -Path "$HOME\AppData\Local\nvim" -Target "$HOME\dotfiles\nvim"
+
+# install packages
+winget install dandavison.delta
+winget install ajeetdsouza.zoxide
+winget install JanDeDobbeleer.OhMyPosh
+winget install Neovim.Neovim
+
+# oh my posh theme
+curl https://raw.githubusercontent.com/Kudostoy0u/pwsh10k/master/pwsh10k.omp.json --output $env:POSH_THEMES_PATH/pwsh10k.omp.json
