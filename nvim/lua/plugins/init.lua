@@ -83,22 +83,6 @@ return {
   },
 
   {
-    "xiyaowong/transparent.nvim",
-    event = "VimEnter",
-    config = function()
-      vim.keymap.set("n", "<leader>tr", ":TransparentToggle<CR>", { desc = "Transparent toggle" })
-    end,
-  },
-
-  {
-    "lewis6991/satellite.nvim",
-    event = "VimEnter",
-    config = function()
-      require("satellite").setup()
-    end,
-  },
-
-  {
     "lambdalisue/vim-suda",
     event = "VimEnter",
     config = function()
