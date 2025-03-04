@@ -4,6 +4,10 @@ CONF_BSP="$HOME/rtworks/bsp.sh"
 CONF_GENERAL="$HOME/rtworks/config.sh"
 RTWORKS_DIR="$HOME/rtworks"
 
+alias kb="fn_branch kernel"
+alias pb="fn_branch partition"
+alias b="fn_branch both"
+
 alias bsp=fn_bsp
 alias rtworksconf=fn_rtworksconf
 
@@ -25,6 +29,27 @@ alias cons="source $CONF_BSP;"'tio $CONSOLE -b 115200'
 alias elf=fn_elf
 alias dmp=fn_dmp
 
+
+##### BRANCHES ################################################################
+function fn_branch() {(
+  set -e;
+  TARGET=$1;
+  BRANCH=$2;
+
+  if   [[ "$TARGET" == "both" ]]; then
+    cd "$RTWORKS_DIR/kernel";
+    git checkout $BRANCH;
+    cd "$RTWORKS_DIR/partition";
+    git checkout $BRANCH;
+  elif [[ "$TARGET" == "kernel" ]]; then
+    cd "$RTWORKS_DIR/kernel";
+    git checkout $BRANCH;
+  elif [[ "$TARGET" == "partition" ]]; then
+    cd "$RTWORKS_DIR/partition";
+    git checkout $BRANCH;
+  else echo "unknown target $TARGET"; exit 1;
+  fi
+)}
 
 ##### CONFIG ##################################################################
 function fn_bsp() {(
