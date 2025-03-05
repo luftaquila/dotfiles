@@ -8,6 +8,10 @@ alias kb="fn_branch kernel"
 alias pb="fn_branch partition"
 alias b="fn_branch both"
 
+alias jk="cd $RTWORKS_DIR/kernel"
+alias jp="cd $RTWORKS_DIR/partition"
+alias jb="cd $RTWORKS_DIR/builder"
+
 alias bsp=fn_bsp
 alias rtworksconf=fn_rtworksconf
 
@@ -21,13 +25,13 @@ alias les=fn_rtworks_local_execute
 alias rr=fn_rtworks_remote_run
 alias re=fn_rtworks_remote_execute
 
-alias tt=fn_t32_launch
-
-alias qq="source $CONF_GENERAL;"'push-return $RELAY;'
-alias cons="source $CONF_BSP;"'tio $CONSOLE -b 115200'
-
 alias elf=fn_elf
 alias dmp=fn_dmp
+
+alias tt=fn_t32_launch
+
+alias q="source $CONF_GENERAL;"'push-return $RELAY;'
+alias cons="source $CONF_BSP;"'tio $CONSOLE -b 115200'
 
 
 ##### BRANCHES ################################################################

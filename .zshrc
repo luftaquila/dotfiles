@@ -289,9 +289,6 @@ alias lf='eza --color-scale --time-style long-iso --group --long --all --total-s
 #############################################################################
 eval "$(zoxide init zsh)"
 alias j=z
-alias jk='j kernel'
-alias jp='j partition'
-alias jb='j builder'
 
 
 #############################################################################
