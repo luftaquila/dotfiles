@@ -81,6 +81,12 @@ map("n", "<F8>", function()
 end, { desc = "Debug step instruction (stepi)" }) -- A
 map("n", "<F9>", dap.step_out, { desc = "Debug step out (finish)" }) -- F
 
+map("n", "<leader>gr", function()
+  local cmd = "qemu-system-x86_64 -gdb tcp::3333 -S -nographic -m 4G -bios ~/Downloads/OVMF.fd -netdev user,id=n1,tftp=/private/tftpboot,bootfile=grubx64.efi -device e1000,netdev=n1 -cpu qemu64"
+  term.runner { pos = "bo vsp", id = "gdb", cmd = cmd, kill = "\x01x" }
+  dap.run_last()
+end, { desc = "Terminal GDB restart" })
+
 -- macro
 map("n", "<CR>", "@q", { desc = "Macro play @q" })
 
@@ -114,58 +120,47 @@ end, { desc = "Terminal Close term in terminal mode" })
 
 map("t", "<ESC>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
 
-map("n", "<leader>gr", function()
-  local cmd = "qemu-system-x86_64 -gdb tcp::3333 -S -nographic -m 4G -bios ~/Downloads/OVMF.fd -netdev user,id=n1,tftp=/private/tftpboot,bootfile=grubx64.efi -device e1000,netdev=n1 -cpu qemu64"
-  term.runner { pos = "bo vsp", id = "gdb", cmd = cmd, kill = "\x01x" }
-end, { desc = "Terminal GDB restart" })
-
 -- RTWORKS
 map("n", "<leader>sm", function()
   term.runner { pos = "bo vsp", id = "console", cmd = "cons" }
 end, { desc = "Serial monitor open" })
 
+map("n", "<leader>lr", function()
+  vim.cmd("echom system('zsh -c \" source ~/rtworks/rt.zsh; fn_rtworks lr; \"')")
+end, { desc = "RTWORKS local launch" })
+
 map("n", "<leader>b", function()
-  term.runner { pos = "bo sp", id = "build", cmd = "bb" }
+  term.runner { pos = "bo sp", id = "build", cmd = "rt b" }
 end, { desc = "RTWORKS build" })
 
 map("n", "<leader>bl", function()
-  term.runner { pos = "bo sp", id = "build", cmd = "bb l4" }
+  term.runner { pos = "bo sp", id = "build", cmd = "rt b l4" }
 end, { desc = "RTWORKS build verbose" })
 
 map("n", "<leader>le", function()
-  term.runner { pos = "bo sp", id = "build", cmd = "le" }
+  term.runner { pos = "bo sp", id = "build", cmd = "rt le" }
 end, { desc = "RTWORKS local build and execute" })
 
 map("n", "<leader>ll", function()
-  term.runner { pos = "bo sp", id = "build", cmd = "le l4" }
+  term.runner { pos = "bo sp", id = "build", cmd = "rt le l4" }
 end, { desc = "RTWORKS local build and execute verbose" })
 
 map("n", "<leader>ls", function()
-  term.runner { pos = "bo sp", id = "build", cmd = "les l4" }
+  term.runner { pos = "bo sp", id = "build", cmd = "rt les l4" }
 end, { desc = "RTWORKS local build and execute verbose serialized" })
 
 map("n", "<leader>mk", function()
-  term.runner { pos = "bo sp", id = "build", cmd = "mm k" }
+  term.runner { pos = "bo sp", id = "build", cmd = "rt m k" }
 end, { desc = "RTWORKS misra kernel" })
 
 map("n", "<leader>mp", function()
-  term.runner { pos = "bo sp", id = "build", cmd = "mm p" }
+  term.runner { pos = "bo sp", id = "build", cmd = "rt m p" }
 end, { desc = "RTWORKS misra partition" })
 
-map("n", "<leader>lr", function()
-  local cmd = "source ~/dotfiles/scripts/rtworks/commands.zsh;"
-  vim.cmd("echom system(" .. "'zsh -c " .. '"' .. cmd .. 'fn_rtworks_local_run"' .. "')")
-end, { desc = "RTWORKS local launch" })
-
-map("t", "<C-l><C-r>", function()
-  local cmd = "source ~/dotfiles/scripts/rtworks/commands.zsh;"
-  vim.cmd("echom system(" .. "'zsh -c " .. '"' .. cmd .. 'fn_rtworks_local_run"' .. "')")
-end, { desc = "RTWORKS local launch" })
-
 map("n", "<leader>re", function()
-  term.runner { pos = "bo sp", id = "build", cmd = "re" }
+  term.runner { pos = "bo sp", id = "build", cmd = "rt re" }
 end, { desc = "RTWORKS remote build and execute" })
 
 map("n", "<leader>rr", function()
-  term.runner { pos = "bo sp", id = "build", cmd = "rr" }
+  term.runner { pos = "bo sp", id = "build", cmd = "rt rr" }
 end, { desc = "RTWORKS remote launch" })
