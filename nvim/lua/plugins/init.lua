@@ -381,7 +381,7 @@ return {
   },
 
   {
-    "gorbit99/codewindow.nvim",
+    "luftaquila/codewindow.nvim",
     event = "VeryLazy",
     config = function()
       local codewindow = require "codewindow"

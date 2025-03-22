@@ -82,7 +82,7 @@ end, { desc = "Debug step instruction (stepi)" }) -- A
 map("n", "<F9>", dap.step_out, { desc = "Debug step out (finish)" }) -- F
 
 map("n", "<leader>gr", function()
-  local cmd = "qemu-system-x86_64 -gdb tcp::3333 -S -nographic -m 4G -bios ~/Downloads/OVMF.fd -netdev user,id=n1,tftp=/private/tftpboot,bootfile=grubx64.efi -device e1000,netdev=n1 -cpu qemu64"
+  local cmd = "qemu-system-x86_64 -gdb tcp::3333 -S -nographic -m 4G -bios ~/Downloads/OVMF.fd -netdev user,id=n1,tftp=/private/tftpboot,bootfile=grubx64.efi -device e1000,netdev=n1 -cpu qemu64 -smp 4"
   term.runner { pos = "bo vsp", id = "gdb", cmd = cmd, kill = "\x01x" }
   dap.run_last()
 end, { desc = "Terminal GDB restart" })
