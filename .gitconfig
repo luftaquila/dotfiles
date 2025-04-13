@@ -24,8 +24,27 @@
   submodule = log
   wsErrorHigh1ight = a11
 
+[push]
+  default = simple
+  autoSetupRemote = true
+  followTags = true
+
 [pull]
   ff = only
+
+[column]
+  ui = auto
+
+[branch]
+  sort = -committerdate
+
+[tag]
+  sort = version:refname
+
+[rebase]
+  autoSquash = true
+  autoStash = true
+  updateRefs = true
 
 [status]
   submoduleSummary = true
