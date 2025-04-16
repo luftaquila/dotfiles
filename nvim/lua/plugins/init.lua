@@ -102,11 +102,6 @@ return {
   },
 
   {
-    "unblevable/quick-scope",
-    event = "VeryLazy",
-  },
-
-  {
     "folke/ts-comments.nvim",
     event = "VeryLazy",
     opts = {},
@@ -127,15 +122,6 @@ return {
       require("no-neck-pain").setup {
         width = 150,
       }
-    end,
-  },
-
-  {
-    "liuchengxu/vista.vim",
-    event = "VeryLazy",
-    config = function()
-      vim.cmd "let g:vista_blink = [0, 0]"
-      vim.cmd "let g:vista_default_executive = 'nvim_lsp'"
     end,
   },
 
@@ -212,36 +198,18 @@ return {
         layouts = {
           {
             elements = {
-              {
-                id = "scopes",
-                size = 0.40,
-              },
-              {
-                id = "breakpoints",
-                size = 0.20,
-              },
-              {
-                id = "stacks",
-                size = 0.20,
-              },
-              {
-                id = "watches",
-                size = 0.20,
-              },
+              { id = "scopes", size = 0.40 },
+              { id = "breakpoints", size = 0.20 },
+              { id = "stacks", size = 0.20 },
+              { id = "watches", size = 0.20 },
             },
             position = "left",
             size = 40,
           },
           {
             elements = {
-              {
-                id = "repl",
-                size = 1,
-              },
-              -- {
-              --   id = "console",
-              --   size = 0.5,
-              -- },
+              { id = "repl", size = 1 },
+              -- { id = "console", size = 0.5 },
             },
             position = "bottom",
             size = 20,
@@ -254,11 +222,7 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    opts = {
-      -- add any options here
-    },
     dependencies = {
-      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
     },
@@ -269,25 +233,7 @@ return {
         stages = "static",
         timeout = 3000,
       }
-
-      require("noice").setup {
-        lsp = {
-          -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-          override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
-            ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
-          },
-        },
-        -- you can enable a preset for easier configuration
-        presets = {
-          bottom_search = true, -- use a classic bottom cmdline for search
-          command_palette = true, -- position the cmdline and popupmenu together
-          long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = false, -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false, -- add a border to hover docs and signature help
-        },
-      }
+      require("noice").setup {}
     end,
   },
 
@@ -392,4 +338,36 @@ return {
       vim.api.nvim_set_hl(0, "CodewindowBorder", { fg = "#1e222a" })
     end,
   },
+
+  {
+    "Bekaboo/dropbar.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-telescope/telescope-fzf-native.nvim",
+    },
+    config = function()
+      local dropbar_api = require "dropbar.api"
+      vim.keymap.set("n", "ts", dropbar_api.goto_context_start, { desc = "Go to start of current context" })
+      vim.keymap.set("n", "tt", dropbar_api.select_next_context, { desc = "Select next context" })
+    end,
+  },
+
+  {
+    "NeogitOrg/neogit",
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      vim.keymap.set("n", "<leader>o", require("neogit").open, { desc = "Go to start of current context" })
+    end,
+  },
+
+  -- {
+  --   "echasnovski/mini.nvim",
+  --   event = "VeryLazy",
+  --   version = "*",
+  -- },
 }
