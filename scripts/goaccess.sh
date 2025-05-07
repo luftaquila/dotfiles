@@ -1,1 +1,0 @@
-{ ls /var/log/nginx/access.log* | gawk -n '/access.log.?[0-9]$/' | xargs cat & ls /var/log/nginx/access.log* | gawk -n '/access.log.*.gz$/' | xargs zcat; } | goaccess -o ~/report.html --log-format='%h - %^ [%d:%t %^] %^ %^ "%r" %s %b "%R" "%u"' --time-format='%T' --date-format='%d/%b/%Y'
