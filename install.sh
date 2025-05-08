@@ -36,26 +36,15 @@ stages_function=(
 ###############################################################################
 #  package definitions
 ###############################################################################
-packages_common=( "bat" "curl" "fzf" "htop" "ripgrep" "universal-ctags" "wget")
-packages_linux=( "build-essential" "cmake" "fd-find" "libncurses-dev")
-packages_macos=( "bottom" "code-minimap" "dust" "eza" "fd" "git-delta" "superfile" "zoxide")
-
-packages_rust_common=( "pay-respects" )
-packages_rust_linux=( "bottom" "code-minimap" "eza" "du-dust" "git-delta" "zoxide" )
-packages_rust_macos=( )
+packages_apt=( "build-essential" "libncurses-dev" "net-tools" )
+packages_brew=( "bat" "btop" "cmake" "code-minimap" "curl" "dust" "eza" "fd" "fzf" "git-delta" "htop" "ripgrep" "wget" "zoxide" )
 
 ################################################################################
 #  detect OS
 ################################################################################
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   platform='linux'
-
-  if [[ "$auto_confirm" = true ]]; then
-    package_cmd='sudo apt-get -y'
-  else
-    package_cmd='sudo apt-get'
-  fi
-
+  package_cmd='sudo apt-get -y'
   openssh_name='openssh-client'
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   platform='macos'
@@ -116,25 +105,16 @@ function fn_install_system_packages() {
   echo "[INF] installing system packages..."
 
   fn_update
-  fn_cmd "$package_cmd install ${packages_common[*]}"
 
   if [[ $platform == "linux" ]]; then
-    fn_cmd "$package_cmd install ${packages_linux[*]}"
-
-    echo "[INF] creating executable symbolic links..."
-
-    fn_cmd "mkdir -p $HOME/.local/bin"
-
-    if [[ ! -f "$HOME/.local/bin/fd" ]]; then
-      fn_cmd "ln -s $(which fdfind) $HOME/.local/bin/fd"
-    fi
-
-    if [[ ! -f "$HOME/.local/bin/bat" ]]; then
-      fn_cmd "ln -s $(which batcat) $HOME/.local/bin/bat"
-    fi
-  elif [[ $platform == "macos" ]]; then
-    fn_cmd "$package_cmd install ${packages_macos[*]}"
+    fn_cmd "sudo apt-get install -y ${packages_apt[*]}"
   fi
+
+  echo "[INF] installing Homebrew..."
+  fn_cmd "/bin/bash -c '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'"
+
+  echo "[INF] installing Homebrew packages..."
+  fn_cmd "brew install ${package_brew[*]}"
 }
 
 function fn_install_tmux() {
