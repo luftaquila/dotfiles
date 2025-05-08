@@ -32,7 +32,7 @@ stages_function=(
 #  package definitions
 ###############################################################################
 packages_apt=( "build-essential" "libncurses-dev" "net-tools" )
-packages_brew=( "bat" "btop" "cmake" "code-minimap" "curl" "dust" "eza" "fd" "fzf" "git-delta" "htop" "ripgrep" "wget" "zoxide" )
+packages_brew=( "bat" "btop" "cmake" "code-minimap" "dust" "eza" "fd" "fzf" "git-delta" "ripgrep" "zoxide" )
 
 ################################################################################
 #  detect OS
@@ -102,14 +102,17 @@ function fn_install_system_packages() {
   fn_update
 
   if [[ $platform == "linux" ]]; then
-    fn_cmd "sudo apt-get install -y ${packages_apt[*]}"
+    fn_cmd "$package_cmd install ${packages_apt[*]}"
+
+    if ! [[ -x "$(command -v brew)" ]]; then
+      echo "[INF] installing Homebrew..."
+      fn_cmd '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+      fn_cmd 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
+    fi
   fi
 
-  echo "[INF] installing Homebrew..."
-  fn_cmd "/bin/bash -c '$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)'"
-
   echo "[INF] installing Homebrew packages..."
-  fn_cmd "brew install ${package_brew[*]}"
+  fn_cmd "brew install ${packages_brew[*]}"
 }
 
 function fn_install_tmux() {
@@ -218,7 +221,7 @@ function fn_install_neovim() {
   if ! [[ -x "$(command -v nvim)" ]]; then
     if [[ $platform == "linux" ]]; then
       fn_cmd "$package_cmd install fuse3 libfuse2"
-      fn_cmd "wget https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage -O $HOME/.local/bin/nvim"
+      fn_cmd "curl -L https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage -o $HOME/.local/bin/nvim"
       fn_cmd "chmod 744 $HOME/.local/bin/nvim"
       fn_cmd 'PATH="$HOME/.local/bin:$PATH"'
     elif [[ $platform == "macos" ]]; then
