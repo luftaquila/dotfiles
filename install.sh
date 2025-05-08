@@ -5,13 +5,8 @@
 ###############################################################################
 if [[ $1 == "all" ]]; then
   auto_install=true
-  auto_confirm=true
-elif [[ $1 == "auto" ]]; then
-  auto_install=false
-  auto_confirm=true
 else
   auto_install=false
-  auto_confirm=false
 fi
 
 package_cmd_update=false
@@ -189,12 +184,7 @@ function fn_install_lang() {
         echo "[INF] installing Rust..."
 
         if ! [[ -x "$(command -v rustc)" ]]; then
-          if [[ "$auto_confirm" = true ]]; then
-            fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y"
-          else
-            fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh"
-          fi
-
+          fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y"
           fn_cmd "source $HOME/.cargo/env"
         else
           echo "[INF] Rust is already installed. skipping..."
@@ -310,27 +300,9 @@ function fn_install_ohmyzsh() {
 ################################################################################
 if ! [[ -x "$(command -v git)" ]]; then
   echo "[ERR] no git detected!"
-
-  while true; do
-    input=''
-
-    if ! [[ "$auto_confirm" = true ]]; then
-      read -p "  install git? (Y/n): " input
-    fi
-
-    if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
-      echo "[INF] installing git..."
-      fn_update
-      fn_cmd "$package_cmd install git"
-      break
-    elif [ $input == 'n' ] || [ $input == 'N' ]; then
-      echo "[WRN] git is required to proceed. terminating."
-      exit 1
-      break
-    else
-      echo "    invalid input"
-    fi
-  done
+  echo "[INF] installing git..."
+  fn_update
+  fn_cmd "$package_cmd install git"
 fi
 
 
@@ -353,27 +325,9 @@ if ! `git remote -v | grep -q 'luftaquila/dotfiles'`; then
   # check ssh client
   if ! [[ -x "$(command -v ssh)" ]]; then
     echo "[ERR] no ssh client detected!"
-
-    while true; do
-      input=''
-
-      if ! [[ "$auto_confirm" = true ]]; then
-        read -p "  install openssh? (Y/n): " input
-      fi
-
-      if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
-        echo "[INF] installing openssh..."
-        fn_update
-        fn_cmd "$package_cmd install $openssh_name"
-        break
-      elif [ $input == 'n' ] || [ $input == 'N' ]; then
-        echo "[WRN] ssh client is required to proceed. terminating."
-        exit 1
-        break
-      else
-        echo "    invalid input"
-      fi
-    done
+    echo "[INF] installing openssh..."
+    fn_update
+    fn_cmd "$package_cmd install $openssh_name"
   fi
 
   # check ssh key
