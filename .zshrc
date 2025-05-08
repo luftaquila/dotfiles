@@ -232,6 +232,17 @@ function fn_git_diff_open() {(
 
 
 #############################################################################
+# Docker
+#############################################################################
+alias dps='sudo docker ps'
+
+alias dcu='sudo docker compose up -d'
+alias dcd='sudo docker compose down'
+alias dcs='sudo docker compose start'
+alias dcp='sudo docker compose stop'
+
+
+#############################################################################
 # vi
 #############################################################################
 alias vi='nvim'
