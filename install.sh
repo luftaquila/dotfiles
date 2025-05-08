@@ -248,8 +248,8 @@ function fn_install_neovim() {
   if ! [[ -x "$(command -v nvim)" ]]; then
     if [[ $platform == "linux" ]]; then
       fn_cmd "$package_cmd install fuse3 libfuse2"
-      fn_cmd "wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
-      fn_cmd "mv nvim.appimage $HOME/.local/bin/nvim && chmod 744 $HOME/.local/bin/nvim"
+      fn_cmd "wget https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage -O $HOME/.local/bin/nvim"
+      fn_cmd "chmod 744 $HOME/.local/bin/nvim"
       fn_cmd 'PATH="$HOME/.local/bin:$PATH"'
     elif [[ $platform == "macos" ]]; then
       fn_cmd "$package_cmd install neovim"
