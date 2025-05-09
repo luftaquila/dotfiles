@@ -235,6 +235,8 @@ function fn_git_diff_open() {(
 # Docker
 #############################################################################
 alias dps='sudo docker ps'
+alias dlg='sudo docker logs -f'
+alias dex='sudo docker exec -it'
 
 alias dcu='sudo docker compose up -d'
 alias dcd='sudo docker compose down'
