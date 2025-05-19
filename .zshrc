@@ -160,6 +160,7 @@ alias gca='git commit --verbose --amend'
 
 alias gdf='git diff'
 alias gds='git diff --staged'
+alias gdu='git diff "@{u}"'
 alias gdo=fn_git_diff_open
 
 alias gfh='git fetch'
