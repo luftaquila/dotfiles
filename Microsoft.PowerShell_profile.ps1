@@ -1,6 +1,11 @@
 # import per-machine script
 . "$HOME/.machine.ps1"
 
+# set terminal locale
+$env:LANG="en"
+$env:LANGUAGE="en"
+$env:LC_MESSAGES="C"
+
 # set aliases
 function gad { git add $args }
 function gap { git add -p $args }
