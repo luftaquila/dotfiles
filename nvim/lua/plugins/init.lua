@@ -314,8 +314,18 @@ return {
   },
 
   {
-    "HiPhish/rainbow-delimiters.nvim",
-    event = "VeryLazy",
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = function(_, opts)
+      opts = {
+        indent = { char = " " },
+        scope = { enabled = false },
+      }
+      return require("indent-rainbowline").make_opts(opts)
+    end,
+    dependencies = {
+      "TheGLander/indent-rainbowline.nvim",
+    },
   },
 
   {
