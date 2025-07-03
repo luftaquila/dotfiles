@@ -5,7 +5,11 @@ CompileFlags:
     -mabi=spe,
     -mcpu=e6500,
     -mno-unaligned-access,
-    -mfloat-gprs=double
+    -mfloat-gprs=double,
+    -mstrict-align
+  ]
+  Add: [
+    -ferror-limit=0
   ]
 
 Diagnostics:
