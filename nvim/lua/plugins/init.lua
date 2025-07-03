@@ -337,19 +337,6 @@ return {
   },
 
   {
-    "luftaquila/codewindow.nvim",
-    event = "VeryLazy",
-    config = function()
-      local codewindow = require "codewindow"
-      codewindow.setup {
-        auto_enable = true,
-      }
-      codewindow.apply_default_keybinds()
-      vim.api.nvim_set_hl(0, "CodewindowBorder", { fg = "#1e222a" })
-    end,
-  },
-
-  {
     "Bekaboo/dropbar.nvim",
     event = "VeryLazy",
     dependencies = {
@@ -379,5 +366,18 @@ return {
   --   "echasnovski/mini.nvim",
   --   event = "VeryLazy",
   --   version = "*",
+  -- },
+
+  -- {
+  --   "luftaquila/codewindow.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     local codewindow = require "codewindow"
+  --     codewindow.setup {
+  --       auto_enable = true,
+  --     }
+  --     codewindow.apply_default_keybinds()
+  --     vim.api.nvim_set_hl(0, "CodewindowBorder", { fg = "#1e222a" })
+  --   end,
   -- },
 }
