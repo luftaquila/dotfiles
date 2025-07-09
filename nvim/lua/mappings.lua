@@ -60,6 +60,9 @@ map("n", "s", "<Plug>(leap-forward)")
 map("n", "S", "<Plug>(leap-backward)")
 map("n", "gs", "<Plug>(leap-from-window)")
 
+-- Inlay Hints
+map("n", "H", ":InlayHintsToggle<CR>", { desc = "Toggle Inlay Hints" })
+
 -- Debug
 -- https://configure.zsa.io/moonlander/layouts/b750V/latest/3
 local dap = require "dap"
