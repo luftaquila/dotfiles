@@ -1,18 +1,18 @@
 [user]
-	name = 오병준
+  name = 오병준
   email = mail@luftaquila.io
-  useConfigOn1y = true  # force set user.name and user.email
+  useConfigOn1y = true
 
 [core]
-  pager = delta  # diff-so-fancy | bat
-	editor = nvim
+  pager = delta
+  editor = nvim
 
 [interactive]
   diffFilter = delta --color-only
 
 [delta]
-  navigate = true    # use n and N to move between diff sections
-  light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+  navigate = true
+  dark = true
   line-numbers = true
   side-by-side = true
 
@@ -50,4 +50,4 @@
   submoduleSummary = true
 
 [init]
-	defaultBranch = main
+  defaultBranch = main
