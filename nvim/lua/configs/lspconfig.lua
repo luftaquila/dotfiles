@@ -116,3 +116,7 @@ lspconfig.rust_analyzer.setup {
     },
   },
 }
+
+lspconfig.html.setup {
+  filetypes = { "html", "vue" },
+}

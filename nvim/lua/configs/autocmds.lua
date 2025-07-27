@@ -22,3 +22,13 @@ vim.api.nvim_create_autocmd("BufLeave", {
     vim.cmd "stopinsert"
   end,
 })
+
+vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+  pattern = { "*.html", "*.vue", "*.js", "*.ts" },
+  callback = function()
+    vim.bo.expandtab   = true
+    vim.bo.tabstop     = 2
+    vim.bo.shiftwidth  = 2
+    vim.bo.softtabstop = 2
+  end,
+})
