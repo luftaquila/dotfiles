@@ -274,6 +274,10 @@ function fn_install_ohmyzsh() {
     fn_cmd "zsh -c 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions'"
   fi
 
+  if [[ ! -d "${ZSH_CUSTOM}/plugins/zsh-hangul" ]]; then
+    fn_cmd "zsh -c 'git clone https://github.com/gomjellie/zsh-hangul ${ZSH_CUSTOM}/plugins/zsh-hangul'"
+  fi
+
   echo "[INF] installing powerlevel10k..."
 
   if [[ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]]; then
