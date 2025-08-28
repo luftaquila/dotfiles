@@ -303,10 +303,17 @@ alias lf='eza --color-scale --time-style long-iso --group --long --all --total-s
 
 
 #############################################################################
-# zoxide https://github.com/ajeetdsouza/zoxidee
+# zoxide https://github.com/ajeetdsouza/zoxide
 #############################################################################
-eval "$(zoxide init zsh)"
-alias j=z
+eval "$(zoxide init zsh --cmd j)"
+
+
+#############################################################################
+# zellij https://github.com/zellij-org/zellij
+#############################################################################
+alias z='zellij'
+alias za='zellij attach'
+alias zl='zellij list-sessions'
 
 
 #############################################################################
