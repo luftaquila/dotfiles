@@ -1,23 +1,21 @@
 # RTWORKS clangd config file
 
 CompileFlags:
-  Remove: [
-    -mabi=spe,
-    -mcpu=e6500,
-    -mno-unaligned-access,
-    -mfloat-gprs=double,
-    -mstrict-align
-  ]
-  Add: [
-    -ferror-limit=0
-  ]
+  Remove:
+    - -mabi=spe
+    - -mcpu=e6500
+    - -mno-unaligned-access
+    - -mfloat-gprs=double
+    - -mstrict-align
+  Add:
+    - -ferror-limit=0
 
 Diagnostics:
-  Suppress: [
-    pp_hash_error,
-    pp_file_not_found,
-    pp_including_mainfile_in_preamble,
-    unknown_typename,
-    unknown_typename_suggest,
-    redefinition_different_typedef,
-  ]
+  Suppress:
+    - pp_hash_error
+    - pp_file_not_found
+    - pp_including_mainfile_in_preamble
+    - unknown_typename
+    - unknown_typename_suggest
+    - redefinition_different_typedef
+
