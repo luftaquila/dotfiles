@@ -1,8 +1,3 @@
-local on_attach = require("nvchad.configs.lspconfig").on_attach
-local on_init = require("nvchad.configs.lspconfig").on_init
-local capabilities = require("nvchad.configs.lspconfig").capabilities
-
-local lspconfig = require "lspconfig"
 local servers = {
   "asm_lsp",
   "bashls",
@@ -20,18 +15,6 @@ local servers = {
   "vale_ls",
   "vtsls",
 }
-
--- custom lsp servers
-local configs = require "lspconfig.configs"
-
--- lsps with default config
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = on_attach,
-    on_init = on_init,
-    capabilities = capabilities,
-  }
-end
 
 vim.api.nvim_create_user_command("LspFormat", function()
   -- Use null-ls if present
@@ -54,7 +37,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-lspconfig.lua_ls.setup {
+vim.lsp.config('lua_ls', {
   settings = {
     Lua = {
       diagnostics = {
@@ -62,9 +45,10 @@ lspconfig.lua_ls.setup {
       },
     },
   },
-}
+})
+vim.lsp.enable('lua_ls')
 
-lspconfig.clangd.setup {
+vim.lsp.config('clangd', {
   settings = {
     clangd = {
       InlayHints = {
@@ -76,9 +60,10 @@ lspconfig.clangd.setup {
       fallbackFlags = { "-std=c++20" },
     },
   },
-}
+})
+vim.lsp.enable('clangd')
 
-lspconfig.rust_analyzer.setup {
+vim.lsp.config('rust_analyzer', {
   settings = {
     ["rust-analyzer"] = {
       inlayHints = {
@@ -115,8 +100,10 @@ lspconfig.rust_analyzer.setup {
       },
     },
   },
-}
+})
+vim.lsp.enable('rust_analyzer')
 
-lspconfig.html.setup {
+vim.lsp.config('html', {
   filetypes = { "html", "vue" },
-}
+})
+vim.lsp.enable('html')
