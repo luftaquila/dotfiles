@@ -278,6 +278,9 @@ function fn_install_ohmyzsh() {
     fn_cmd "zsh -c 'git clone https://github.com/gomjellie/zsh-hangul ${ZSH_CUSTOM}/plugins/zsh-hangul'"
   fi
 
+  echo "[INF] installing atuin..."
+  fn_cmd "curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh"
+
   echo "[INF] installing powerlevel10k..."
 
   if [[ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]]; then
