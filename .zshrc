@@ -317,6 +317,14 @@ alias zl='zellij list-sessions'
 
 
 #############################################################################
+# atuin https://github.com/atuinsh/atuin
+#############################################################################
+export ATUIN_CONFIG_DIR="$HOME/dotfiles/toolsets/atuin"
+. "$HOME/.atuin/bin/env"
+eval "$(atuin init zsh --disable-up-arrow)"
+
+
+#############################################################################
 # magic-enter
 #############################################################################
 MAGIC_ENTER_GIT_COMMAND='ll && echo && gst'
