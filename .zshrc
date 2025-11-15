@@ -82,7 +82,6 @@ plugins=(
   magic-enter
   zsh-syntax-highlighting
   zsh-autosuggestions
-  zsh-hangul
 )
 
 source $ZSH/oh-my-zsh.sh
