@@ -32,7 +32,7 @@ stages_function=(
 #  package definitions
 ###############################################################################
 packages_apt=( "build-essential" "libncurses-dev" "net-tools" )
-packages_brew=( "bat" "btop" "cmake" "code-minimap" "dust" "eza" "fd" "fzf" "git-delta" "ripgrep" "zoxide" )
+packages_brew=( "bat" "btop" "cmake" "code-minimap" "dust" "eza" "fd" "fzf" "git-delta" "ripgrep" "tig" "zoxide" )
 
 ################################################################################
 #  detect OS

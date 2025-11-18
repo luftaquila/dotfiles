@@ -165,7 +165,7 @@ alias gdo=fn_git_diff_open
 
 alias gfh='git fetch'
 
-alias glg='git log --graph'
+alias glg='tig --all'
 alias glo='git log --oneline'
 
 alias gpl='git pull'
