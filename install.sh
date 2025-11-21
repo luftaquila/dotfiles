@@ -113,6 +113,8 @@ function fn_install_system_packages() {
 
   echo "[INF] installing Homebrew packages..."
   fn_cmd "brew install ${packages_brew[*]}"
+
+  fn_install_dotfile ".tigrc"
 }
 
 function fn_install_tmux() {
@@ -242,7 +244,7 @@ function fn_install_neovim() {
   echo "[INF] installing Vim..."
 
   fn_cmd "git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim"
-  fn_cmd "ln -s $HOME/dotfiles/.vimrc $HOME/.vimrc"
+  fn_install_dotfile ".vimrc"
   fn_cmd "vim -Es -u $HOME/.vimrc +VundleInstall +qall" ignore
 }
 
