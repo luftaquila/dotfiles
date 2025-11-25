@@ -191,6 +191,11 @@ alias gss='git stash show -p'
 
 alias gst='git status'
 
+alias gbs='git bisect start'
+alias gbb='git bisect bad'
+alias gbg='git bisect good'
+alias gbr='git bisect reset'
+
 unalias gp
 unalias gpu
 
