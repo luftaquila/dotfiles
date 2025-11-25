@@ -196,6 +196,8 @@ alias gbb='git bisect bad'
 alias gbg='git bisect good'
 alias gbr='git bisect reset'
 
+alias gcp='git cherry-pick'
+
 unalias gp
 unalias gpu
 
