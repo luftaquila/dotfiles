@@ -150,14 +150,11 @@ keybinds clear-defaults=true {
         bind "Ctrl [" { PreviousSwapLayout; }
         bind "Ctrl ]" { NextSwapLayout; }
     }
-    shared_except "locked" {
-        // zellij-autolock
-        bind "Alt z" { MessagePlugin "autolock" {payload "disable";}; SwitchToMode "Locked"; }
-        bind "Ctrl h" { MoveFocusOrTab "Left"; }
-        bind "Ctrl l" { MoveFocusOrTab "Right"; }
-        bind "Ctrl j" { MoveFocus "Down"; }
-        bind "Ctrl k" { MoveFocus "Up"; }
-
+    shared_except "scroll" {
+        bind "Ctrl h" { MessagePlugin { name "nvim_nav_left"; payload "8"; }; }
+        bind "Ctrl j" { MessagePlugin { name "nvim_nav_down"; payload "10"; }; }
+        bind "Ctrl k" { MessagePlugin { name "nvim_nav_up"; payload "11"; }; }
+        bind "Ctrl l" { MessagePlugin { name "nvim_nav_right"; payload "12"; }; }
         bind "Ctrl g" { SwitchToMode "locked"; }
         bind "Alt Shift p" { ToggleGroupMarking; }
         bind "Ctrl q" { Quit; }
@@ -288,18 +285,14 @@ plugins {
         welcome_screen true
     }
 
-    autolock location="https://github.com/fresh2dev/zellij-autolock/releases/download/0.2.2/zellij-autolock.wasm" {
-      is_enabled true
-      triggers "nvim|vim|fzf|zoxide|atuin"
-      reaction_seconds "0.3"
-    }
+    nvim-nav location="https://github.com/sharph/zellij-nvim-nav-plugin/releases/download/v1.0.0/zellij-nvim-nav-plugin.wasm"
 }
 
 // Plugins to load in the background when a new session starts
 // eg. "file:/path/to/my-plugin.wasm"
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
-  autolock
+  nvim-nav
 }
 web_client {
     font "monospace"
@@ -310,7 +303,7 @@ web_client {
 //   - true
 //   - false (Default)
 // 
-// simplified_ui true
+simplified_ui true
  
 // Choose the theme that is specified in the themes section.
 // Default: default
