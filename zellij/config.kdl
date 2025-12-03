@@ -293,6 +293,8 @@ plugins {
       triggers "nvim|vim|fzf|zoxide|atuin"
       reaction_seconds "0.3"
     }
+
+    zjstatus-hints location="https://github.com/b0o/zjstatus-hints/releases/latest/download/zjstatus-hints.wasm"
 }
 
 // Plugins to load in the background when a new session starts
@@ -300,6 +302,7 @@ plugins {
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
   autolock
+  zjstatus-hints
 }
 web_client {
     font "monospace"
@@ -315,7 +318,7 @@ simplified_ui true
 // Choose the theme that is specified in the themes section.
 // Default: default
 // 
-// theme "dracula"
+theme "lavi"
  
 // Choose the base input mode of zellij.
 // Default: normal
