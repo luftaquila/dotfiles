@@ -101,6 +101,11 @@ return {
   },
 
   {
+    "swaits/zellij-nav.nvim",
+    event = "VeryLazy",
+  },
+
+  {
     "folke/ts-comments.nvim",
     event = "VeryLazy",
     opts = {},
@@ -111,16 +116,6 @@ return {
     event = "VeryLazy",
     config = function()
       require("nvim-surround").setup {}
-    end,
-  },
-
-  {
-    "shortcuts/no-neck-pain.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("no-neck-pain").setup {
-        width = 150,
-      }
     end,
   },
 

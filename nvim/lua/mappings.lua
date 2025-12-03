@@ -18,6 +18,24 @@ map("n", "<leader>lf", vim.diagnostic.open_float, { desc = "Diagnostics under cu
 -- Buffer
 map("n", "<leader>bb", "<cmd>enew<CR>", { desc = "buffer new" })
 
+-- Zellij
+local zellij = require "zellij-nav"
+
+map("n", "<C-h>", zellij.left, { desc = "Zellij navigate left" })
+map("n", "<C-k>", zellij.up, { desc = "Zellij navigate up" })
+map("n", "<C-j>", zellij.down, { desc = "Zellij navigate down" })
+map("n", "<C-l>", zellij.right, { desc = "Zellij navigate right" })
+
+-- Tabs
+map("n", "tn", ":tabnew<CR>", { desc = "Tab create new" })
+map("n", "tx", ":tabclose<CR>", { desc = "Tab close" })
+map("n", "tl", ":tabnext<CR>", { desc = "Tab next" })
+map("n", "th", ":tabprev<CR>", { desc = "Tab prev" })
+
+-- Ctrl + P to previous window
+map("n", "<C-p>", "<C-w>p", { desc = "Jump to previous window" })
+map("t", "<C-p>", "<C-\\><C-o><C-w>p", { desc = "Jump to previous window" })
+
 -- Telescope
 local telescope = require "telescope.builtin"
 
@@ -47,9 +65,6 @@ end, { desc = "Telescope fuzzy grep string" })
 
 -- Gitsigns
 map("n", "<leader>df", require("gitsigns").diffthis, { desc = "Git diff" })
-
--- No Neck Pain
-map("n", "cn", ":NoNeckPain<CR>", { desc = "NoNeckPain toggle" })
 
 -- Vista
 map("n", "tt", ":Vista!!<CR>", { desc = "Vista toggle tag window" })
@@ -84,24 +99,8 @@ map("n", "<F8>", function()
 end, { desc = "Debug step instruction (stepi)" }) -- A
 map("n", "<F9>", dap.step_out, { desc = "Debug step out (finish)" }) -- F
 
-map("n", "<leader>gr", function()
-  local cmd = "qemu-system-x86_64 -gdb tcp::3333 -S -nographic -m 4G -bios ~/Downloads/OVMF.fd -netdev user,id=n1,tftp=/private/tftpboot,bootfile=grubx64.efi -device e1000,netdev=n1 -cpu qemu64 -smp 4"
-  term.runner { pos = "bo vsp", id = "gdb", cmd = cmd, kill = "\x01x" }
-  dap.run_last()
-end, { desc = "Terminal GDB restart" })
-
 -- macro
 map("n", "<CR>", "@q", { desc = "Macro play @q" })
-
--- Tabs
-map("n", "tn", ":tabnew<CR>", { desc = "Tab create new" })
-map("n", "tx", ":tabclose<CR>", { desc = "Tab close" })
-map("n", "tl", ":tabnext<CR>", { desc = "Tab next" })
-map("n", "th", ":tabprev<CR>", { desc = "Tab prev" })
-
--- Ctrl + P to previous window
-map("n", "<C-p>", "<C-w>p", { desc = "Jump to previous window" })
-map("t", "<C-p>", "<C-\\><C-o><C-w>p", { desc = "Jump to previous window" })
 
 -- terminals
 map("n", "<leader>v", function()

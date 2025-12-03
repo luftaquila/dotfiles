@@ -320,6 +320,7 @@ eval "$(zoxide init zsh --cmd j)"
 alias z='zellij'
 alias za='zellij attach'
 alias zl='zellij list-sessions'
+export ZELLIJ_CONFIG_DIR="$HOME/dotfiles/toolsets/zellij"
 
 
 #############################################################################
