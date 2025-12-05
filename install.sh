@@ -324,19 +324,9 @@ function fn_set_directory() {
       fn_cmd "$package_cmd install $openssh_name"
     fi
 
-    # check ssh key
-    ssh_pubkey=$HOME/.ssh/id_ed25519
-    if ! [[ -f $ssh_pubkey ]]; then
-      echo "[INF] no ssh key found! generating new..."
-      fn_cmd "ssh-keygen -t ed25519 -f $ssh_pubkey -N '' <<< y"
-    fi
-    echo "[INF] ssh key: `cat $ssh_pubkey.pub`"
-    echo "[INF] assign the key at https://github.com/settings/keys"
-    read -p "  Press ENTER to continue..."
-
     # cloning dotfiles
     echo "[INF] cloning dotfiles..."
-    fn_cmd "git clone git@github.com:luftaquila/dotfiles.git $HOME/dotfiles"
+    fn_cmd "git clone https://github.com/luftaquila/dotfiles.git $HOME/dotfiles"
     fn_cmd "cd $HOME/dotfiles"
 
     echo "[INF] restarting in cloned directory..."
@@ -418,6 +408,32 @@ function fn_execute_stages() {
   done
 }
 
+function fn_generate_ssh_key() {
+  ssh_pubkey=$HOME/.ssh/id_ed25519
+
+  if ! [[ -f $ssh_pubkey ]]; then
+    echo "[INF] no ssh key found! generating new one..."
+    fn_cmd "ssh-keygen -t ed25519 -f $ssh_pubkey -N '' <<< y"
+  fi
+
+  echo "[INF] ssh key: `cat $ssh_pubkey.pub`"
+  echo "[INF] assign this key to GitHub at https://github.com/settings/keys"
+
+  while true; do
+    input=''
+    read -p "Replace dotfile remote url from https to ssh? (Y/n): " input
+
+    if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
+      fn_cmd "git remote set-url origin git@github.com/luftaquila/dotfiles.git"
+      break
+    elif [ $input == 'n' ] || [ $input == 'N' ]; then
+      break
+    else
+      echo "  invalid input"
+    fi
+  done
+}
+
 
 ################################################################################
 #  launch
@@ -433,5 +449,6 @@ fn_configure_stages
 fn_update
 fn_execute_stages
 echo "[INF] ALL DONE!"
+fn_generate_ssh_key
 echo "[INF] starting in new zsh..."
 exec zsh

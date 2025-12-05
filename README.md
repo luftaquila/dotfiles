@@ -3,7 +3,7 @@
 ## Linux & macOS
 
 ```sh
-bash <(curl -s https://raw.githubusercontent.com/luftaquila/dotfiles/main/install.sh)
+/bin/bash <(curl -s https://raw.githubusercontent.com/luftaquila/dotfiles/main/install.sh)
 ```
 
 ## Windows
