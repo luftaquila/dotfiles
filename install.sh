@@ -182,7 +182,7 @@ function fn_install_ohmyzsh() {
 
   if ! [[ $SHELL == *'zsh'* ]]; then
     echo "[INF] replacing default shell to zsh..."
-    fn_cmd "chsh -s `which zsh`" retry
+    fn_cmd "sudo chsh -s `which zsh` luftaquila" retry
   fi
 }
 
@@ -422,6 +422,9 @@ function fn_execute_stages() {
 ################################################################################
 #  launch
 ################################################################################
+echo "[INF] asking administrator privilege..."
+sudo -v
+
 fn_detect_platform
 fn_check_homebrew
 fn_check_git
