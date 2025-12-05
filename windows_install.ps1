@@ -1,6 +1,6 @@
 # clone dotfiles
 cd "$HOME"
-git clone git@github.com:luftaquila/dotfiles.git
+git clone https://github.com/luftaquila/dotfiles.git
 
 # install powershell profile
 Remove-Item "$profile"

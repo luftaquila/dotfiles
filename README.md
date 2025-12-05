@@ -9,5 +9,5 @@
 ## Windows
 ```powershell
 # in administrative powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/luftaquila/dotfiles/refs/heads/main/install.ps1'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/luftaquila/dotfiles/refs/heads/main/windows_install.ps1'))
 ```
