@@ -221,12 +221,12 @@ function fn_install_lang() {
 
     echo "[INF] activating mise..."
 
-    if [[ $SHELL == *zsh* ]]; then
-      fn_cmd 'eval "$(~/.local/bin/mise activate zsh)"'
-    elif [[ $SHELL == *bash* ]]; then
-      fn_cmd 'eval "$(~/.local/bin/mise activate bash)"'
+    if [[ -n "$ZSH_NAME" ]]; then
+      fn_cmd 'eval "$($HOME/.local/bin/mise activate zsh)"'
+    elif [[ -n "$BASH" ]]; then
+      fn_cmd 'eval "$($HOME/.local/bin/mise activate bash)"'
     else
-      echo "[ERR] $SHELL is not supported"
+      echo "[ERR] $SHELL is not supported (yet)"
     fi
   else
     echo "[INF] mise is already installed. skipping..."
@@ -246,13 +246,7 @@ function fn_install_lang() {
 
       if [[ ${stages_language[$i]} == "Rust" ]]; then
         echo "[INF] installing Rust..."
-
-        if ! [[ -x "$(command -v rustc)" ]]; then
-          fn_cmd "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y"
-          fn_cmd "source $HOME/.cargo/env"
-        else
-          echo "[INF] Rust is already installed. skipping..."
-        fi
+        fn_cmd 'mise use -g rust'
       fi
     fi
   done
@@ -271,17 +265,23 @@ function fn_install_neovim() {
     elif [[ $platform == "macos" ]]; then
       fn_cmd "$package_cmd install neovim"
     fi
-
-    if ! [[ -x "$(command -v pip)" ]]; then
-      fn_cmd "pip install pynvim"
-    else
-      echo "[WRN] Missing pip. skipping pynvim installation..."
-    fi
   else
     echo "[INF] NeoVim is already installed. skipping..."
   fi
 
   echo "[INF] configuring NeoVim..."
+
+  if [[ -x "$(command -v mise)" ]]; then
+    if [[ -x "$(mise which python)" ]]; then
+      fn_cmd 'mise exec python -- python -m pip install pynvim'
+    else
+      echo "[WRN] mise is detected, but python environment is missing. skipping pynvim..."
+    fi
+  elif [[ -x "$(command -v pip)" ]]; then
+    fn_cmd 'python -m pip install pynvim'
+  else
+    echo "[WRN] no mise and pip detected. skipping pynvim..."
+  fi
 
   if [[ ! -d "$HOME/.config/nvim" ]]; then
     fn_cmd "mkdir -p $HOME/.config"
