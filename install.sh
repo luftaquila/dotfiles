@@ -9,47 +9,22 @@ else
   auto_install=false
 fi
 
-package_cmd_update=false
-
-
-###############################################################################
-#  stage definitions
-###############################################################################
-stages=( "Oh My Zsh" "Packages" "Languages" "NeoVim" )
-stages_confirm=( true true true true )
-
+stages=( "Oh My Zsh" "Packages & Languages" )
+stages_confirm=( false false )
 stages_function=(
   fn_install_ohmyzsh
   fn_install_packages
-  fn_install_lang
-  fn_install_neovim
 )
 
-stages_language=( "Python" "Node.js" "Rust" )
-stages_language_confirm=( true true true )
+languages=( "python" "node" "rust" )
+languages_confirm=( false false false )
 
-
-###############################################################################
-#  package definitions
-###############################################################################
 packages_apt=( "build-essential" "libncurses-dev" "net-tools" )
 packages_brew=(
-  "atuin"
-  "bat"
-  "btop"
-  "cmake"
-  "code-minimap"
-  "dust"
-  "eza"
-  "fd"
-  "fzf"
-  "git-delta"
-  "rainbarf"
-  "ripgrep"
-  "tig"
-  "tmux"
-  "zellij"
-  "zoxide"
+  "atuin" "bat" "btop" "cmake" "code-minimap"
+  "dust" "eza" "fd" "fzf" "git-delta" "mise"
+  "nvim" "rainbarf" "ripgrep" "tig" "tmux"
+  "zellij" "zoxide"
 )
 
 
@@ -60,11 +35,9 @@ function fn_detect_platform() {
   if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     platform='linux'
     package_cmd='sudo apt-get -y'
-    openssh_name='openssh-client'
   elif [[ "$OSTYPE" == "darwin"* ]]; then
     platform='macos'
     package_cmd='brew'
-    openssh_name='openssh'
   else
     echo "[ERR] unknown OS detected! terminating..."
     exit 1
@@ -79,22 +52,19 @@ function fn_cmd() {
 
   if [[ "$?" -ne 0 ]]; then
     echo "[ERR] command failed."
+
     if [[ $2 == "retry" ]]; then
       echo "[INF] retrying..."
       fn_cmd "$1" $2
     elif [[ $2 == "ignore" ]]; then
-      :
+      echo "[INF] ignoring..."
+    elif [[ $2 == "onfail" ]]; then
+      echo "$3"
+      exit 1
     else
       echo "[INF] terminating..."
       exit 1
     fi
-  fi
-}
-
-function fn_update() {
-  if [[ "$package_cmd_update" = false ]]; then
-    fn_cmd "$package_cmd update && $package_cmd upgrade"
-    package_cmd_update=true
   fi
 }
 
@@ -128,7 +98,6 @@ function fn_check_git() {
   if ! [[ -x "$(command -v git)" ]]; then
     echo "[ERR] no git detected!"
     echo "[INF] installing git..."
-    fn_update
     fn_cmd "$package_cmd install git"
   fi
 }
@@ -198,7 +167,17 @@ function fn_install_packages() {
   fn_install_dotfile ".tigrc"
   fn_install_dotfile ".tmux.conf"
 
-  # tpm
+  echo "[INF] installing languages..."
+
+  for i in `seq 0 $(( ${#languages[@]} - 1 ))`; do
+    if [[ ${languages_confirm[$i]} == true ]]; then
+      echo "[INF] installing ${languages[$i]}..."
+      fn_cmd "mise use -g ${languages[$i]}"
+    fi
+  done
+
+  echo "[INF] configuring tmux..."
+
   if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
     fn_cmd "git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm"
   fi
@@ -207,88 +186,24 @@ function fn_install_packages() {
   fn_cmd "tmux new-session -d"
   fn_cmd "$HOME/.tmux/plugins/tpm/scripts/install_plugins.sh"
   fn_cmd "tmux kill-server"
-}
-
-function fn_install_lang() {
-  echo "[INF] installing mise..."
-
-  if ! [[ -x "$(command -v mise)" ]]; then
-    if ! [ -f "$HOME/.local/bin/mise" ]; then
-      fn_cmd "curl https://mise.run | sh"
-    else
-      echo "[INF] mise is already installed, but not activated yet"
-    fi
-
-    echo "[INF] activating mise..."
-
-    if [[ -n "$ZSH_NAME" ]]; then
-      fn_cmd 'eval "$($HOME/.local/bin/mise activate zsh)"'
-    elif [[ -n "$BASH" ]]; then
-      fn_cmd 'eval "$($HOME/.local/bin/mise activate bash)"'
-    else
-      echo "[ERR] $SHELL is not supported (yet)"
-    fi
-  else
-    echo "[INF] mise is already installed. skipping..."
-  fi
-
-  for i in `seq 0 $(( ${#stages_language[@]} - 1 ))`; do
-    if [[ ${stages_language_confirm[$i]} == true ]]; then
-      if [[ ${stages_language[$i]} == "Python" ]]; then
-        echo "[INF] installing Python..."
-        fn_cmd 'mise use -g python'
-      fi
-
-      if [[ ${stages_language[$i]} == "Node.js" ]]; then
-        echo "[INF] installing Node.js..."
-        fn_cmd 'mise use -g node'
-      fi
-
-      if [[ ${stages_language[$i]} == "Rust" ]]; then
-        echo "[INF] installing Rust..."
-        fn_cmd 'mise use -g rust'
-      fi
-    fi
-  done
-}
-
-function fn_install_neovim() {
-  echo "[INF] installing NeoVim..."
-
-  if ! [[ -x "$(command -v nvim)" ]]; then
-    if [[ $platform == "linux" ]]; then
-      fn_cmd "$package_cmd install fuse3 libfuse2"
-      fn_cmd "mkdir -p $HOME/.local/bin"
-      fn_cmd "curl -L https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage -o $HOME/.local/bin/nvim"
-      fn_cmd "chmod 744 $HOME/.local/bin/nvim"
-      fn_cmd 'PATH="$HOME/.local/bin:$PATH"'
-    elif [[ $platform == "macos" ]]; then
-      fn_cmd "$package_cmd install neovim"
-    fi
-  else
-    echo "[INF] NeoVim is already installed. skipping..."
-  fi
 
   echo "[INF] configuring NeoVim..."
 
-  if [[ -x "$(command -v mise)" ]]; then
-    if [[ -x "$(mise which python)" ]]; then
-      fn_cmd 'mise exec python -- python -m pip install pynvim'
-    else
-      echo "[WRN] mise is detected, but python environment is missing. skipping pynvim..."
-    fi
-  elif [[ -x "$(command -v pip)" ]]; then
-    fn_cmd 'python -m pip install pynvim'
-  else
-    echo "[WRN] no mise and pip detected. skipping pynvim..."
+  if ! [[ -x "$(mise which python)" ]]; then
+    echo "[INF] installing python for pynvim..."
+    fn_cmd "mise use -g python"
   fi
+
+  fn_cmd "$(mise which python) -m pip install pynvim"
 
   if [[ ! -d "$HOME/.config/nvim" ]]; then
     fn_cmd "mkdir -p $HOME/.config"
     fn_cmd "ln -s $HOME/dotfiles/nvim $HOME/.config/nvim"
   fi
 
-  echo "[INF] installing Vim..."
+  fn_cmd "nvim --headless '+Lazy! sync' +qall" ignore
+
+  echo "[INF] configuring Vim..."
 
   if [[ ! -d "$HOME/.vim/bundle/Vundle.vim" ]]; then
     fn_cmd "git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim"
@@ -305,32 +220,30 @@ function fn_install_neovim() {
 function fn_set_directory() {
   echo "[INF] looking for dotfiles..."
 
-  # current directory is not $HOME/dotfiles
-  if ! `git remote -v | grep -q 'luftaquila/dotfiles'`; then
+  if [[ -d "$HOME/dotfiles" ]]; then
+    fn_cmd "cd $HOME/dotfiles"
 
-    # if exist
-    if [[ -d "$HOME/dotfiles" ]]; then
-      fn_cmd "cd $HOME/dotfiles"
+    if ! `git remote -v | grep -q 'luftaquila/dotfiles'`; then
+      echo "[ERR] existing dotfiles directory is not from luftaquila/dotfiles. terminating..."
+      exit 1
+    else
+      echo "[INF] existing dotfiles directory found"
+      fn_cmd "git fetch origin"
 
-      echo "[INF] restarting in dotfiles directory..."
-      exec ./install.sh $1
+      if [ "$(git rev-parse HEAD)" != "$(git rev-parse @{u})" ]; then
+        echo "[INF] updating dotfiles..."
+        fn_cmd "git pull origin main" onfail "[ERR] cannot update dotfiles due to conflict. terminating..."
+        echo "[INF] installation script updated. restarting..."
+        exec ./install.sh $1
+        exit 0
+      fi
     fi
-
-    # check ssh client
-    if ! [[ -x "$(command -v ssh)" ]]; then
-      echo "[ERR] no ssh client detected!"
-      echo "[INF] installing openssh..."
-      fn_update
-      fn_cmd "$package_cmd install $openssh_name"
-    fi
-
-    # cloning dotfiles
+  else
     echo "[INF] cloning dotfiles..."
     fn_cmd "git clone https://github.com/luftaquila/dotfiles.git $HOME/dotfiles"
     fn_cmd "cd $HOME/dotfiles"
-
-    echo "[INF] restarting in cloned directory..."
     exec ./install.sh $1
+    exit 0
   fi
 
   fn_install_dotfile ".gitconfig"
@@ -350,26 +263,6 @@ function fn_configure_stages() {
 
         if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
           stages_confirm[$i]=true
-
-          # configure languages support
-          if [[ ${stages[$i]} == "Languages" ]]; then
-            for i in `seq 0 $(( ${#stages_language[@]} - 1 ))`; do
-              while true; do
-                input=''
-                read -p "    install ${stages_language[$i]}? (Y/n): " input
-
-                if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
-                  stages_language_confirm[$i]=true
-                  break
-                elif [ $input == 'n' ] || [ $input == 'N' ]; then
-                  stages_language_confirm[$i]=false
-                  break
-                else
-                  echo "    invalid input"
-                fi
-              done
-            done
-          fi
           break
 
         elif [ $input == 'n' ] || [ $input == 'N' ]; then
@@ -382,25 +275,52 @@ function fn_configure_stages() {
       done
     done
 
+    if [[ ${stages_confirm[1]} == true ]]; then
+      for i in `seq 0 $(( ${#languages[@]} - 1 ))`; do
+        while true; do
+          input=''
+          read -p "    install ${languages[$i]}? (Y/n): " input
+
+          if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
+            languages_confirm[$i]=true
+            break
+          elif [ $input == 'n' ] || [ $input == 'N' ]; then
+            languages_confirm[$i]=false
+            break
+          else
+            echo "      invalid input"
+          fi
+        done
+      done
+    fi
+
     echo
-    echo "[INF] please confirm the configurations:"
+    echo "[INF] confirm the configurations:"
 
     for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
-      echo -e "  ${stages[$i]}\033[20G${stages_confirm[$i]}"
+      echo -e "  ${stages[$i]}\033[30G${stages_confirm[$i]}"
+    done
 
-      if [[ ${stages[$i]} == "Languages" && ${stages_confirm[$i]} == true ]]; then
-        for i in `seq 0 $(( ${#stages_language[@]} - 1 ))`; do
-          echo -e "    ${stages_language[$i]}\033[22G${stages_language_confirm[$i]}"
-        done
-      fi
+    for i in `seq 0 $(( ${#languages[@]} - 1 ))`; do
+      echo -e "    ${languages[$i]}\033[30G${languages_confirm[$i]}"
     done
 
     echo
     read -p "  Press ENTER to continue..."
+  else
+    for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
+      stages_confirm[$i]=true
+    done
+
+    for i in `seq 0 $(( ${#languages[@]} - 1 ))`; do
+      languages_confirm[$i]=true
+    done
   fi
 }
 
 function fn_execute_stages() {
+  fn_cmd "$package_cmd update && $package_cmd upgrade"
+
   for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
     if [[ ${stages_confirm[$i]} == true ]]; then
       eval ${stages_function[$i]}
@@ -446,7 +366,6 @@ fn_check_homebrew
 fn_check_git
 fn_set_directory $1
 fn_configure_stages
-fn_update
 fn_execute_stages
 echo "[INF] ALL DONE!"
 fn_generate_ssh_key
