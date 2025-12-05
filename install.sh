@@ -358,9 +358,6 @@ function fn_generate_ssh_key() {
 ################################################################################
 #  launch
 ################################################################################
-echo "[INF] asking administrator privilege..."
-sudo -v
-
 fn_detect_platform
 fn_check_homebrew
 fn_check_git
