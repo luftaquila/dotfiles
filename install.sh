@@ -15,14 +15,14 @@ package_cmd_update=false
 ###############################################################################
 #  stage definitions
 ###############################################################################
-stages=( "Oh My Zsh" "Packages" "NeoVim" "Languages" )
+stages=( "Oh My Zsh" "Packages" "Languages" "NeoVim" )
 stages_confirm=( true true true true )
 
 stages_function=(
   fn_install_ohmyzsh
   fn_install_packages
-  fn_install_neovim
   fn_install_lang
+  fn_install_neovim
 )
 
 stages_language=( "Python" "Node.js" "Rust" )
@@ -209,41 +209,6 @@ function fn_install_packages() {
   fn_cmd "tmux kill-server"
 }
 
-function fn_install_neovim() {
-  echo "[INF] installing NeoVim..."
-
-  if ! [[ -x "$(command -v nvim)" ]]; then
-    if [[ $platform == "linux" ]]; then
-      fn_cmd "$package_cmd install fuse3 libfuse2"
-      fn_cmd "mkdir -p $HOME/.local/bin"
-      fn_cmd "curl -L https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage -o $HOME/.local/bin/nvim"
-      fn_cmd "chmod 744 $HOME/.local/bin/nvim"
-      fn_cmd 'PATH="$HOME/.local/bin:$PATH"'
-    elif [[ $platform == "macos" ]]; then
-      fn_cmd "$package_cmd install neovim"
-    fi
-    fn_cmd "pip install pynvim"
-  else
-    echo "[INF] NeoVim is already installed. skipping..."
-  fi
-
-  echo "[INF] configuring NeoVim..."
-
-  if [[ ! -d "$HOME/.config/nvim" ]]; then
-    fn_cmd "mkdir -p $HOME/.config"
-    fn_cmd "ln -s $HOME/dotfiles/nvim $HOME/.config/nvim"
-  fi
-
-  echo "[INF] installing Vim..."
-
-  if [[ ! -d "$HOME/.vim/bundle/Vundle.vim" ]]; then
-    fn_cmd "git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim"
-  fi
-
-  fn_install_dotfile ".vimrc"
-  fn_cmd "vim -Es -u $HOME/.vimrc +VundleInstall +qall" ignore
-}
-
 function fn_install_lang() {
   echo "[INF] installing mise..."
 
@@ -291,6 +256,46 @@ function fn_install_lang() {
       fi
     fi
   done
+}
+
+function fn_install_neovim() {
+  echo "[INF] installing NeoVim..."
+
+  if ! [[ -x "$(command -v nvim)" ]]; then
+    if [[ $platform == "linux" ]]; then
+      fn_cmd "$package_cmd install fuse3 libfuse2"
+      fn_cmd "mkdir -p $HOME/.local/bin"
+      fn_cmd "curl -L https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage -o $HOME/.local/bin/nvim"
+      fn_cmd "chmod 744 $HOME/.local/bin/nvim"
+      fn_cmd 'PATH="$HOME/.local/bin:$PATH"'
+    elif [[ $platform == "macos" ]]; then
+      fn_cmd "$package_cmd install neovim"
+    fi
+
+    if ! [[ -x "$(command -v pip)" ]]; then
+      fn_cmd "pip install pynvim"
+    else
+      echo "[WRN] Missing pip. skipping pynvim installation..."
+    fi
+  else
+    echo "[INF] NeoVim is already installed. skipping..."
+  fi
+
+  echo "[INF] configuring NeoVim..."
+
+  if [[ ! -d "$HOME/.config/nvim" ]]; then
+    fn_cmd "mkdir -p $HOME/.config"
+    fn_cmd "ln -s $HOME/dotfiles/nvim $HOME/.config/nvim"
+  fi
+
+  echo "[INF] installing Vim..."
+
+  if [[ ! -d "$HOME/.vim/bundle/Vundle.vim" ]]; then
+    fn_cmd "git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim"
+  fi
+
+  fn_install_dotfile ".vimrc"
+  fn_cmd "vim -Es -u $HOME/.vimrc +VundleInstall +qall" ignore
 }
 
 
