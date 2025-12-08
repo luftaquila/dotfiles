@@ -344,7 +344,7 @@ function fn_generate_ssh_key() {
     read -p "Replace dotfile remote url from https to ssh? (Y/n): " input
 
     if [ -z $input ] || [ $input == 'y' ] || [ $input == 'Y' ]; then
-      fn_cmd "git remote set-url origin git@github.com/luftaquila/dotfiles.git"
+      fn_cmd "git remote set-url origin git@github.com:luftaquila/dotfiles.git"
       break
     elif [ $input == 'n' ] || [ $input == 'N' ]; then
       break
