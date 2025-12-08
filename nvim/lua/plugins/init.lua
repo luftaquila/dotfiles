@@ -65,24 +65,6 @@ return {
 
   -- custom plugins -----------------------------------------------------------
   {
-    "ojroques/nvim-osc52",
-    event = "VimEnter",
-    config = function()
-      local osc52 = require "osc52"
-
-      osc52.setup {}
-
-      vim.api.nvim_create_autocmd("TextYankPost", {
-        callback = function()
-          if vim.v.event.operator == "y" and vim.v.event.regname == "" then
-            osc52.copy_register '"'
-          end
-        end,
-      })
-    end,
-  },
-
-  {
     "luftaquila/nvim-cursorline",
     event = "VimEnter",
     config = function()
@@ -100,21 +82,39 @@ return {
   },
 
   {
-    "lambdalisue/vim-suda",
-    event = "VimEnter",
-    config = function()
-      vim.g.suda_smart_edit = 1
-      vim.api.nvim_create_user_command("R", "SudaRead", {})
-      vim.api.nvim_create_user_command("W", "SudaWrite", {})
-    end,
-  },
-
-  {
     "MysticalDevil/inlay-hints.nvim",
     event = "LspAttach",
     dependencies = { "neovim/nvim-lspconfig" },
     config = function()
       require("inlay-hints").setup()
+    end,
+  },
+
+  {
+    "ojroques/nvim-osc52",
+    event = "VeryLazy",
+    config = function()
+      local osc52 = require "osc52"
+
+      osc52.setup {}
+
+      vim.api.nvim_create_autocmd("TextYankPost", {
+        callback = function()
+          if vim.v.event.operator == "y" and vim.v.event.regname == "" then
+            osc52.copy_register '"'
+          end
+        end,
+      })
+    end,
+  },
+
+  {
+    "lambdalisue/vim-suda",
+    event = "VeryLazy",
+    config = function()
+      vim.g.suda_smart_edit = 1
+      vim.api.nvim_create_user_command("R", "SudaRead", {})
+      vim.api.nvim_create_user_command("W", "SudaWrite", {})
     end,
   },
 
