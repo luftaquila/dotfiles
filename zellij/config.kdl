@@ -7,8 +7,7 @@ keybinds clear-defaults=true {
         bind "Enter" { WriteChars "\u{000D}"; MessagePlugin "autolock" {}; }
     }
     locked {
-        bind "Alt z" { MessagePlugin "autolock" {payload "disable";}; SwitchToMode "Normal"; }
-
+        bind "Ctrl i" { MessagePlugin "autolock" {payload "disable";}; SwitchToMode "Normal"; }
         bind "Ctrl g" { SwitchToMode "normal"; }
     }
     shared {
@@ -152,7 +151,7 @@ keybinds clear-defaults=true {
     }
     shared_except "locked" {
         // zellij-autolock
-        bind "Alt z" { MessagePlugin "autolock" {payload "disable";}; SwitchToMode "Locked"; }
+        bind "Ctrl i" { MessagePlugin "autolock" {payload "enable";}; SwitchToMode "Locked"; }
         bind "Ctrl h" { MoveFocusOrTab "Left"; }
         bind "Ctrl l" { MoveFocusOrTab "Right"; }
         bind "Ctrl j" { MoveFocus "Down"; }
