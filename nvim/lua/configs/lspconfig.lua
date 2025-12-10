@@ -12,6 +12,7 @@ local servers = {
   "ruff",
   "rust_analyzer",
   "taplo",
+  "tinymist",
   "vale_ls",
   "vtsls",
 }
@@ -107,3 +108,12 @@ vim.lsp.config('html', {
   filetypes = { "html", "vue" },
 })
 vim.lsp.enable('html')
+
+vim.lsp.config('tinymist', {
+  settings = {
+    formatterMode = "typstyle",
+    exportPdf = "onType",
+    semanticTokens = "disable"
+  }
+})
+vim.lsp.enable('tinymist')

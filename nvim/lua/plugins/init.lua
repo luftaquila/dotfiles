@@ -389,6 +389,12 @@ return {
     end,
   },
 
+  {
+    "chomosuke/typst-preview.nvim",
+    ft = "typst",
+    opts = {},
+  },
+
   -- {
   --   "echasnovski/mini.nvim",
   --   event = "VeryLazy",
