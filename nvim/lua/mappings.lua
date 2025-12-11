@@ -44,11 +44,6 @@ map("n", "<leader>fw", telescope.live_grep, { desc = "Telescope live grep" })
 map("n", "<leader>fk", telescope.keymaps, { desc = "Telescope find keymaps" })
 map("n", "<leader>fr", telescope.registers, { desc = "Telescope find registers" })
 
--- Leap
-map("n", "s", "<Plug>(leap-forward)")
-map("n", "S", "<Plug>(leap-backward)")
-map("n", "gs", "<Plug>(leap-from-window)")
-
 -- Inlay Hints
 map("n", "H", ":InlayHintsToggle<CR>", { desc = "Toggle Inlay Hints" })
 
