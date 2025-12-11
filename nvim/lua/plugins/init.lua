@@ -145,7 +145,6 @@ return {
         highlight_command = {
           require("actions-preview.highlight").delta(),
         },
-        backend = { "telescope" },
         telescope = {
           sorting_strategy = "ascending",
           layout_strategy = "vertical",

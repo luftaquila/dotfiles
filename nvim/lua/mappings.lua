@@ -12,9 +12,6 @@ local function opts_to_id(id)
   end
 end
 
--- LSP
-map("n", "<leader>lf", vim.diagnostic.open_float, { desc = "Diagnostics under cursor" })
-
 -- Buffer
 map("n", "<leader>bb", "<cmd>enew<CR>", { desc = "buffer new" })
 
@@ -36,6 +33,9 @@ map("n", "th", ":tabprev<CR>", { desc = "Tab prev" })
 map("n", "<C-p>", "<C-w>p", { desc = "Jump to previous window" })
 map("t", "<C-p>", "<C-\\><C-o><C-w>p", { desc = "Jump to previous window" })
 
+-- LSP
+map("n", "<leader>lf", vim.diagnostic.open_float, { desc = "Diagnostics under cursor" })
+
 -- Telescope
 local telescope = require "telescope.builtin"
 
@@ -44,31 +44,21 @@ map("n", "<leader>gs", telescope.git_status, { desc = "Telescope Git Status" })
 map("n", "<leader>gt", telescope.git_stash, { desc = "Telescope Git Stash" })
 
 map("n", "<leader>ca", require("actions-preview").code_actions, { desc = "Telescope LSP code action preview" })
+map("n", "<leader>fd", telescope.lsp_definitions, { desc = "Telescope find LSP definitions" })
+map("n", "<leader>fp", telescope.lsp_type_definitions, { desc = "Telescope find LSP type definitions" })
+map("n", "<leader>fc", telescope.lsp_incoming_calls, { desc = "Telescope find LSP incoming calls" })
+map("n", "<leader>fs", telescope.lsp_document_symbols, { desc = "Telescope find LSP symbols" })
+map("n", "<leader>ft", telescope.lsp_dynamic_workspace_symbols, { desc = "Telescope find LSP tags" })
 map("n", "<leader>fl", telescope.diagnostics, { desc = "Telescope find LSP diagnostics" })
 
-map("n", "<leader>fc", telescope.commands, { desc = "Telescope find commands" })
-map("n", "<leader>fr", telescope.registers, { desc = "Telescope find registers" })
 map("n", "<leader>fu", telescope.grep_string, { desc = "Telescope grep string under cursor" })
-map("n", "<leader>fb", telescope.current_buffer_fuzzy_find, { desc = "Telescope find current buffer" })
+map("n", "<leader>fw", telescope.live_grep, { desc = "Telescope live grep" })
 
 map("n", "<leader>fk", telescope.keymaps, { desc = "Telescope find keymaps" })
-map("n", "<leader>fj", telescope.marks, { desc = "Telescope find marks" })
-map("n", "<leader>fp", telescope.filetypes, { desc = "Telescope find filetypes" })
-map("n", "<leader>fs", telescope.spell_suggest, { desc = "Telescope spell suggestion" })
-
-map("n", "<leader>ft", telescope.lsp_dynamic_workspace_symbols, { desc = "Telescope find LSP tags" })
-
-map("n", "<leader>fw", telescope.live_grep, { desc = "Telescope live grep" })
-map("n", "<leader>fz", function()
-  telescope.grep_string { search = "" }
-end, { desc = "Telescope fuzzy grep string" })
+map("n", "<leader>fr", telescope.registers, { desc = "Telescope find registers" })
 
 -- Gitsigns
 map("n", "<leader>df", require("gitsigns").diffthis, { desc = "Git diff" })
-
--- Vista
-map("n", "tt", ":Vista!!<CR>", { desc = "Vista toggle tag window" })
-map("n", "<leader>i", ":Vista focus<CR>", { desc = "Vista focus tag window" })
 
 -- Leap
 map("n", "s", "<Plug>(leap-forward)")
@@ -128,7 +118,7 @@ map("n", "<leader>sm", function()
 end, { desc = "Serial monitor open" })
 
 map("n", "<leader>lr", function()
-  vim.cmd("echom system('zsh -c \" source ~/rtworks/rt.zsh; fn_rtworks lr; \"')")
+  vim.cmd "echom system('zsh -c \" source ~/rtworks/rt.zsh; fn_rtworks lr; \"')"
 end, { desc = "RTWORKS local launch" })
 
 map("n", "<leader>b", function()
