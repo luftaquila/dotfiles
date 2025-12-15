@@ -82,6 +82,11 @@ return {
   },
 
   {
+    "mrjones2014/smart-splits.nvim",
+    event = "VimEnter",
+  },
+
+  {
     "MysticalDevil/inlay-hints.nvim",
     event = "LspAttach",
     dependencies = { "neovim/nvim-lspconfig" },
@@ -116,11 +121,6 @@ return {
       vim.api.nvim_create_user_command("R", "SudaRead", {})
       vim.api.nvim_create_user_command("W", "SudaWrite", {})
     end,
-  },
-
-  {
-    "swaits/zellij-nav.nvim",
-    event = "VeryLazy",
   },
 
   {
@@ -198,8 +198,8 @@ return {
       modes = {
         search = {
           enabled = true,
-        }
-      }
+        },
+      },
     },
     keys = {
       {

@@ -3,13 +3,22 @@ require "nvchad.mappings"
 local map = vim.keymap.set
 local term = require "nvchad.term"
 
--- Zellij
-local zellij = require "zellij-nav"
+-- smart-splits.nvim
+vim.keymap.set('n', '<A-h>', require('smart-splits').resize_left)
+vim.keymap.set('n', '<A-j>', require('smart-splits').resize_down)
+vim.keymap.set('n', '<A-k>', require('smart-splits').resize_up)
+vim.keymap.set('n', '<A-l>', require('smart-splits').resize_right)
 
-map("n", "<C-h>", zellij.left, { desc = "Zellij navigate left" })
-map("n", "<C-k>", zellij.up, { desc = "Zellij navigate up" })
-map("n", "<C-j>", zellij.down, { desc = "Zellij navigate down" })
-map("n", "<C-l>", zellij.right, { desc = "Zellij navigate right" })
+vim.keymap.set('n', '<C-h>', require('smart-splits').move_cursor_left)
+vim.keymap.set('n', '<C-j>', require('smart-splits').move_cursor_down)
+vim.keymap.set('n', '<C-k>', require('smart-splits').move_cursor_up)
+vim.keymap.set('n', '<C-l>', require('smart-splits').move_cursor_right)
+vim.keymap.set('n', '<C-\\>', require('smart-splits').move_cursor_previous)
+
+vim.keymap.set('n', '<leader><leader>h', require('smart-splits').swap_buf_left)
+vim.keymap.set('n', '<leader><leader>j', require('smart-splits').swap_buf_down)
+vim.keymap.set('n', '<leader><leader>k', require('smart-splits').swap_buf_up)
+vim.keymap.set('n', '<leader><leader>l', require('smart-splits').swap_buf_right)
 
 -- Tabs
 map("n", "tn", ":tabnew<CR>", { desc = "Tab create new" })
@@ -25,10 +34,6 @@ map("n", "<leader>lf", vim.diagnostic.open_float, { desc = "Diagnostics under cu
 
 -- Telescope
 local telescope = require "telescope.builtin"
-
-map("n", "<leader>br", telescope.git_branches, { desc = "Telescope Git Branches" })
-map("n", "<leader>gs", telescope.git_status, { desc = "Telescope Git Status" })
-map("n", "<leader>gt", telescope.git_stash, { desc = "Telescope Git Stash" })
 
 map("n", "<leader>ca", require("actions-preview").code_actions, { desc = "Telescope LSP code action preview" })
 map("n", "<leader>fd", telescope.lsp_definitions, { desc = "Telescope find LSP definitions" })

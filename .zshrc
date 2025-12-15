@@ -141,9 +141,9 @@ alias c='clear'
 #############################################################################
 # navigation
 #############################################################################
-bindkey "^H" backward-word
-bindkey "^J" backward-kill-word
-bindkey "^L" forward-word
+bindkey '^W' backward-word
+bindkey '^E' forward-word
+bindkey '^F' backward-kill-word
 
 
 #############################################################################
