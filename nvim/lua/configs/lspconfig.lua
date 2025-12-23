@@ -9,6 +9,7 @@ local servers = {
   "jsonls",
   "lua_ls",
   "marksman",
+  "openscad_lsp",
   "ruff",
   "rust_analyzer",
   "taplo",
@@ -38,7 +39,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.lsp.config('lua_ls', {
+vim.lsp.config("lua_ls", {
   settings = {
     Lua = {
       diagnostics = {
@@ -47,9 +48,8 @@ vim.lsp.config('lua_ls', {
     },
   },
 })
-vim.lsp.enable('lua_ls')
 
-vim.lsp.config('clangd', {
+vim.lsp.config("clangd", {
   settings = {
     clangd = {
       InlayHints = {
@@ -62,9 +62,8 @@ vim.lsp.config('clangd', {
     },
   },
 })
-vim.lsp.enable('clangd')
 
-vim.lsp.config('rust_analyzer', {
+vim.lsp.config("rust_analyzer", {
   settings = {
     ["rust-analyzer"] = {
       inlayHints = {
@@ -102,18 +101,19 @@ vim.lsp.config('rust_analyzer', {
     },
   },
 })
-vim.lsp.enable('rust_analyzer')
 
-vim.lsp.config('html', {
+vim.lsp.config("html", {
   filetypes = { "html", "vue" },
 })
-vim.lsp.enable('html')
 
-vim.lsp.config('tinymist', {
+vim.lsp.config("tinymist", {
   settings = {
     formatterMode = "typstyle",
     exportPdf = "onType",
-    semanticTokens = "disable"
-  }
+    semanticTokens = "disable",
+  },
 })
-vim.lsp.enable('tinymist')
+
+for _, lsp in ipairs(servers) do
+  vim.lsp.enable(lsp)
+end
