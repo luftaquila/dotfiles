@@ -16,7 +16,7 @@ local lazy_config = require "configs.lazy"
 -- load plugins ---------------------------------------------------------------
 require("lazy").setup({
   {
-    "luftaquila/NvChad",
+    "NvChad/NvChad",
     lazy = false,
     branch = "v2.5",
     import = "nvchad.plugins",
