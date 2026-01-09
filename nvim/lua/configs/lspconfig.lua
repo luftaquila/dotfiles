@@ -1,11 +1,8 @@
 local servers = {
-  "asm_lsp",
   "bashls",
   "biome",
   "clangd",
   "cmake",
-  "cssls",
-  "html",
   "jsonls",
   "lua_ls",
   "marksman",
@@ -14,8 +11,8 @@ local servers = {
   "rust_analyzer",
   "taplo",
   "tinymist",
-  "vale_ls",
   "vtsls",
+  "vue_ls",
 }
 
 vim.api.nvim_create_user_command("LspFormat", function()
@@ -102,16 +99,38 @@ vim.lsp.config("rust_analyzer", {
   },
 })
 
-vim.lsp.config("html", {
-  filetypes = { "html", "vue" },
-})
-
 vim.lsp.config("tinymist", {
   settings = {
     formatterMode = "typstyle",
     exportPdf = "onType",
     semanticTokens = "disable",
   },
+})
+
+vim.lsp.config("vtsls", {
+  settings = {
+    vtsls = {
+      tsserver = {
+        globalPlugins = {
+          {
+            name = "@vue/typescript-plugin",
+            location = vim.fn.stdpath "data"
+              .. "/mason"
+              .. "/packages/vue-language-server/node_modules/@vue/language-server",
+            languages = { "vue" },
+            configNamespace = "typescript",
+          },
+        },
+      },
+    },
+  },
+  filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+
+  on_attach = function(client, bufnr)
+    if client.name == "vtsls" and vim.bo[bufnr].filetype == "vue" then
+      client.server_capabilities.semanticTokensProvider = nil
+    end
+  end,
 })
 
 for _, lsp in ipairs(servers) do

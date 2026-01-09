@@ -2,8 +2,14 @@ local options = {
   formatters_by_ft = {
     lua = { "stylua" },
     c = { "clang-format" },
-    -- css = { "prettier" },
-    -- html = { "prettier" },
+    vue = { "biome" },
+  },
+  formatters = {
+    prettier = {
+      prepend_args = {
+        "--print-width", "120",
+      },
+    },
   },
 
   -- format_on_save = {
