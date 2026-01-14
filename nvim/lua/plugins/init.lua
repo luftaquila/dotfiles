@@ -1,14 +1,37 @@
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
     config = function()
       require "configs.conform"
     end,
   },
 
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason-lspconfig.nvim",
+    event = "VeryLazy",
+    opts = {
+      ensure_installed = {
+        "bashls",
+        "biome",
+        "clangd",
+        "cmake",
+        "jsonls",
+        "lua_ls",
+        "marksman",
+        "openscad_lsp",
+        "ruff",
+        "rust_analyzer",
+        "stylua",
+        "taplo",
+        "tinymist",
+        "vtsls",
+        "vue_ls",
+      },
+    },
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+      "neovim/nvim-lspconfig",
+    },
   },
 
   {
@@ -19,11 +42,13 @@ return {
         "bash",
         "c",
         "cmake",
+        "comment",
         "cpp",
         "css",
         "csv",
         "diff",
         "disassembly",
+        "dockerfile",
         "doxygen",
         "git_config",
         "git_rebase",
@@ -35,21 +60,35 @@ return {
         "java",
         "javascript",
         "json",
+        "json5",
+        "kconfig",
+        "latex",
         "llvm",
         "lua",
         "make",
+        "markdown",
         "markdown_inline",
+        "nginx",
+        "ninja",
         "objdump",
+        "passwd",
+        "powershell",
+        "printf",
         "python",
         "regex",
         "rst",
         "rust",
+        "sql",
+        "ssh_config",
         "t32",
         "tmux",
         "toml",
-        "verilog",
+        "typescript",
+        "typst",
+        "udev",
+        "vhdl",
         "vim",
-        "vimdoc",
+        "vue",
         "xml",
         "yaml",
       },
@@ -93,6 +132,32 @@ return {
   },
 
   {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = "VeryLazy",
+    config = function()
+      require("treesitter-context").setup {}
+    end,
+  },
+
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    event = "VeryLazy",
+    build = "make",
+  },
+
+  {
+    "nvimdev/lspsaga.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("lspsaga").setup {}
+    end,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+  },
+
+  {
     "ojroques/nvim-osc52",
     event = "VeryLazy",
     config = function()
@@ -118,9 +183,18 @@ return {
   },
 
   {
-    "folke/ts-comments.nvim",
+    "Bekaboo/dropbar.nvim",
     event = "VeryLazy",
-    opts = {},
+    dependencies = {
+      "nvim-telescope/telescope-fzf-native.nvim",
+    },
+    config = function()
+      vim.opt.mousemoveevent = true
+      local dropbar_api = require "dropbar.api"
+      vim.keymap.set("n", "<leader>pp", dropbar_api.pick, { desc = "Go to start of current context" })
+      vim.keymap.set("n", "<leader>s", dropbar_api.goto_context_start, { desc = "Go to start of current context" })
+      vim.keymap.set("n", "<leader>tt", dropbar_api.select_next_context, { desc = "Select next context" })
+    end,
   },
 
   {
@@ -132,27 +206,17 @@ return {
   },
 
   {
-    "aznhe21/actions-preview.nvim",
+    "folke/ts-comments.nvim",
     event = "VeryLazy",
+    opts = {},
+  },
+
+  {
+    "folke/todo-comments.nvim",
+    event = "VeryLazy",
+    dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
-      require("actions-preview").setup {
-        highlight_command = {
-          require("actions-preview.highlight").delta(),
-        },
-        telescope = {
-          sorting_strategy = "ascending",
-          layout_strategy = "vertical",
-          layout_config = {
-            width = 0.8,
-            height = 0.9,
-            prompt_position = "top",
-            preview_cutoff = 20,
-            preview_height = function(_, _, max_lines)
-              return max_lines - 15
-            end,
-          },
-        },
-      }
+      require("todo-comments").setup {}
     end,
   },
 
@@ -167,22 +231,6 @@ return {
       vim.keymap.set("n", "<leader>ql", persistence.load, { desc = "Load last session" })
       vim.keymap.set("n", "<leader>qd", persistence.stop, { desc = "Do not save session on exit" })
     end,
-  },
-
-  {
-    "kosayoda/nvim-lightbulb",
-    event = "VeryLazy",
-    config = function()
-      require("nvim-lightbulb").setup {
-        autocmd = { enabled = true },
-      }
-    end,
-  },
-
-  {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    event = "VeryLazy",
-    build = "make",
   },
 
   {
@@ -279,6 +327,41 @@ return {
   },
 
   {
+    "aznhe21/actions-preview.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("actions-preview").setup {
+        highlight_command = {
+          require("actions-preview.highlight").delta(),
+        },
+        telescope = {
+          sorting_strategy = "ascending",
+          layout_strategy = "vertical",
+          layout_config = {
+            width = 0.8,
+            height = 0.9,
+            prompt_position = "top",
+            preview_cutoff = 20,
+            preview_height = function(_, _, max_lines)
+              return max_lines - 15
+            end,
+          },
+        },
+      }
+    end,
+  },
+
+  {
+    "kosayoda/nvim-lightbulb",
+    event = "VeryLazy",
+    config = function()
+      require("nvim-lightbulb").setup {
+        autocmd = { enabled = true },
+      }
+    end,
+  },
+
+  {
     "Skosulor/nibbler",
     event = "VeryLazy",
     config = function()
@@ -286,35 +369,6 @@ return {
         display_enabled = true,
       }
     end,
-  },
-
-  {
-    "folke/todo-comments.nvim",
-    event = "VeryLazy",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("todo-comments").setup {}
-    end,
-  },
-
-  {
-    "nvim-treesitter/nvim-treesitter-context",
-    event = "VeryLazy",
-    config = function()
-      require("treesitter-context").setup {}
-    end,
-  },
-
-  {
-    "nvimdev/lspsaga.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("lspsaga").setup {}
-    end,
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
   },
 
   {
@@ -356,16 +410,14 @@ return {
   },
 
   {
-    "Bekaboo/dropbar.nvim",
+    "chomosuke/typst-preview.nvim",
+    ft = "typst",
+    opts = {},
+  },
+
+  {
+    "jannis-baum/vivify.vim",
     event = "VeryLazy",
-    dependencies = {
-      "nvim-telescope/telescope-fzf-native.nvim",
-    },
-    config = function()
-      local dropbar_api = require "dropbar.api"
-      vim.keymap.set("n", "ts", dropbar_api.goto_context_start, { desc = "Go to start of current context" })
-      vim.keymap.set("n", "tt", dropbar_api.select_next_context, { desc = "Select next context" })
-    end,
   },
 
   {
@@ -377,14 +429,8 @@ return {
       "nvim-telescope/telescope.nvim",
     },
     config = function()
-      vim.keymap.set("n", "<leader>o", require("neogit").open, { desc = "Go to start of current context" })
+      vim.keymap.set("n", "<leader>o", require("neogit").open, { desc = "Open NeoGit" })
     end,
-  },
-
-  {
-    "chomosuke/typst-preview.nvim",
-    ft = "typst",
-    opts = {},
   },
 
   -- {

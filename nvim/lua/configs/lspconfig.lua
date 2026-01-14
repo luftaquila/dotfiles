@@ -1,20 +1,3 @@
-local servers = {
-  "bashls",
-  "biome",
-  "clangd",
-  "cmake",
-  "jsonls",
-  "lua_ls",
-  "marksman",
-  "openscad_lsp",
-  "ruff",
-  "rust_analyzer",
-  "taplo",
-  "tinymist",
-  "vtsls",
-  "vue_ls",
-}
-
 vim.api.nvim_create_user_command("LspFormat", function()
   -- Use null-ls if present
   if vim.fn.exists ":NullFormat" == 2 then
@@ -50,8 +33,8 @@ vim.lsp.config("clangd", {
   settings = {
     clangd = {
       InlayHints = {
-        Designators = true,
         Enabled = true,
+        Designators = true,
         ParameterNames = true,
         DeducedTypes = true,
       },
@@ -132,7 +115,3 @@ vim.lsp.config("vtsls", {
     end
   end,
 })
-
-for _, lsp in ipairs(servers) do
-  vim.lsp.enable(lsp)
-end
