@@ -49,9 +49,6 @@ map("n", "<leader>fw", telescope.live_grep, { desc = "Telescope live grep" })
 map("n", "<leader>fk", telescope.keymaps, { desc = "Telescope find keymaps" })
 map("n", "<leader>fr", telescope.registers, { desc = "Telescope find registers" })
 
--- Inlay Hints
-map("n", "H", ":InlayHintsToggle<CR>", { desc = "Toggle Inlay Hints" })
-
 -- macro
 map("n", "<CR>", "@q", { desc = "Macro play @q" })
 

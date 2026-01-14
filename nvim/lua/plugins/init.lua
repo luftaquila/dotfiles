@@ -87,26 +87,20 @@ return {
   },
 
   {
-    "MysticalDevil/inlay-hints.nvim",
+    "chrisgrieser/nvim-lsp-endhints",
     event = "LspAttach",
-    dependencies = { "neovim/nvim-lspconfig" },
-    config = function()
-      require("inlay-hints").setup()
-    end,
+    opts = {}, -- required, even if empty
   },
 
   {
     "ojroques/nvim-osc52",
     event = "VeryLazy",
     config = function()
-      local osc52 = require "osc52"
-
-      osc52.setup {}
-
+      require("osc52").setup {}
       vim.api.nvim_create_autocmd("TextYankPost", {
         callback = function()
           if vim.v.event.operator == "y" and vim.v.event.regname == "" then
-            osc52.copy_register '"'
+            require("osc52").copy_register '"'
           end
         end,
       })
@@ -397,18 +391,5 @@ return {
   --   "echasnovski/mini.nvim",
   --   event = "VeryLazy",
   --   version = "*",
-  -- },
-
-  -- {
-  --   "luftaquila/codewindow.nvim",
-  --   event = "VeryLazy",
-  --   config = function()
-  --     local codewindow = require "codewindow"
-  --     codewindow.setup {
-  --       auto_enable = true,
-  --     }
-  --     codewindow.apply_default_keybinds()
-  --     vim.api.nvim_set_hl(0, "CodewindowBorder", { fg = "#1e222a" })
-  --   end,
   -- },
 }
