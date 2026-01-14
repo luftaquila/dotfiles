@@ -1,6 +1,7 @@
 require "nvchad.mappings"
 
 local map = vim.keymap.set
+local unmap = vim.keymap.del
 local term = require "nvchad.term"
 
 -- smart-splits.nvim
@@ -30,15 +31,16 @@ map("n", "th", ":tabprev<CR>", { desc = "Tab prev" })
 map("n", "<C-p>", "<C-w>p", { desc = "Jump to previous window" })
 
 -- LSP
-map("n", "<leader>lf", vim.diagnostic.open_float, { desc = "Diagnostics under cursor" })
+map("n", "<leader>fi", ":Lspsaga incoming_calls<CR>", { desc = "LSP incoming calls" })
+map("n", "<leader>fo", ":Lspsaga outgoing_calls<CR>", { desc = "LSP outgoing calls" })
+map("n", "<leader>ca", ":Lspsaga code_action<CR>", { desc = "LSP code action" })
+map("n", "<leader>fd", ":Lspsaga finder<CR>", { desc = "LSP finder" })
+map("n", "K", ":Lspsaga hover_doc<CR>", { desc = "LSP documentation" })
+map("n", "tt", ":Lspsaga outline<CR>", { desc = "LSP code outline" })
 
 -- Telescope
 local telescope = require "telescope.builtin"
 
-map("n", "<leader>ca", require("actions-preview").code_actions, { desc = "Telescope LSP code action preview" })
-map("n", "<leader>fd", telescope.lsp_definitions, { desc = "Telescope find LSP definitions" })
-map("n", "<leader>fp", telescope.lsp_type_definitions, { desc = "Telescope find LSP type definitions" })
-map("n", "<leader>fc", telescope.lsp_incoming_calls, { desc = "Telescope find LSP incoming calls" })
 map("n", "<leader>fs", telescope.lsp_document_symbols, { desc = "Telescope find LSP symbols" })
 map("n", "<leader>ft", telescope.lsp_dynamic_workspace_symbols, { desc = "Telescope find LSP tags" })
 map("n", "<leader>fl", telescope.diagnostics, { desc = "Telescope find LSP diagnostics" })
@@ -56,3 +58,5 @@ map("n", "<CR>", "@q", { desc = "Macro play @q" })
 map("n", "<leader>a", function()
   term.toggle { pos = "float", id = "floating" }
 end, { desc = "Terminal Toggle Floating terminal" })
+unmap("n", "<leader>h")
+unmap("n", "<leader>v")

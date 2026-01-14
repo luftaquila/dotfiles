@@ -149,7 +149,11 @@ return {
     "nvimdev/lspsaga.nvim",
     event = "VeryLazy",
     config = function()
-      require("lspsaga").setup {}
+      require("lspsaga").setup {
+        lightbulb = {
+          virtual_text = false,
+        },
+      }
     end,
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
@@ -179,21 +183,6 @@ return {
       vim.g.suda_smart_edit = 1
       vim.api.nvim_create_user_command("R", "SudaRead", {})
       vim.api.nvim_create_user_command("W", "SudaWrite", {})
-    end,
-  },
-
-  {
-    "Bekaboo/dropbar.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      "nvim-telescope/telescope-fzf-native.nvim",
-    },
-    config = function()
-      vim.opt.mousemoveevent = true
-      local dropbar_api = require "dropbar.api"
-      vim.keymap.set("n", "<leader>pp", dropbar_api.pick, { desc = "Go to start of current context" })
-      vim.keymap.set("n", "<leader>s", dropbar_api.goto_context_start, { desc = "Go to start of current context" })
-      vim.keymap.set("n", "<leader>tt", dropbar_api.select_next_context, { desc = "Select next context" })
     end,
   },
 
@@ -357,16 +346,6 @@ return {
             end,
           },
         },
-      }
-    end,
-  },
-
-  {
-    "kosayoda/nvim-lightbulb",
-    event = "VeryLazy",
-    config = function()
-      require("nvim-lightbulb").setup {
-        autocmd = { enabled = true },
       }
     end,
   },
