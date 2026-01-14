@@ -60,23 +60,3 @@ map("n", "<leader>a", function()
   term.toggle { pos = "float", id = "floating" }
 end, { desc = "Terminal Toggle Floating terminal" })
 
--- Debug
--- https://configure.zsa.io/moonlander/layouts/b750V/latest/3
-local dap = require "dap"
-
-map("n", "<leader>gg", require("dapui").toggle, { desc = "Debug open UI" })
-map("n", "g?", dap.status, { desc = "Debug DAP status" })
-
-map("n", "<F1>", dap.continue, { desc = "Debug continue" }) -- C
-map("n", "<F2>", dap.run_last, { desc = "Debug run last configuration" }) -- R
-
-map("n", "<F3>", dap.toggle_breakpoint, { desc = "Debug toggle breakpoint" }) -- B
-map("n", "<F4>", dap.clear_breakpoints, { desc = "Debug clear all breakpoints" }) -- W
-map("n", "<F5>", dap.run_to_cursor, { desc = "Debug run to the current cursor" }) -- V
-
-map("n", "<F6>", dap.step_over, { desc = "Debug step over (next)" }) -- T
-map("n", "<F7>", dap.step_into, { desc = "Debug step into (step)" }) -- S
-map("n", "<F8>", function()
-  dap.repl.execute "stepi"
-end, { desc = "Debug step instruction (stepi)" }) -- A
-map("n", "<F9>", dap.step_out, { desc = "Debug step out (finish)" }) -- F
