@@ -1,19 +1,26 @@
+local capabilities = require("nvchad.configs.lspconfig").capabilities
+local status, blink = pcall(require, "blink.cmp")
+if status then
+  capabilities = blink.get_lsp_capabilities(capabilities)
+end
+
+vim.lsp.config("*", {
+  on_attach = require("nvchad.configs.lspconfig").on_attach,
+  on_init = require("nvchad.configs.lspconfig").on_init,
+  capabilities = capabilities,
+})
+
 vim.api.nvim_create_user_command("LspFormat", function()
-  -- Use null-ls if present
   if vim.fn.exists ":NullFormat" == 2 then
     vim.cmd "NullFormat"
     return
   end
-
-  -- Fallback to whatever lsp server has formatting capabilities
   vim.lsp.buf.format()
 end, { desc = "Format current buffer" })
 
--- disable default lsp code action keymap
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     vim.schedule(function()
-      -- ignore error despite failure
       pcall(vim.keymap.del, { "n", "v" }, "<leader>ca", { buffer = args.buf })
     end)
   end,

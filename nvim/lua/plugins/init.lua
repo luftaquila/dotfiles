@@ -102,19 +102,9 @@ return {
     end,
   },
 
-  -- custom plugins -----------------------------------------------------------
-  {
-    "luftaquila/nvim-cursorline",
-    event = "VimEnter",
-    config = function()
-      require("nvim-cursorline").setup {
-        cursorline = {
-          timeout = 0,
-        },
-      }
-    end,
-  },
+  { "hrsh7th/nvim-cmp", enabled = false },
 
+  -- custom plugins -----------------------------------------------------------
   {
     "wakatime/vim-wakatime",
     event = "VimEnter",
@@ -126,60 +116,11 @@ return {
   },
 
   {
-    "chrisgrieser/nvim-lsp-endhints",
-    event = "LspAttach",
-    opts = {}, -- required, even if empty
-  },
-
-  {
-    "zbirenbaum/copilot.lua",
-    event = "InsertEnter",
-    lazy = false,
-    cmd = "Copilot",
-    config = function()
-      -- exclude copilot in certain paths
-      local augroup = vim.api.nvim_create_augroup("copilot-disable-patterns", { clear = true })
-
-      for _, pattern in ipairs { "*/*rtworks*/*" } do
-        vim.api.nvim_create_autocmd("LspAttach", {
-          group = augroup,
-          pattern = pattern,
-          callback = vim.schedule_wrap(function(args)
-            local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-            if client.name == "copilot" then
-              vim.cmd "Copilot detach"
-            end
-          end),
-        })
-      end
-
-      require("copilot").setup {
-        suggestion = {
-          auto_trigger = true,
-          keymap = {
-            accept = "<Right>",
-            next = "<Down>",
-            prev = "<Up>",
-            dismiss = "<Left>",
-          },
-        },
-      }
-    end,
-  },
-
-  {
     "nvim-treesitter/nvim-treesitter-context",
     event = "VeryLazy",
     config = function()
       require("treesitter-context").setup {}
     end,
-  },
-
-  {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    event = "VeryLazy",
-    build = "make",
   },
 
   {
@@ -199,66 +140,18 @@ return {
   },
 
   {
-    "ojroques/nvim-osc52",
+    "nvim-mini/mini.nvim",
     event = "VeryLazy",
+    version = false,
     config = function()
-      require("osc52").setup {}
-      vim.api.nvim_create_autocmd("TextYankPost", {
-        callback = function()
-          if vim.v.event.operator == "y" and vim.v.event.regname == "" then
-            require("osc52").copy_register '"'
-          end
-        end,
-      })
+      require("mini.ai").setup {}
+      require("mini.comment").setup {}
+      require("mini.pairs").setup {}
+      require("mini.surround").setup {}
     end,
   },
 
-  {
-    "lambdalisue/vim-suda",
-    event = "VeryLazy",
-    config = function()
-      vim.g.suda_smart_edit = 1
-      vim.api.nvim_create_user_command("R", "SudaRead", {})
-      vim.api.nvim_create_user_command("W", "SudaWrite", {})
-    end,
-  },
-
-  {
-    "kylechui/nvim-surround",
-    event = "VeryLazy",
-    config = function()
-      require("nvim-surround").setup {}
-    end,
-  },
-
-  {
-    "folke/ts-comments.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
-
-  {
-    "folke/todo-comments.nvim",
-    event = "VeryLazy",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("todo-comments").setup {}
-    end,
-  },
-
-  {
-    "folke/persistence.nvim",
-    event = "VeryLazy",
-    config = function()
-      local persistence = require "persistence"
-      persistence.setup {}
-      vim.keymap.set("n", "<leader>qs", persistence.load, { desc = "Load session for the current directory" })
-      vim.keymap.set("n", "<leader>qS", persistence.select, { desc = "Load a selected session" })
-      vim.keymap.set("n", "<leader>ql", persistence.load, { desc = "Load last session" })
-      vim.keymap.set("n", "<leader>qd", persistence.stop, { desc = "Do not save session on exit" })
-    end,
-  },
-
+  -- text edit -----------------------------------------------------------------
   {
     "folke/flash.nvim",
     event = "VeryLazy",
@@ -299,6 +192,170 @@ return {
   },
 
   {
+    "saghen/blink.cmp",
+    event = "VeryLazy",
+    dependencies = { "rafamadriz/friendly-snippets" },
+    opts = {
+      keymap = { preset = "enter" },
+      completion = {
+        documentation = { auto_show = true },
+      },
+    },
+  },
+
+  {
+    "folke/todo-comments.nvim",
+    event = "VeryLazy",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("todo-comments").setup {}
+    end,
+  },
+
+  -- utils ---------------------------------------------------------------------
+  {
+    "ojroques/nvim-osc52",
+    event = "VeryLazy",
+    config = function()
+      require("osc52").setup {}
+      vim.api.nvim_create_autocmd("TextYankPost", {
+        callback = function()
+          if vim.v.event.operator == "y" and vim.v.event.regname == "" then
+            require("osc52").copy_register '"'
+          end
+        end,
+      })
+    end,
+  },
+
+  {
+    "lambdalisue/vim-suda",
+    event = "VeryLazy",
+    config = function()
+      vim.g.suda_smart_edit = 1
+      vim.api.nvim_create_user_command("R", "SudaRead", {})
+      vim.api.nvim_create_user_command("W", "SudaWrite", {})
+    end,
+  },
+
+  {
+    "folke/persistence.nvim",
+    event = "VeryLazy",
+    config = function()
+      local persistence = require "persistence"
+      persistence.setup {}
+      vim.keymap.set("n", "<leader>qs", persistence.load, { desc = "Load session for the current directory" })
+      vim.keymap.set("n", "<leader>qS", persistence.select, { desc = "Load a selected session" })
+      vim.keymap.set("n", "<leader>ql", persistence.load, { desc = "Load last session" })
+      vim.keymap.set("n", "<leader>qd", persistence.stop, { desc = "Do not save session on exit" })
+    end,
+  },
+
+  {
+    "Skosulor/nibbler",
+    event = "VeryLazy",
+    config = function()
+      require("nibbler").setup {
+        display_enabled = true,
+      }
+    end,
+  },
+
+  {
+    "fasterius/simple-zoom.nvim",
+    event = "VeryLazy",
+    config = function()
+      vim.keymap.set("n", "<leader>z", require("simple-zoom").toggle_zoom)
+    end,
+  },
+
+  {
+    "NeogitOrg/neogit",
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      vim.keymap.set("n", "<leader>o", require("neogit").open, { desc = "Open NeoGit" })
+    end,
+  },
+
+  {
+    "zbirenbaum/copilot.lua",
+    event = "InsertEnter",
+    lazy = false,
+    cmd = "Copilot",
+    config = function()
+      -- exclude copilot in certain paths
+      local augroup = vim.api.nvim_create_augroup("copilot-disable-patterns", { clear = true })
+
+      for _, pattern in ipairs { "*/*rtworks*/*" } do
+        vim.api.nvim_create_autocmd("LspAttach", {
+          group = augroup,
+          pattern = pattern,
+          callback = vim.schedule_wrap(function(args)
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+            if client.name == "copilot" then
+              vim.cmd "Copilot detach"
+            end
+          end),
+        })
+      end
+
+      require("copilot").setup {
+        suggestion = {
+          auto_trigger = true,
+          keymap = {
+            accept = "<Right>",
+            next = "<Down>",
+            prev = "<Up>",
+            dismiss = "<Left>",
+          },
+        },
+      }
+    end,
+  },
+
+  {
+    "chomosuke/typst-preview.nvim",
+    ft = "typst",
+    opts = {},
+  },
+
+  {
+    "jannis-baum/vivify.vim",
+    event = "VeryLazy",
+  },
+
+  -- ui ------------------------------------------------------------------------
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    event = "VeryLazy",
+    build = "make",
+  },
+
+  {
+    "luftaquila/nvim-cursorline",
+    event = "VimEnter",
+    config = function()
+      require("nvim-cursorline").setup {
+        cursorline = {
+          timeout = 0,
+        },
+      }
+    end,
+  },
+
+  {
+    "chrisgrieser/nvim-lsp-endhints",
+    event = "LspAttach",
+    opts = {}, -- required, even if empty
+  },
+
+  {
     "folke/noice.nvim",
     event = "VeryLazy",
     dependencies = {
@@ -323,16 +380,6 @@ return {
     config = function()
       require("tiny-inline-diagnostic").setup()
       vim.diagnostic.config { virtual_text = false }
-    end,
-  },
-
-  {
-    "Skosulor/nibbler",
-    event = "VeryLazy",
-    config = function()
-      require("nibbler").setup {
-        display_enabled = true,
-      }
     end,
   },
 
@@ -365,42 +412,4 @@ return {
     end,
     dependencies = { "HiPhish/rainbow-delimiters.nvim" },
   },
-
-  {
-    "fasterius/simple-zoom.nvim",
-    event = "VeryLazy",
-    config = function()
-      vim.keymap.set("n", "<leader>z", require("simple-zoom").toggle_zoom)
-    end,
-  },
-
-  {
-    "chomosuke/typst-preview.nvim",
-    ft = "typst",
-    opts = {},
-  },
-
-  {
-    "jannis-baum/vivify.vim",
-    event = "VeryLazy",
-  },
-
-  {
-    "NeogitOrg/neogit",
-    event = "VeryLazy",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "sindrets/diffview.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-    config = function()
-      vim.keymap.set("n", "<leader>o", require("neogit").open, { desc = "Open NeoGit" })
-    end,
-  },
-
-  -- {
-  --   "echasnovski/mini.nvim",
-  --   event = "VeryLazy",
-  --   version = "*",
-  -- },
 }
