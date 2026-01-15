@@ -1,15 +1,3 @@
-local capabilities = require("nvchad.configs.lspconfig").capabilities
-local status, blink = pcall(require, "blink.cmp")
-if status then
-  capabilities = blink.get_lsp_capabilities(capabilities)
-end
-
-vim.lsp.config("*", {
-  on_attach = require("nvchad.configs.lspconfig").on_attach,
-  on_init = require("nvchad.configs.lspconfig").on_init,
-  capabilities = capabilities,
-})
-
 vim.api.nvim_create_user_command("LspFormat", function()
   if vim.fn.exists ":NullFormat" == 2 then
     vim.cmd "NullFormat"
