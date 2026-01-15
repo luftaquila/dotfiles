@@ -132,6 +132,43 @@ return {
   },
 
   {
+    "zbirenbaum/copilot.lua",
+    event = "InsertEnter",
+    lazy = false,
+    cmd = "Copilot",
+    config = function()
+      -- exclude copilot in certain paths
+      local augroup = vim.api.nvim_create_augroup("copilot-disable-patterns", { clear = true })
+
+      for _, pattern in ipairs { "*/*rtworks*/*" } do
+        vim.api.nvim_create_autocmd("LspAttach", {
+          group = augroup,
+          pattern = pattern,
+          callback = vim.schedule_wrap(function(args)
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+            if client.name == "copilot" then
+              vim.cmd "Copilot detach"
+            end
+          end),
+        })
+      end
+
+      require("copilot").setup {
+        suggestion = {
+          auto_trigger = true,
+          keymap = {
+            accept = "<Right>",
+            next = "<Down>",
+            prev = "<Up>",
+            dismiss = "<Left>",
+          },
+        },
+      }
+    end,
+  },
+
+  {
     "nvim-treesitter/nvim-treesitter-context",
     event = "VeryLazy",
     config = function()
@@ -279,74 +316,12 @@ return {
   },
 
   {
-    "zbirenbaum/copilot.lua",
-    event = "InsertEnter",
-    lazy = false,
-    cmd = "Copilot",
-    config = function()
-      -- exclude copilot in certain paths
-      local augroup = vim.api.nvim_create_augroup("copilot-disable-patterns", { clear = true })
-
-      for _, pattern in ipairs { "*/*rtworks*/*" } do
-        vim.api.nvim_create_autocmd("LspAttach", {
-          group = augroup,
-          pattern = pattern,
-          callback = vim.schedule_wrap(function(args)
-            local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-            if client.name == "copilot" then
-              vim.cmd "Copilot detach"
-            end
-          end),
-        })
-      end
-
-      require("copilot").setup {
-        suggestion = {
-          auto_trigger = true,
-          keymap = {
-            accept = "<Right>",
-            next = "<Down>",
-            prev = "<Up>",
-            dismiss = "<Left>",
-          },
-        },
-      }
-    end,
-  },
-
-  {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "VeryLazy",
     priority = 1000,
     config = function()
       require("tiny-inline-diagnostic").setup()
       vim.diagnostic.config { virtual_text = false }
-    end,
-  },
-
-  {
-    "aznhe21/actions-preview.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("actions-preview").setup {
-        highlight_command = {
-          require("actions-preview.highlight").delta(),
-        },
-        telescope = {
-          sorting_strategy = "ascending",
-          layout_strategy = "vertical",
-          layout_config = {
-            width = 0.8,
-            height = 0.9,
-            prompt_position = "top",
-            preview_cutoff = 20,
-            preview_height = function(_, _, max_lines)
-              return max_lines - 15
-            end,
-          },
-        },
-      }
     end,
   },
 
