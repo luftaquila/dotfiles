@@ -265,13 +265,22 @@ return {
     opts = {
       modes = {
         search = {
-          enabled = true,
+          enabled = false,
         },
+        char = {
+          enabled = false,
+        },
+      },
+      exclude = {
+        "notify",
+        "noice",
+        "cmp_menu",
+        "TelescopePrompt",
       },
     },
     keys = {
       {
-        "s",
+        "t",
         mode = { "n", "x", "o" },
         function()
           require("flash").jump()
@@ -279,20 +288,12 @@ return {
         desc = "Flash",
       },
       {
-        "S",
+        "T",
         mode = { "n", "x", "o" },
         function()
           require("flash").treesitter()
         end,
         desc = "Flash Treesitter",
-      },
-      {
-        "<c-s>",
-        mode = { "c" },
-        function()
-          require("flash").toggle()
-        end,
-        desc = "Toggle Flash Search",
       },
     },
   },
