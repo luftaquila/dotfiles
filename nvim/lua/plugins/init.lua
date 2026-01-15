@@ -131,6 +131,9 @@ return {
         lightbulb = {
           virtual_text = false,
         },
+        outline = {
+          win_width = 50,
+        },
       }
     end,
     dependencies = {
@@ -148,6 +151,35 @@ return {
       require("mini.comment").setup {}
       require("mini.pairs").setup {}
       require("mini.surround").setup {}
+      require("mini.jump").setup {
+        mappings = {
+          forward_till = "",
+          backward_till = "",
+          repeat_jump = "",
+        },
+      }
+      require("mini.jump2d").setup {}
+      require("mini.sessions").setup {}
+      require("mini.cursorword").setup {
+        delay = 0,
+      }
+      require("mini.hipatterns").setup {
+        highlighters = {
+          fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+          hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+          todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+          note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+          hex_color = require("mini.hipatterns").gen_highlighter.hex_color(),
+        },
+      }
+      require("mini.trailspace").setup {}
+
+      vim.keymap.set("n", "<leader>sl", require("mini.sessions").read, { desc = "Load Session" })
+      vim.api.nvim_create_autocmd("VimLeavePre", {
+        callback = function()
+          require("mini.sessions").write "default"
+        end,
+      })
     end,
   },
 
@@ -203,15 +235,6 @@ return {
     },
   },
 
-  {
-    "folke/todo-comments.nvim",
-    event = "VeryLazy",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("todo-comments").setup {}
-    end,
-  },
-
   -- utils ---------------------------------------------------------------------
   {
     "ojroques/nvim-osc52",
@@ -235,19 +258,6 @@ return {
       vim.g.suda_smart_edit = 1
       vim.api.nvim_create_user_command("R", "SudaRead", {})
       vim.api.nvim_create_user_command("W", "SudaWrite", {})
-    end,
-  },
-
-  {
-    "folke/persistence.nvim",
-    event = "VeryLazy",
-    config = function()
-      local persistence = require "persistence"
-      persistence.setup {}
-      vim.keymap.set("n", "<leader>qs", persistence.load, { desc = "Load session for the current directory" })
-      vim.keymap.set("n", "<leader>qS", persistence.select, { desc = "Load a selected session" })
-      vim.keymap.set("n", "<leader>ql", persistence.load, { desc = "Load last session" })
-      vim.keymap.set("n", "<leader>qd", persistence.stop, { desc = "Do not save session on exit" })
     end,
   },
 
@@ -332,27 +342,19 @@ return {
 
   -- ui ------------------------------------------------------------------------
   {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    event = "VeryLazy",
-    build = "make",
-  },
-
-  {
-    "luftaquila/nvim-cursorline",
-    event = "VimEnter",
-    config = function()
-      require("nvim-cursorline").setup {
-        cursorline = {
-          timeout = 0,
-        },
-      }
-    end,
-  },
-
-  {
     "chrisgrieser/nvim-lsp-endhints",
     event = "LspAttach",
     opts = {}, -- required, even if empty
+  },
+
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy",
+    priority = 1000,
+    config = function()
+      require("tiny-inline-diagnostic").setup()
+      vim.diagnostic.config { virtual_text = false }
+    end,
   },
 
   {
@@ -374,13 +376,9 @@ return {
   },
 
   {
-    "rachartier/tiny-inline-diagnostic.nvim",
+    "nvim-telescope/telescope-fzf-native.nvim",
     event = "VeryLazy",
-    priority = 1000,
-    config = function()
-      require("tiny-inline-diagnostic").setup()
-      vim.diagnostic.config { virtual_text = false }
-    end,
+    build = "make",
   },
 
   {

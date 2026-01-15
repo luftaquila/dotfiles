@@ -74,4 +74,8 @@ M.lsp = {
   signature = false,
 }
 
+M.colorify = {
+  enabled = false,
+}
+
 return M
