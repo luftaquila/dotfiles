@@ -43,6 +43,14 @@ vim.lsp.config("clangd", {
   },
 })
 
+vim.lsp.config("ruff", {
+  init_options = {
+    settings = {
+      lineLength = 120,
+    },
+  },
+})
+
 vim.lsp.config("rust_analyzer", {
   settings = {
     ["rust-analyzer"] = {
