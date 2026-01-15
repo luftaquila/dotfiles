@@ -62,7 +62,6 @@ return {
         "json",
         "json5",
         "kconfig",
-        "latex",
         "llvm",
         "lua",
         "make",
@@ -226,6 +225,7 @@ return {
   {
     "saghen/blink.cmp",
     event = "VeryLazy",
+    version = "1.*",
     dependencies = { "rafamadriz/friendly-snippets" },
     opts = {
       keymap = { preset = "enter" },
