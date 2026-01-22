@@ -55,7 +55,7 @@ map("n", "<leader>fr", telescope.registers, { desc = "Telescope find registers" 
 map("n", "<CR>", "@q", { desc = "Macro play @q" })
 
 -- terminals
-map("n", "<leader>a", function()
+map("n", "<leader>tm", function()
   term.toggle { pos = "float", id = "floating" }
 end, { desc = "Terminal Toggle Floating terminal" })
 unmap("n", "<leader>h")
