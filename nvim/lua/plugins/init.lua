@@ -173,6 +173,7 @@ return {
       }
       require("mini.trailspace").setup {}
 
+      vim.keymap.set("n", "<leader>tr", require("mini.trailspace").trim, { desc = "Trim all trailing whitespaces" })
       vim.keymap.set("n", "<leader>sl", require("mini.sessions").read, { desc = "Load Session" })
       vim.api.nvim_create_autocmd("VimLeavePre", {
         callback = function()
