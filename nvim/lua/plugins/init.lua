@@ -106,7 +106,7 @@ return {
   -- custom plugins -----------------------------------------------------------
   {
     "wakatime/vim-wakatime",
-    event = "VimEnter",
+    event = { "BufReadPost", "BufNewFile" },
   },
 
   {
@@ -254,11 +254,17 @@ return {
 
   {
     "lambdalisue/vim-suda",
-    event = "VeryLazy",
+    cmd = { "SudaRead", "SudaWrite", "R", "W" },
+    init = function()
+      vim.api.nvim_create_user_command("R", function()
+        vim.cmd "SudaRead"
+      end, {})
+      vim.api.nvim_create_user_command("W", function()
+        vim.cmd "SudaWrite"
+      end, {})
+    end,
     config = function()
       vim.g.suda_smart_edit = 1
-      vim.api.nvim_create_user_command("R", "SudaRead", {})
-      vim.api.nvim_create_user_command("W", "SudaWrite", {})
     end,
   },
 
@@ -296,7 +302,6 @@ return {
   {
     "zbirenbaum/copilot.lua",
     event = "InsertEnter",
-    lazy = false,
     cmd = "Copilot",
     config = function()
       -- exclude copilot in certain paths
