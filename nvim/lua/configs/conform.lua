@@ -11,6 +11,21 @@ local options = {
     vue = { "biome", "prettier" },
   },
   formatters = {
+    ["clang-format"] = {
+      prepend_args = {
+        "--style=file:" .. vim.fn.expand "~/dotfiles/tools/clang/.clang-format",
+      },
+    },
+    biome = {
+      args = {
+        "format",
+        "--config-path",
+        vim.fn.expand "~/dotfiles/tools/biome",
+        "--stdin-file-path",
+        "$FILENAME",
+      },
+      stdin = true,
+    },
     prettier = {
       prepend_args = { "--print-width", "120" },
     },
