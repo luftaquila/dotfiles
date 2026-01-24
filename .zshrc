@@ -341,7 +341,7 @@ chpwd_functions+=(zellij_tab_name_update)
 #############################################################################
 # atuin https://github.com/atuinsh/atuin
 #############################################################################
-export ATUIN_CONFIG_DIR="$HOME/dotfiles/toolsets/atuin"
+export ATUIN_CONFIG_DIR="$HOME/dotfiles/tools/atuin"
 eval "$(atuin init zsh --disable-up-arrow)"
 
 
