@@ -316,29 +316,6 @@ eval "$(zoxide init zsh --cmd j)"
 
 
 #############################################################################
-# zellij https://github.com/zellij-org/zellij
-#############################################################################
-alias z='zellij'
-alias za='zellij attach'
-alias zl='zellij list-sessions'
-export ZELLIJ_CONFIG_DIR="$HOME/dotfiles/zellij"
-
-zellij_tab_name_update() {
-    if [[ -n $ZELLIJ ]]; then
-        local current_dir=$PWD
-        if [[ $current_dir == $HOME ]]; then
-            current_dir="~"
-        else
-            current_dir=${current_dir##*/}
-        fi
-        command nohup zellij action rename-tab $current_dir >/dev/null 2>&1
-    fi
-}
-zellij_tab_name_update
-chpwd_functions+=(zellij_tab_name_update)
-
-
-#############################################################################
 # atuin https://github.com/atuinsh/atuin
 #############################################################################
 export ATUIN_CONFIG_DIR="$HOME/dotfiles/toolsets/atuin"
