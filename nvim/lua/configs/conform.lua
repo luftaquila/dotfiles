@@ -2,13 +2,17 @@ local options = {
   formatters_by_ft = {
     lua = { "stylua" },
     c = { "clang-format" },
-    vue = { "biome" },
+    javascript = { "biome" },
+    javascriptreact = { "biome" },
+    typescript = { "biome" },
+    typescriptreact = { "biome" },
+    html = { "biome" },
+    css = { "biome" },
+    vue = { "biome", "prettier" },
   },
   formatters = {
     prettier = {
-      prepend_args = {
-        "--print-width", "120",
-      },
+      prepend_args = { "--print-width", "120" },
     },
   },
 

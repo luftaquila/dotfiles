@@ -7,29 +7,40 @@ return {
   },
 
   {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "mason-org/mason.nvim" },
+    cmd = { "MasonToolsInstall", "MasonToolsInstallSync", "MasonToolsUpdate" },
+    config = function()
+      require("mason-tool-installer").setup {
+        ensure_installed = {
+          "bash-language-server",
+          "biome",
+          "clangd",
+          "cmake-language-server",
+          "json-lsp",
+          "lua-language-server",
+          "marksman",
+          "openscad-lsp",
+          "ruff",
+          "rust-analyzer",
+          "taplo",
+          "tinymist",
+          "vtsls",
+          "vue-language-server",
+          "clang-format",
+          "prettier",
+          "stylua",
+        },
+      }
+    end,
+  },
+
+  {
     "mason-org/mason-lspconfig.nvim",
     event = "VeryLazy",
-    opts = {
-      ensure_installed = {
-        "bashls",
-        "biome",
-        "clangd",
-        "cmake",
-        "jsonls",
-        "lua_ls",
-        "marksman",
-        "openscad_lsp",
-        "ruff",
-        "rust_analyzer",
-        "stylua",
-        "taplo",
-        "tinymist",
-        "vtsls",
-        "vue_ls",
-      },
-    },
+    opts = {},
     dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
+      "mason-org/mason.nvim",
       "neovim/nvim-lspconfig",
     },
   },
