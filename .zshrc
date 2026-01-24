@@ -318,7 +318,7 @@ eval "$(zoxide init zsh --cmd j)"
 #############################################################################
 # atuin https://github.com/atuinsh/atuin
 #############################################################################
-export ATUIN_CONFIG_DIR="$HOME/dotfiles/toolsets/atuin"
+export ATUIN_CONFIG_DIR="$HOME/dotfiles/tools/atuin"
 eval "$(atuin init zsh --disable-up-arrow)"
 
 

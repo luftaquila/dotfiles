@@ -1,0 +1,9 @@
+BasedOnStyle: Google
+ColumnLimit: 120
+IncludeBlocks: Preserve
+Cpp11BracedListStyle: false
+ContinuationIndentWidth: 2
+AlignAfterOpenBracket: DontAlign
+AlignConsecutiveAssignments: true
+DerivePointerAlignment: false
+PointerAlignment: Right
