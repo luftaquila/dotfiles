@@ -79,7 +79,6 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  magic-enter
   zsh-syntax-highlighting
   zsh-autosuggestions
 )
@@ -320,13 +319,6 @@ eval "$(zoxide init zsh --cmd j)"
 #############################################################################
 export ATUIN_CONFIG_DIR="$HOME/dotfiles/tools/atuin"
 eval "$(atuin init zsh --disable-up-arrow)"
-
-
-#############################################################################
-# magic-enter
-#############################################################################
-MAGIC_ENTER_GIT_COMMAND='ll && echo && gst'
-MAGIC_ENTER_OTHER_COMMAND='ll'
 
 
 #############################################################################
