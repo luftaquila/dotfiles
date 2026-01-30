@@ -44,7 +44,7 @@ M.ui = {
 
       lsp = function()
         if rawget(vim, "lsp") then
-          for _, client in ipairs(vim.lsp.get_active_clients()) do
+          for _, client in ipairs(vim.lsp.get_clients()) do
             if
               client.attached_buffers[vim.api.nvim_win_get_buf(vim.g.statusline_winid or 0)]
               and client.name ~= "null-ls"
