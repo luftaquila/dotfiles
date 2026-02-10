@@ -7,6 +7,15 @@ $Esc::
     return
 } ; Added bracket before function
 
+; Ctrl-A to english mode for tmux prefix
+$^a::
+{
+    if(IME_CHECK("A"))
+        Send("{VK15}")
+    Send("^a")
+    return
+}
+
 IME_CHECK(WinTitle) {
   try
   {
