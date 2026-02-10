@@ -154,6 +154,8 @@ alias cl='claude'
 alias tm='tmux -2'
 alias ta='tmux attach'
 
+alias py='python'
+
 
 #############################################################################
 # git
