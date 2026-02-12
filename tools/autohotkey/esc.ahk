@@ -16,6 +16,9 @@ $^a::
     return
 }
 
+; Remap Hanja to RAlt
+*vk19::Send("{RAlt}")
+
 IME_CHECK(WinTitle) {
   try
   {
