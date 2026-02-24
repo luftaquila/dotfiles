@@ -25,7 +25,7 @@ M.ui = {
   statusline = {
     theme = "minimal",
     separator_style = "block",
-    order = { "mode", "file", "git", "%=", "lsp_msg", "%=", "diagnostics", "lsp", "filetype", "cursor" },
+    order = { "mode", "file", "git", "%=", "lsp_msg", "%=", "search", "diagnostics", "lsp", "filetype", "cursor" },
     modules = {
       file = function()
         local cwd = vim.loop.cwd()
@@ -40,6 +40,14 @@ M.ui = {
 
       filetype = function()
         return gen_block("", vim.bo.filetype, "%#St_cwd_sep#", "%#St_cwd_bg#", "%#St_cwd_txt#")
+      end,
+
+      search = function()
+        local ok, result = pcall(vim.fn.searchcount, { maxcount = 0 })
+        if not ok or result.total == 0 then
+          return ""
+        end
+        return gen_block("", result.current .. "/" .. result.total, "%#St_file_sep#", "%#St_file_bg#", "%#St_file_txt#")
       end,
 
       lsp = function()
