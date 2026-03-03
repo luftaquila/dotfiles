@@ -211,6 +211,9 @@ function fn_install_packages() {
 
   fn_install_dotfile ".vimrc"
   fn_cmd "vim -Es -u $HOME/.vimrc +VundleInstall +qall" ignore
+
+  echo "[INF] installing Claude Code..."
+  fn_cmd "curl -fsSL https://claude.ai/install.sh | bash"
 }
 
 

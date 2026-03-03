@@ -150,6 +150,7 @@ alias make='make -j'
 
 alias vi='nvim'
 alias cl='claude'
+alias cld='claude --dangerously-skip-permissions'
 
 alias tm='tmux -2'
 alias ta='tmux attach'
