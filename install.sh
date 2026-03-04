@@ -22,7 +22,7 @@ languages_confirm=( false false false )
 packages_apt=( "build-essential" "libncurses-dev" "net-tools" )
 packages_brew=(
   "atuin" "bat" "btop" "cmake" "code-minimap"
-  "dust" "eza" "fd" "fzf" "git-delta" "mise"
+  "duf" "dust" "eza" "fd" "fzf" "git-delta" "mise"
   "nvim" "rainbarf" "ripgrep" "tig" "tmux"
   "zellij" "zoxide"
 )
