@@ -214,6 +214,8 @@ function fn_install_packages() {
 
   echo "[INF] installing Claude Code..."
   fn_cmd "curl -fsSL https://claude.ai/install.sh | bash"
+  fn_cmd "claude plugin marketplace add https://github.com/wakatime/claude-code-wakatime.git"
+  fn_cmd "claude plugin i claude-code-wakatime@wakatime"
 }
 
 
