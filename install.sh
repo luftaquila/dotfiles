@@ -439,9 +439,9 @@ function fn_generate_ssh_key() {
 #  launch
 ################################################################################
 fn_detect_platform
+fn_check_git
 fn_install_prerequisites
 fn_check_homebrew
-fn_check_git
 fn_set_directory $1
 fn_configure_stages
 fn_execute_stages
