@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ###############################################################################
 #  configure options
@@ -19,7 +19,6 @@ stages_function=(
 languages=( "python" "node" "rust" )
 languages_confirm=( false false false )
 
-packages_apt=( "build-essential" "libncurses-dev" "net-tools" )
 packages_brew=(
   "atuin" "bat" "btop" "cmake" "code-minimap"
   "duf" "dust" "eza" "fd" "fzf" "git-delta" "mise"
@@ -31,19 +30,82 @@ packages_brew=(
 ################################################################################
 #  util functions
 ################################################################################
+function fn_set_distro_config() {
+  distro="$1"
+
+  case "$distro" in
+    debian)
+      pkg_install_cmd='sudo apt-get -y install'
+      pkg_update_cmd='sudo apt-get -y update && sudo apt-get -y upgrade'
+      packages_system=( "build-essential" "libncurses-dev" "net-tools" "curl" "file" "git" "procps" )
+      ;;
+    fedora)
+      pkg_install_cmd='sudo dnf -y install'
+      pkg_update_cmd='sudo dnf -y upgrade'
+      packages_system=( "gcc" "gcc-c++" "make" "ncurses-devel" "net-tools" "curl" "file" "git" "procps-ng" )
+      ;;
+    arch)
+      pkg_install_cmd='sudo pacman -S --noconfirm --needed'
+      pkg_update_cmd='sudo pacman -Syu --noconfirm'
+      packages_system=( "base-devel" "ncurses" "net-tools" "curl" "file" "git" "procps-ng" )
+      ;;
+    suse)
+      pkg_install_cmd='sudo zypper -n install'
+      pkg_update_cmd='sudo zypper -n update'
+      packages_system=( "gcc" "gcc-c++" "make" "ncurses-devel" "net-tools" "curl" "file" "git" "procps" )
+      ;;
+    alpine)
+      pkg_install_cmd='sudo apk add'
+      pkg_update_cmd='sudo apk update && sudo apk upgrade'
+      packages_system=( "build-base" "ncurses-dev" "net-tools" "curl" "file" "git" "procps" "bash" "sudo" )
+      ;;
+  esac
+}
+
 function fn_detect_platform() {
-  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    platform='linux'
-    package_cmd='sudo apt-get -y'
-  elif [[ "$OSTYPE" == "darwin"* ]]; then
+  if [[ "$OSTYPE" == "darwin"* ]]; then
     platform='macos'
-    package_cmd='brew'
+    distro='macos'
+    pkg_install_cmd='brew install'
+    pkg_update_cmd='brew update && brew upgrade'
+    packages_system=()
+  elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    platform='linux'
+
+    if [[ -f /etc/os-release ]]; then
+      . /etc/os-release
+      distro_id="$ID"
+    else
+      distro_id='unknown'
+    fi
+
+    case "$distro_id" in
+      ubuntu|debian|linuxmint|pop)       fn_set_distro_config debian ;;
+      fedora|rhel|centos|rocky|alma)     fn_set_distro_config fedora ;;
+      arch|manjaro|endeavouros)          fn_set_distro_config arch ;;
+      opensuse*|sles)                    fn_set_distro_config suse ;;
+      alpine)                            fn_set_distro_config alpine ;;
+      *)
+        echo "[WRN] unknown Linux distribution: $distro_id"
+        echo "[WRN] attempting to detect package manager..."
+
+        if command -v apt-get &>/dev/null; then   fn_set_distro_config debian
+        elif command -v dnf &>/dev/null; then     fn_set_distro_config fedora
+        elif command -v pacman &>/dev/null; then  fn_set_distro_config arch
+        elif command -v zypper &>/dev/null; then  fn_set_distro_config suse
+        elif command -v apk &>/dev/null; then     fn_set_distro_config alpine
+        else
+          echo "[ERR] no supported package manager found! terminating..."
+          exit 1
+        fi
+        ;;
+    esac
   else
     echo "[ERR] unknown OS detected! terminating..."
     exit 1
   fi
 
-  echo "[INF] target OS: $platform"
+  echo "[INF] target OS: $platform ($distro)"
 }
 
 function fn_cmd() {
@@ -80,7 +142,15 @@ function fn_install_dotfile() {
     fn_cmd "rm -f $HOME/$target"
   fi
 
-  fn_cmd "ln -s `pwd`/$target $HOME/$target"
+  fn_cmd "ln -s $(pwd)/$target $HOME/$target"
+}
+
+function fn_install_prerequisites() {
+  if [[ $platform == "linux" ]] && [[ ${#packages_system[@]} -gt 0 ]]; then
+    echo "[INF] installing system prerequisites..."
+    fn_cmd "$pkg_update_cmd"
+    fn_cmd "$pkg_install_cmd ${packages_system[*]}"
+  fi
 }
 
 function fn_check_homebrew() {
@@ -89,7 +159,11 @@ function fn_check_homebrew() {
     fn_cmd 'NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
 
     if [[ $platform == "linux" ]]; then
-      fn_cmd 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"'
+      if [[ -d /home/linuxbrew/.linuxbrew ]]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+      elif [[ -d "$HOME/.linuxbrew" ]]; then
+        eval "$("$HOME/.linuxbrew/bin/brew" shellenv)"
+      fi
     fi
   fi
 }
@@ -98,7 +172,7 @@ function fn_check_git() {
   if ! [[ -x "$(command -v git)" ]]; then
     echo "[ERR] no git detected!"
     echo "[INF] installing git..."
-    fn_cmd "$package_cmd install git"
+    fn_cmd "$pkg_install_cmd git"
   fi
 }
 
@@ -111,7 +185,7 @@ function fn_install_ohmyzsh() {
 
   if ! [[ -x "$(command -v zsh)" ]]; then
     echo "[WRN] no zsh detected! installing it first..."
-    fn_cmd "$package_cmd install zsh"
+    fn_cmd "$pkg_install_cmd zsh"
   fi
 
   if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
@@ -122,7 +196,7 @@ function fn_install_ohmyzsh() {
 
   echo "[INF] installing zsh plugins..."
 
-  ZSH_CUSTOM=`zsh -ic 'echo $ZSH_CUSTOM'`
+  ZSH_CUSTOM=$(zsh -ic 'echo $ZSH_CUSTOM')
 
   if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]]; then
     fn_cmd "zsh -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting $ZSH_CUSTOM/plugins/zsh-syntax-highlighting'"
@@ -151,16 +225,17 @@ function fn_install_ohmyzsh() {
 
   if ! [[ $SHELL == *'zsh'* ]]; then
     echo "[INF] replacing default shell to zsh..."
-    fn_cmd "sudo chsh -s `which zsh` luftaquila" retry
+
+    if [[ $platform == "macos" ]]; then
+      fn_cmd "chsh -s $(which zsh)" retry
+    else
+      fn_cmd "sudo chsh -s $(which zsh) $(whoami)" retry
+    fi
   fi
 }
 
 function fn_install_packages() {
   echo "[INF] installing packages..."
-
-  if [[ $platform == "linux" ]]; then
-    fn_cmd "$package_cmd install ${packages_apt[*]}"
-  fi
 
   fn_cmd "brew install ${packages_brew[*]}"
 
@@ -169,7 +244,7 @@ function fn_install_packages() {
 
   echo "[INF] installing languages..."
 
-  for i in `seq 0 $(( ${#languages[@]} - 1 ))`; do
+  for i in $(seq 0 $(( ${#languages[@]} - 1 ))); do
     if [[ ${languages_confirm[$i]} == true ]]; then
       echo "[INF] installing ${languages[$i]}..."
       fn_cmd "mise use -g ${languages[$i]}"
@@ -228,7 +303,7 @@ function fn_set_directory() {
   if [[ -d "$HOME/dotfiles" ]]; then
     fn_cmd "cd $HOME/dotfiles"
 
-    if ! `git remote -v | grep -q 'luftaquila/dotfiles'`; then
+    if ! $(git remote -v | grep -q 'luftaquila/dotfiles'); then
       echo "[ERR] existing dotfiles directory is not from luftaquila/dotfiles. terminating..."
       exit 1
     else
@@ -261,7 +336,7 @@ function fn_configure_stages() {
   if ! [[ "$auto_install" = true ]]; then
     echo "[INF] configuring stages..."
 
-    for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
+    for i in $(seq 0 $(( ${#stages[@]} - 1 ))); do
       while true; do
         input=''
         read -p "  install ${stages[$i]}? (Y/n): " input
@@ -281,7 +356,7 @@ function fn_configure_stages() {
     done
 
     if [[ ${stages_confirm[1]} == true ]]; then
-      for i in `seq 0 $(( ${#languages[@]} - 1 ))`; do
+      for i in $(seq 0 $(( ${#languages[@]} - 1 ))); do
         while true; do
           input=''
           read -p "    install ${languages[$i]}? (Y/n): " input
@@ -302,31 +377,31 @@ function fn_configure_stages() {
     echo
     echo "[INF] confirm the configurations:"
 
-    for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
+    for i in $(seq 0 $(( ${#stages[@]} - 1 ))); do
       echo -e "  ${stages[$i]}\033[30G${stages_confirm[$i]}"
     done
 
-    for i in `seq 0 $(( ${#languages[@]} - 1 ))`; do
+    for i in $(seq 0 $(( ${#languages[@]} - 1 ))); do
       echo -e "    ${languages[$i]}\033[30G${languages_confirm[$i]}"
     done
 
     echo
     read -p "  Press ENTER to continue..."
   else
-    for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
+    for i in $(seq 0 $(( ${#stages[@]} - 1 ))); do
       stages_confirm[$i]=true
     done
 
-    for i in `seq 0 $(( ${#languages[@]} - 1 ))`; do
+    for i in $(seq 0 $(( ${#languages[@]} - 1 ))); do
       languages_confirm[$i]=true
     done
   fi
 }
 
 function fn_execute_stages() {
-  fn_cmd "$package_cmd update && $package_cmd upgrade"
+  fn_cmd "brew update && brew upgrade"
 
-  for i in `seq 0 $(( ${#stages[@]} - 1 ))`; do
+  for i in $(seq 0 $(( ${#stages[@]} - 1 ))); do
     if [[ ${stages_confirm[$i]} == true ]]; then
       eval ${stages_function[$i]}
     fi
@@ -341,7 +416,7 @@ function fn_generate_ssh_key() {
     fn_cmd "ssh-keygen -t ed25519 -f $ssh_pubkey -N '' <<< y"
   fi
 
-  echo "[INF] ssh key: `cat $ssh_pubkey.pub`"
+  echo "[INF] ssh key: $(cat $ssh_pubkey.pub)"
   echo "[INF] assign this key to GitHub at https://github.com/settings/keys"
 
   while true; do
@@ -364,6 +439,7 @@ function fn_generate_ssh_key() {
 #  launch
 ################################################################################
 fn_detect_platform
+fn_install_prerequisites
 fn_check_homebrew
 fn_check_git
 fn_set_directory $1
