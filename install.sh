@@ -168,14 +168,6 @@ function fn_check_homebrew() {
   fi
 }
 
-function fn_check_git() {
-  if ! [[ -x "$(command -v git)" ]]; then
-    echo "[ERR] no git detected!"
-    echo "[INF] installing git..."
-    fn_cmd "$pkg_install_cmd git"
-  fi
-}
-
 
 ################################################################################
 #  install functions
@@ -439,7 +431,6 @@ function fn_generate_ssh_key() {
 #  launch
 ################################################################################
 fn_detect_platform
-fn_check_git
 fn_install_prerequisites
 fn_check_homebrew
 fn_set_directory $1
