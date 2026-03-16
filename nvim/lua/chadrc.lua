@@ -44,7 +44,7 @@ M.ui = {
 
       search = function()
         local ok, result = pcall(vim.fn.searchcount, { maxcount = 0 })
-        if not ok or result.total == 0 then
+        if not ok or not result.total or result.total == 0 then
           return ""
         end
         return gen_block("", result.current .. "/" .. result.total, "%#St_file_sep#", "%#St_file_bg#", "%#St_file_txt#")
