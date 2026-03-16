@@ -222,13 +222,16 @@ function fn_install_ohmyzsh() {
 
     if [[ $platform == "macos" ]]; then
       fn_cmd "chsh -s $zsh_path"
-    elif command -v chsh &>/dev/null; then
-      fn_cmd "sudo chsh -s $zsh_path $(whoami)"
-    elif [[ -w /etc/passwd ]] || [[ $EUID -eq 0 ]]; then
-      fn_cmd "sudo sed -i 's|$(whoami):[^:]*$|$(whoami):$zsh_path|' /etc/passwd"
     else
-      echo "[WRN] chsh not found and cannot modify /etc/passwd. change your shell manually:"
-      echo "[WRN]   sudo usermod -s $zsh_path $(whoami)"
+      if ! command -v chsh &>/dev/null; then
+        echo "[INF] chsh not found. installing..."
+        case "$distro" in
+          fedora)  fn_cmd "sudo dnf -y install util-linux-user" ;;
+          suse)    fn_cmd "sudo zypper -n install util-linux" ;;
+          *)       fn_cmd "$pkg_install_cmd util-linux" ;;
+        esac
+      fi
+      fn_cmd "sudo chsh -s $zsh_path $(whoami)"
     fi
   fi
 }
