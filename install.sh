@@ -217,11 +217,18 @@ function fn_install_ohmyzsh() {
 
   if ! [[ $SHELL == *'zsh'* ]]; then
     echo "[INF] replacing default shell to zsh..."
+    local zsh_path
+    zsh_path="$(which zsh)"
 
     if [[ $platform == "macos" ]]; then
-      fn_cmd "chsh -s $(which zsh)" retry
+      fn_cmd "chsh -s $zsh_path"
+    elif command -v chsh &>/dev/null; then
+      fn_cmd "sudo chsh -s $zsh_path $(whoami)"
+    elif [[ -w /etc/passwd ]] || [[ $EUID -eq 0 ]]; then
+      fn_cmd "sudo sed -i 's|$(whoami):[^:]*$|$(whoami):$zsh_path|' /etc/passwd"
     else
-      fn_cmd "sudo chsh -s $(which zsh) $(whoami)" retry
+      echo "[WRN] chsh not found and cannot modify /etc/passwd. change your shell manually:"
+      echo "[WRN]   sudo usermod -s $zsh_path $(whoami)"
     fi
   fi
 }
