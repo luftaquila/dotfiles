@@ -154,8 +154,8 @@ alias f='fg'
 alias make='make -j'
 
 alias vi='nvim'
-alias cl='claude'
-alias cld='claude --dangerously-skip-permissions'
+alias cl='claude --effort max --remote-control'
+alias cld='claude --dangerously-skip-permissions --effort max --remote-control'
 
 alias tm='tmux -2'
 alias ta='tmux attach'
