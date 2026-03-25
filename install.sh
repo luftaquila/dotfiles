@@ -23,7 +23,7 @@ packages_brew=(
   "atuin" "bat" "btop" "cmake" "code-minimap"
   "duf" "dust" "eza" "fd" "fzf" "git-delta" "mise"
   "nvim" "rainbarf" "ripgrep" "tig" "tmux"
-  "zellij" "zoxide"
+  "zoxide"
 )
 
 
