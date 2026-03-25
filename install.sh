@@ -42,7 +42,7 @@ function fn_set_distro_config() {
     fedora)
       pkg_install_cmd='sudo dnf -y install'
       pkg_update_cmd='sudo dnf -y upgrade'
-      packages_system=( "gcc" "gcc-c++" "make" "ncurses-devel" "net-tools" "curl" "file" "git" "procps-ng" )
+      packages_system=( "gcc" "gcc-c++" "make" "ncurses-devel" "net-tools" "curl" "file" "git" "procps-ng" "tar" "libatomic" )
       ;;
     arch)
       pkg_install_cmd='sudo pacman -S --noconfirm --needed'
