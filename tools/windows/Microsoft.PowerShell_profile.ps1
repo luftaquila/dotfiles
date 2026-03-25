@@ -3,18 +3,19 @@ $env:LANG="en"
 $env:LANGUAGE="en"
 $env:LC_MESSAGES="C"
 
+$env:STARSHIP_CONFIG = "$HOME\dotfiles\tools\windows\starship.toml"
 Invoke-Expression (&starship init powershell)
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
 # autocomplete
+Set-PSReadlineOption -EditMode Vi
+Set-PSReadlineOption -PredictionSource History
+Set-PSReadlineOption -PredictionViewStyle InlineView
+
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
 Set-PSReadlineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
-
-Set-PSReadlineOption -PredictionSource History
-Set-PSReadlineOption -PredictionViewStyle ListView
-Set-PSReadlineOption -EditMode Vi
 
 # set aliases
 Set-Alias -Name vi -Value nvim

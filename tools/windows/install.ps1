@@ -13,6 +13,7 @@ New-Item -ItemType SymbolicLink -Path "$HOME\.gitconfig" -Target "$HOME\dotfiles
 New-Item -ItemType SymbolicLink -Path "$HOME\AppData\Local\nvim" -Target "$HOME\dotfiles\nvim"
 
 # install packages
+winget install Starship.Starship
 winget install Neovim.Neovim
 winget install dandavison.delta
 winget install ajeetdsouza.zoxide
