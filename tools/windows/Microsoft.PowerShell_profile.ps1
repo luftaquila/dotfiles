@@ -7,7 +7,14 @@ Invoke-Expression (&starship init powershell)
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
 # autocomplete
-Set-PSReadlineKeyHandler -Key Tab -Function Complete
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
+Set-PSReadlineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
+
+Set-PSReadlineOption -PredictionSource History
+Set-PSReadlineOption -PredictionViewStyle ListView
+Set-PSReadlineOption -EditMode Vi
 
 # set aliases
 Set-Alias -Name vi -Value nvim
