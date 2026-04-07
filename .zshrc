@@ -153,14 +153,21 @@ alias f='fg'
 alias make='make -j'
 
 alias vi='nvim'
-alias cl='claude --effort max --remote-control'
-alias cld='claude --dangerously-skip-permissions --effort max --remote-control'
+alias cl='claude --remote-control'
+alias cld='claude --dangerously-skip-permissions --remote-control'
 
 alias tm='tmux -2'
 alias ta='tmux attach'
 
 alias py='python'
 
+
+#############################################################################
+# Claude Code
+#############################################################################
+export CLAUDE_CODE_NO_FLICKER=1
+export CLAUDE_CODE_EFFORT_LEVEL=max
+export ANTHROPIC_MODEL=claude-opus-4-6
 
 #############################################################################
 # git
