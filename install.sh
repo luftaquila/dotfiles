@@ -293,6 +293,17 @@ function fn_install_packages() {
   fn_cmd "curl -fsSL https://claude.ai/install.sh | bash"
   fn_cmd "claude plugin marketplace add https://github.com/wakatime/claude-code-wakatime.git"
   fn_cmd "claude plugin i claude-code-wakatime@wakatime"
+
+  echo "[INF] configuring Claude Code..."
+  fn_cmd "mkdir -p $HOME/.claude/hud"
+
+  for f in settings.json hud/status.mjs; do
+    if [[ -f "$HOME/.claude/$f" ]] && [[ ! -L "$HOME/.claude/$f" ]]; then
+      fn_cmd "cp $HOME/.claude/$f ./backups/.claude-$(basename $f)"
+      fn_cmd "rm -f $HOME/.claude/$f"
+    fi
+    fn_cmd "ln -sf $(pwd)/tools/claude/$f $HOME/.claude/$f"
+  done
 }
 
 

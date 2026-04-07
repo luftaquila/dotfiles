@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch"
+    ],
+    "defaultMode": "default"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "node $HOME/.claude/hud/status.mjs"
+  },
+  "promptSuggestionEnabled": false,
+  "showThinkingSummaries": true,
+  "skipDangerousModePermissionPrompt": true,
+  "enabledPlugins": {
+    "claude-code-wakatime@wakatime": true
+  }
+}
