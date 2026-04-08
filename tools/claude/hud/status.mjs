@@ -9,7 +9,9 @@ import https from 'https';
 const CACHE_PATH = join(homedir(), '.claude', 'hud', '.usage-cache.json');
 const PROFILE_CACHE_PATH = join(homedir(), '.claude', 'hud', '.profile-cache.json');
 const SESSION_FILE = join(tmpdir(), 'claude-hud-sessions.json');
-const CACHE_TTL_MS = 60_000;
+const CACHE_TTL_MS = 90_000;
+const ERROR_CACHE_TTL_MS = 300_000; // 5min backoff on API errors (429 etc.)
+const JITTER_MS = 30_000; // random jitter to prevent thundering herd
 const PROFILE_CACHE_TTL_MS = 86_400_000; // 24h
 const API_TIMEOUT_MS = 8000;
 
@@ -158,12 +160,12 @@ function fetchUsage(token) {
       res.on('data', c => data += c);
       res.on('end', () => {
         if (res.statusCode === 200) {
-          try { resolve(JSON.parse(data)); } catch { resolve(null); }
-        } else resolve(null);
+          try { resolve(JSON.parse(data)); } catch { resolve({ error: 'parse error' }); }
+        } else resolve({ error: `${res.statusCode}` });
       });
     });
-    req.on('error', () => resolve(null));
-    req.on('timeout', () => { req.destroy(); resolve(null); });
+    req.on('error', (e) => resolve({ error: e.code || 'network error' }));
+    req.on('timeout', () => { req.destroy(); resolve({ error: 'timeout' }); });
     req.end();
   });
 }
@@ -185,19 +187,27 @@ function writeCache(data) {
 
 async function getUsageData() {
   const cache = readCache();
-  if (cache && Date.now() - cache.timestamp < CACHE_TTL_MS) return cache;
+  if (cache) {
+    const ttl = cache.apiError ? ERROR_CACHE_TTL_MS : CACHE_TTL_MS;
+    const jitter = Math.random() * JITTER_MS;
+    if (Date.now() - cache.timestamp < ttl + jitter) return cache;
+  }
 
   const token = readKeychain();
   if (!token) return cache; // no credentials, use stale cache
 
   const resp = await fetchUsage(token);
-  if (!resp) return cache; // API failed, use stale cache
+  if (resp?.error) {
+    const stale = cache || {};
+    return { ...stale, timestamp: Date.now(), apiError: resp.error };
+  }
 
   const result = {
     fiveHour: resp.five_hour?.utilization ?? null,
     fiveHourReset: resp.five_hour?.resets_at ?? null,
     sevenDay: resp.seven_day?.utilization ?? null,
     sevenDayReset: resp.seven_day?.resets_at ?? null,
+    apiError: null,
   };
   writeCache(result);
   return { timestamp: Date.now(), ...result };
@@ -281,7 +291,8 @@ async function main() {
   const user = profileName || userInfo().username;
   const sHost = `\x1b[32m${user}\x1b[37m@\x1b[33m${hostname().replace(/\.local$/, '')}${R}`;
 
-  console.log(`${sHost} ${gray('│')} ${s5} ${gray('│')} ${s7} ${gray('│')} ${sCtx} ${gray('│')} ${sTime}`);
+  const sErr = usage?.apiError ? ` ${gray('│')} ${red(`err:${usage.apiError}`)}` : '';
+  console.log(`${sHost} ${gray('│')} ${s5} ${gray('│')} ${s7} ${gray('│')} ${sCtx} ${gray('│')} ${sTime}${sErr}`);
 }
 
 main().catch(() => process.exit(0));
