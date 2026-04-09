@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, unlinkSync } from 'fs';
 import { join, dirname } from 'path';
 import { execFileSync } from 'child_process';
 import { tmpdir, homedir, userInfo, hostname } from 'os';
@@ -8,10 +8,11 @@ import https from 'https';
 
 const CACHE_PATH = join(homedir(), '.claude', 'hud', '.usage-cache.json');
 const PROFILE_CACHE_PATH = join(homedir(), '.claude', 'hud', '.profile-cache.json');
+const LOCK_PATH = join(homedir(), '.claude', 'hud', '.usage-lock');
 const SESSION_FILE = join(tmpdir(), 'claude-hud-sessions.json');
 const CACHE_TTL_MS = 90_000;
 const ERROR_CACHE_TTL_MS = 300_000; // 5min backoff on API errors (429 etc.)
-const JITTER_MS = 30_000; // random jitter to prevent thundering herd
+const LOCK_STALE_MS = 15_000; // consider lock stale after 15s
 const PROFILE_CACHE_TTL_MS = 86_400_000; // 24h
 const API_TIMEOUT_MS = 8000;
 
@@ -185,32 +186,65 @@ function writeCache(data) {
   } catch {}
 }
 
+// --- Lock for single-writer cache refresh ---
+function acquireLock() {
+  try {
+    const dir = dirname(LOCK_PATH);
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+    writeFileSync(LOCK_PATH, String(Date.now()), { flag: 'wx' });
+    return true;
+  } catch {
+    // lock exists — check if stale
+    try {
+      const lockTime = parseInt(readFileSync(LOCK_PATH, 'utf-8'), 10);
+      if (Date.now() - lockTime > LOCK_STALE_MS) {
+        unlinkSync(LOCK_PATH);
+        writeFileSync(LOCK_PATH, String(Date.now()), { flag: 'wx' });
+        return true;
+      }
+    } catch {}
+    return false;
+  }
+}
+
+function releaseLock() {
+  try { unlinkSync(LOCK_PATH); } catch {}
+}
+
 async function getUsageData() {
   const cache = readCache();
   if (cache) {
     const ttl = cache.apiError ? ERROR_CACHE_TTL_MS : CACHE_TTL_MS;
-    const jitter = Math.random() * JITTER_MS;
-    if (Date.now() - cache.timestamp < ttl + jitter) return cache;
+    if (Date.now() - cache.timestamp < ttl) return cache;
   }
 
-  const token = readKeychain();
-  if (!token) return cache; // no credentials, use stale cache
+  // cache expired — only one process refreshes
+  if (!acquireLock()) return cache;
 
-  const resp = await fetchUsage(token);
-  if (resp?.error) {
-    const stale = cache || {};
-    return { ...stale, timestamp: Date.now(), apiError: resp.error };
+  try {
+    const token = readKeychain();
+    if (!token) return cache; // no credentials, use stale cache
+
+    const resp = await fetchUsage(token);
+    if (resp?.error) {
+      const stale = cache || {};
+      const result = { ...stale, timestamp: Date.now(), apiError: resp.error };
+      writeCache(result);
+      return result;
+    }
+
+    const result = {
+      fiveHour: resp.five_hour?.utilization ?? null,
+      fiveHourReset: resp.five_hour?.resets_at ?? null,
+      sevenDay: resp.seven_day?.utilization ?? null,
+      sevenDayReset: resp.seven_day?.resets_at ?? null,
+      apiError: null,
+    };
+    writeCache(result);
+    return { timestamp: Date.now(), ...result };
+  } finally {
+    releaseLock();
   }
-
-  const result = {
-    fiveHour: resp.five_hour?.utilization ?? null,
-    fiveHourReset: resp.five_hour?.resets_at ?? null,
-    sevenDay: resp.seven_day?.utilization ?? null,
-    sevenDayReset: resp.seven_day?.resets_at ?? null,
-    apiError: null,
-  };
-  writeCache(result);
-  return { timestamp: Date.now(), ...result };
 }
 
 // --- Session tracking ---
