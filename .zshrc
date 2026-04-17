@@ -166,10 +166,10 @@ alias py='python'
 # Claude Code
 #############################################################################
 export CLAUDE_CODE_NO_FLICKER=1
-export CLAUDE_CODE_EFFORT_LEVEL=max
-export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1
-export CLAUDE_CODE_DISABLE_1M_CONTEXT=1
-export ANTHROPIC_MODEL=claude-opus-4-6
+# export CLAUDE_CODE_EFFORT_LEVEL=max
+# export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1
+# export CLAUDE_CODE_DISABLE_1M_CONTEXT=1
+# export ANTHROPIC_MODEL=claude-opus-4-6
 
 #############################################################################
 # git

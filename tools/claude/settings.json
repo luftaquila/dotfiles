@@ -14,5 +14,6 @@
   },
   "promptSuggestionEnabled": false,
   "showThinkingSummaries": true,
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "effortLevel": "xhigh"
 }
