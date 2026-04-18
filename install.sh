@@ -421,6 +421,20 @@ function fn_execute_stages() {
   done
 }
 
+function fn_install_authorized_keys() {
+  echo "[INF] installing authorized_keys from github.com/luftaquila.keys..."
+
+  fn_cmd "mkdir -p $HOME/.ssh"
+  fn_cmd "chmod 700 $HOME/.ssh"
+
+  if [[ -f $HOME/.ssh/authorized_keys ]]; then
+    fn_cmd "cp $HOME/.ssh/authorized_keys ./backups/authorized_keys"
+  fi
+
+  fn_cmd "curl -fsSL https://github.com/luftaquila.keys -o $HOME/.ssh/authorized_keys"
+  fn_cmd "chmod 600 $HOME/.ssh/authorized_keys"
+}
+
 function fn_generate_ssh_key() {
   ssh_pubkey=$HOME/.ssh/id_ed25519
 
@@ -458,6 +472,7 @@ fn_set_directory $1
 fn_configure_stages
 fn_execute_stages
 echo "[INF] ALL DONE!"
+fn_install_authorized_keys
 fn_generate_ssh_key
 echo "[INF] starting in new zsh..."
 exec zsh
