@@ -12,8 +12,8 @@
   "enabledPlugins": {
     "claude-code-wakatime@wakatime": true
   },
+  "effortLevel": "xhigh",
   "promptSuggestionEnabled": false,
   "showThinkingSummaries": true,
-  "skipDangerousModePermissionPrompt": true,
-  "effortLevel": "xhigh"
+  "skipDangerousModePermissionPrompt": true
 }
