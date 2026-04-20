@@ -11,12 +11,6 @@ $directory\
 $git_branch\
 $git_status\
 $docker_context\
-$python\
-$nodejs\
-$rust\
-$golang\
-$dotnet\
-$java\
 $cmd_duration\
 $jobs"""
 
@@ -43,6 +37,7 @@ Alpine = ""
 CentOS = ""
 Redhat = ""
 RedHatEnterprise = ""
+RockyLinux = ""
 openSUSE = ""
 SUSE = ""
 NixOS = ""
@@ -81,24 +76,6 @@ renamed = ""
 
 [docker_context]
 format = "[$context](39) "
-
-[python]
-format = "[$symbol($virtualenv )](178) "
-
-[nodejs]
-format = "[$symbol$version](70) "
-
-[rust]
-format = "[$symbol$version](178) "
-
-[golang]
-format = "[$symbol$version](76) "
-
-[dotnet]
-format = "[$symbol$version](134) "
-
-[java]
-format = "[$symbol$version](178) "
 
 [cmd_duration]
 min_time = 3_000
