@@ -240,6 +240,8 @@ function install-packages-cli() {
   wi junegunn.fzf
   wi ezwinports.make
   wi BrechtSanders.WinLibs.POSIX.UCRT
+  # runtime (for Claude HUD status.mjs)
+  wi OpenJS.NodeJS.LTS
 
   # refresh PATH so nvim/make/gcc are visible for plugin build
   refresh-path
