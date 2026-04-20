@@ -3,9 +3,70 @@ $env:LANG="en"
 $env:LANGUAGE="en"
 $env:LC_MESSAGES="C"
 
+# force UTF-8 so starship's unicode glyphs render correctly
+[Console]::InputEncoding  = [System.Text.Encoding]::UTF8
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding           = [System.Text.Encoding]::UTF8
+
 $env:STARSHIP_CONFIG = "$HOME\dotfiles\tools\windows\starship.toml"
 Invoke-Expression (&starship init powershell)
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
+
+# starship init doesn't render right_format on PowerShell; override prompt to compose it
+function global:prompt {
+    $origDollarQuestion = $global:?
+    $origLastExitCode = $global:LASTEXITCODE
+
+    try { if (Test-Path function:Invoke-Starship-PreCommand) { Invoke-Starship-PreCommand } } catch {}
+
+    $jobs = @(Get-Job | Where-Object { $_.State -eq 'Running' }).Count
+    $cwd = Get-Location
+    $width = $Host.UI.RawUI.WindowSize.Width
+
+    $sArgs = @(
+        'prompt',
+        "--path=$($cwd.ProviderPath)",
+        "--logical-path=$($cwd.Path)",
+        "--terminal-width=$width",
+        "--jobs=$jobs"
+    )
+
+    $exitForPrompt = 0
+    if ($lastCmd = Get-History -Count 1) {
+        if (-not $origDollarQuestion) {
+            $lastCmdletError = try { $global:error[0] | Where-Object { $_ -ne $null } | Select-Object -ExpandProperty InvocationInfo } catch { $null }
+            $exitForPrompt = if ($null -ne $lastCmdletError -and $lastCmd.CommandLine -eq $lastCmdletError.Line) { 1 } else { $origLastExitCode }
+        }
+        $duration = [math]::Round(($lastCmd.EndExecutionTime - $lastCmd.StartExecutionTime).TotalMilliseconds)
+        $sArgs += "--cmd-duration=$duration"
+    }
+    $sArgs += "--status=$exitForPrompt"
+
+    if ([Microsoft.PowerShell.PSConsoleReadLine]::InViCommandMode()) { $sArgs += '--keymap=vi' }
+
+    $left  = ((& starship @sArgs)         -join '') -replace "`r?`n$", ''
+    $right = ((& starship @sArgs --right) -join '') -replace "`r?`n$", ''
+    $right = $right.TrimEnd()
+
+    $ansi = [regex]'\x1b\[[0-9;?]*[a-zA-Z]|\x1b\].*?(\x07|\x1b\\)'
+    $leftLen  = $ansi.Replace($left,  '').Length
+    $rightLen = $ansi.Replace($right, '').Length
+
+    $pad = $width - $leftLen - $rightLen
+    $promptText = if ($pad -lt 1 -or $rightLen -eq 0) {
+        $left
+    } else {
+        $left + "`e7`e[$($width - $rightLen + 1)G" + $right + "`e8"
+    }
+
+    Set-PSReadLineOption -ExtraPromptLineCount 0
+    $promptText
+
+    $global:LASTEXITCODE = $origLastExitCode
+    if ($global:? -ne $origDollarQuestion) {
+        if ($origDollarQuestion) { 1+1 } else { Write-Error '' -ErrorAction 'Ignore' }
+    }
+}
 
 # autocomplete
 Set-PSReadlineOption -EditMode Vi

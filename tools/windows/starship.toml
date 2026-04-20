@@ -1,10 +1,11 @@
 # Starship configuration matching Powerlevel10k lean theme
-# p10k: nerdfont-complete, lean, 2 line, compact, concise
-# NOTE: right_format not supported in PowerShell, using 2-line left prompt
+# p10k: nerdfont-complete, lean, 1 line, info on the right
 
 add_newline = false
 
-format = """
+format = "$character"
+
+right_format = """
 $os\
 $hostname\
 $directory\
@@ -18,8 +19,7 @@ $golang\
 $dotnet\
 $java\
 $cmd_duration\
-$jobs
-$character"""
+$jobs"""
 
 [character]
 success_symbol = "[❯](76)"
@@ -34,55 +34,55 @@ disabled = false
 
 [hostname]
 ssh_only = true
-format = " [$hostname](180)"
+format = "[$hostname](180) "
 
 [directory]
-format = " [$path](31)"
+format = "[$path](31) "
 truncation_length = 8
 fish_style_pwd_dir_length = 1
 truncate_to_repo = false
 
 [git_branch]
 symbol = ""
-format = " [$branch(:$remote_branch)](76)"
+format = "[$branch(:$remote_branch)](76) "
 
 [git_status]
 format = "$ahead_behind$stashed$conflicted$staged$modified$untracked"
-ahead = " [⇡$count](76)"
-behind = " [⇣$count](76)"
-diverged = " [⇣${behind_count}⇡${ahead_count}](76)"
-stashed = " [*$count](76)"
-conflicted = " [~$count](196)"
-staged = " [+$count](178)"
-modified = " [!$count](178)"
-untracked = " [?$count](39)"
+ahead = "[⇡$count](76) "
+behind = "[⇣$count](76) "
+diverged = "[⇣${behind_count}⇡${ahead_count}](76) "
+stashed = "[*$count](76) "
+conflicted = "[~$count](196) "
+staged = "[+$count](178) "
+modified = "[!$count](178) "
+untracked = "[?$count](39) "
 deleted = ""
 renamed = ""
 
 [docker_context]
-format = " [$context](39)"
+format = "[$context](39) "
 
 [python]
-format = " [$symbol($virtualenv )](178)"
+format = "[$symbol($virtualenv )](178) "
 
 [nodejs]
-format = " [$symbol$version](70)"
+format = "[$symbol$version](70) "
 
 [rust]
-format = " [$symbol$version](178)"
+format = "[$symbol$version](178) "
 
 [golang]
-format = " [$symbol$version](76)"
+format = "[$symbol$version](76) "
 
 [dotnet]
-format = " [$symbol$version](134)"
+format = "[$symbol$version](134) "
 
 [java]
-format = " [$symbol$version](178)"
+format = "[$symbol$version](178) "
 
 [cmd_duration]
 min_time = 3_000
-format = " [$duration](101)"
+format = "[$duration](101) "
 
 [jobs]
-format = " [$number](70)"
+format = "[$number](70) "
