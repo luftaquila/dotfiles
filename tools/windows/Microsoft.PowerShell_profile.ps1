@@ -160,6 +160,26 @@ function gbr { git bisect reset @args }
 
 function rgh { rg --hidden --no-ignore --smart-case @args }
 
+del alias:rm -Force -ErrorAction SilentlyContinue
+function rm {
+    $recurse = $false
+    $force = $false
+    $paths = [System.Collections.Generic.List[string]]::new()
+    foreach ($a in $args) {
+        if ($a -match '^-[rRfF]+$') {
+            if ($a -cmatch '[rR]') { $recurse = $true }
+            if ($a -cmatch '[fF]') { $force = $true }
+        } else {
+            $paths.Add($a)
+        }
+    }
+    if ($paths.Count -eq 0) { Write-Error 'rm: missing operand'; return }
+    $p = @{}
+    if ($recurse) { $p.Recurse = $true }
+    if ($force)   { $p.Force = $true; $p.ErrorAction = 'SilentlyContinue' }
+    Remove-Item @p -Path $paths
+}
+
 del alias:ls -Force -ErrorAction SilentlyContinue
 function ls { eza --color-scale --time-style long-iso @args }
 function ll { eza --color-scale --time-style long-iso --long @args }
