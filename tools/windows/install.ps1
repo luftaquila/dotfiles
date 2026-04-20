@@ -235,6 +235,23 @@ function install-packages-cli() {
   # cli tools
   wi ajeetdsouza.zoxide
   wi dandavison.delta
+  wi BurntSushi.ripgrep.MSVC
+  wi eza-community.eza
+  wi junegunn.fzf
+  wi ezwinports.make
+  wi BrechtSanders.WinLibs.POSIX.UCRT
+
+  # refresh PATH so nvim/make/gcc are visible for plugin build
+  refresh-path
+
+  # sync nvim plugins (needs nvim config from dotfiles + make + gcc for native builds)
+  if ((Test-Path "$HOME\AppData\Local\nvim") -and (Get-Command nvim -ErrorAction SilentlyContinue)) {
+    log INF 'syncing nvim plugins (Lazy)...'
+    nvim --headless '+Lazy! sync' +qall
+    if ($LASTEXITCODE -ne 0) {
+      log WRN "nvim plugin sync failed (exit $LASTEXITCODE) - run ':Lazy sync' manually"
+    }
+  }
 }
 
 function install-packages-apps() {
