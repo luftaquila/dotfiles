@@ -10,7 +10,7 @@ $OutputEncoding           = [System.Text.Encoding]::UTF8
 
 $env:STARSHIP_CONFIG = "$HOME\dotfiles\tools\windows\starship.toml"
 Invoke-Expression (&starship init powershell)
-Invoke-Expression (& { (zoxide init powershell | Out-String) })
+Invoke-Expression (& { (zoxide init powershell --cmd j | Out-String) })
 
 # starship init doesn't render right_format on PowerShell; override prompt to compose it
 function global:prompt {
@@ -53,14 +53,15 @@ function global:prompt {
     $rightLen = $ansi.Replace($right, '').Length
 
     $pad = $width - $leftLen - $rightLen
-    $promptText = if ($pad -lt 1 -or $rightLen -eq 0) {
-        $left
-    } else {
-        $left + "`e7`e[$($width - $rightLen + 1)G" + $right + "`e8"
+
+    # write right prompt as console side-effect so it stays outside PSReadLine's
+    # buffered prompt string; avoids re-emitting `e7...`e8 on every redraw (tab, menu, predictions).
+    if ($rightLen -gt 0 -and $pad -ge 1) {
+        [Console]::Write("`e7`e[$($width - $rightLen + 1)G$right`e8")
     }
 
     Set-PSReadLineOption -ExtraPromptLineCount 0
-    $promptText
+    $left
 
     $global:LASTEXITCODE = $origLastExitCode
     if ($global:? -ne $origDollarQuestion) {
@@ -84,6 +85,8 @@ Set-Alias -Name vi -Value nvim
 function c  { clear }
 function py { python @args }
 
+function make { make.exe -j @args }
+
 function cl  { claude --remote-control @args }
 function cld { claude --dangerously-skip-permissions --remote-control @args }
 
@@ -102,6 +105,25 @@ function gcp { git cherry-pick @args }
 function gdf { git diff $args }
 function gds { git diff --staged $args }
 function gdu { git diff '@{u}' @args }
+
+function gdo {
+    param([string]$Branch)
+
+    if ([string]::IsNullOrEmpty($Branch)) {
+        $files = git diff --name-only
+        if (-not $files) { Write-Error 'no diff found!'; return }
+        $root = (git rev-parse --show-toplevel).Trim()
+        $paths = $files | ForEach-Object { Join-Path $root $_ }
+        $paths | ForEach-Object { Write-Host $_ }
+        & nvim @paths
+    } else {
+        $files = git diff --merge-base $Branch --name-only
+        if (-not $files) { Write-Error 'no diff found!'; return }
+        $root = (git rev-parse --show-toplevel).Trim()
+        $paths = $files | ForEach-Object { Join-Path $root $_ }
+        & nvim "+Gitsigns change_base $Branch true" @paths
+    }
+}
 
 function gfh { git fetch $args }
 
