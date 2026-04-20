@@ -9,7 +9,7 @@ set -uo pipefail
 packages_brew=(
   "atuin" "bat" "btop" "cmake" "code-minimap"
   "duf" "dust" "eza" "fd" "fzf" "git-delta" "mise"
-  "nvim" "rainbarf" "ripgrep" "tig" "tmux"
+  "nvim" "rainbarf" "ripgrep" "starship" "tig" "tmux"
   "zoxide"
 )
 
@@ -361,14 +361,11 @@ function fn_install_ohmyzsh() {
     fn_cmd "zsh -c 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions'"
   fi
 
-  echo "[INF] installing powerlevel10k..."
-
-  if [[ ! -d "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" ]]; then
-    fn_cmd "zsh -c 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'"
+  if [[ ! -d "${ZSH_CUSTOM}/plugins/zsh-defer" ]]; then
+    fn_cmd "zsh -c 'git clone https://github.com/romkatv/zsh-defer ${ZSH_CUSTOM}/plugins/zsh-defer'"
   fi
 
   fn_install_dotfile ".zshrc"
-  fn_install_dotfile ".p10k.zsh"
 
   echo "[INF] installing per-machine zsh script..."
 
@@ -611,7 +608,7 @@ function fn_configure_items() {
     fn_print_header "Installation Options"
     echo
 
-    fn_ask_yn "Oh My Zsh ${C_D}(zsh, plugins, p10k)${C_R}" "y"
+    fn_ask_yn "Oh My Zsh ${C_D}(zsh, plugins)${C_R}" "y"
     sel[ohmyzsh]=$ASK_RESULT
 
     fn_ask_yn "Homebrew packages ${C_D}(CLI tools: mise, nvim, tmux, tig, ...)${C_R}" "y"

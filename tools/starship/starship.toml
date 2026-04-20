@@ -1,5 +1,4 @@
-# Starship configuration matching Powerlevel10k lean theme
-# p10k: nerdfont-complete, lean, 1 line, info on the right
+# nerdfont-complete, lean, 1 line, info on the right
 
 add_newline = false
 
@@ -31,6 +30,27 @@ vimcmd_replace_one_symbol = "[▶](76)"
 
 [os]
 disabled = false
+format = "[$symbol]($style) "
+
+[os.symbols]
+Macos = ""
+Linux = ""
+Arch = ""
+Debian = ""
+Ubuntu = ""
+Fedora = ""
+Alpine = ""
+CentOS = ""
+Redhat = ""
+RedHatEnterprise = ""
+openSUSE = ""
+SUSE = ""
+NixOS = ""
+Raspbian = ""
+Manjaro = ""
+Mint = ""
+Pop = ""
+Windows = ""
 
 [hostname]
 ssh_only = true

@@ -8,7 +8,7 @@ $env:LC_MESSAGES="C"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding           = [System.Text.Encoding]::UTF8
 
-$env:STARSHIP_CONFIG = "$HOME\dotfiles\tools\windows\starship.toml"
+$env:STARSHIP_CONFIG = "$HOME\dotfiles\tools\starship\starship.toml"
 Invoke-Expression (&starship init powershell)
 Invoke-Expression (& { (zoxide init powershell --cmd j | Out-String) })
 
