@@ -111,13 +111,6 @@ export LANG=en_US.UTF-8
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 #############################################################################
-# starship https://starship.rs
-#############################################################################
-export STARSHIP_CONFIG="$HOME/dotfiles/tools/starship/starship.toml"
-eval "$(starship init zsh)"
-
-
-#############################################################################
 # PATH
 #############################################################################
 if [ -d "$HOME/.local/bin" ] ; then
@@ -131,6 +124,13 @@ fi
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
+
+
+#############################################################################
+# starship https://starship.rs
+#############################################################################
+export STARSHIP_CONFIG="$HOME/dotfiles/tools/starship/starship.toml"
+eval "$(starship init zsh)"
 
 
 #############################################################################
