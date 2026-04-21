@@ -489,7 +489,7 @@ function fn_install_claude() {
   echo "[INF] configuring Claude Code..."
   fn_cmd "mkdir -p $HOME/.claude/hud"
 
-  for f in settings.json hud/status.mjs; do
+  for f in settings.json CLAUDE.md hud/status.mjs; do
     if [[ -L "$HOME/.claude/$f" ]]; then
       fn_cmd "rm -f $HOME/.claude/$f"
     elif [[ -f "$HOME/.claude/$f" ]]; then
