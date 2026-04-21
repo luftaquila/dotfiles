@@ -139,6 +139,9 @@ eval "$(starship init zsh)"
 bindkey -v
 export KEYTIMEOUT=1
 
+autoload -Uz bracketed-paste-magic
+zle -N bracketed-paste bracketed-paste-magic
+
 
 #############################################################################
 # basic
