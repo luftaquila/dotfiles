@@ -121,37 +121,46 @@ function atomicWrite(filePath, data) {
 }
 
 async function getProfileName() {
-  // check cache by timestamp first to avoid unnecessary Keychain access
+  const token = readKeychain();
+  if (!token) return null;
+  const tokenHash = createHash('sha256').update(token).digest('hex').slice(0, 16);
+
+  // cache is keyed by token hash so switching accounts invalidates it
   try {
     if (existsSync(PROFILE_CACHE_PATH)) {
       const cache = JSON.parse(readFileSync(PROFILE_CACHE_PATH, 'utf-8'));
-      if (cache.name && Date.now() - cache.timestamp < PROFILE_CACHE_TTL_MS)
+      if (cache.name && cache.tokenHash === tokenHash &&
+          Date.now() - cache.timestamp < PROFILE_CACHE_TTL_MS)
         return cache.name;
     }
   } catch {}
-
-  const token = readKeychain();
-  if (!token) return null;
 
   const resp = await fetchProfile(token);
   const name = resp?.account?.display_name || resp?.account?.full_name || null;
   if (name) {
     try {
-      atomicWrite(PROFILE_CACHE_PATH, JSON.stringify({ timestamp: Date.now(), name }));
+      atomicWrite(PROFILE_CACHE_PATH, JSON.stringify({ timestamp: Date.now(), tokenHash, name }));
     } catch {}
   }
   return name;
 }
 
 // --- Session tracking ---
-function getSessionElapsed() {
-  const sid = process.env.CLAUDE_SESSION_ID || 'default';
+const SESSION_TTL_MS = 86_400_000; // drop session records older than 24h
+
+function getSessionElapsed(sid) {
+  if (!sid) return 0;
   const now = Date.now();
   let sessions = {};
   try { sessions = JSON.parse(readFileSync(SESSION_FILE, 'utf-8')); } catch {}
-  if (!sessions[sid]) {
-    sessions[sid] = now;
-    writeFileSync(SESSION_FILE, JSON.stringify(sessions));
+  const cutoff = now - SESSION_TTL_MS;
+  let dirty = false;
+  for (const k of Object.keys(sessions)) {
+    if (sessions[k] < cutoff) { delete sessions[k]; dirty = true; }
+  }
+  if (!sessions[sid]) { sessions[sid] = now; dirty = true; }
+  if (dirty) {
+    try { writeFileSync(SESSION_FILE, JSON.stringify(sessions)); } catch {}
   }
   return now - sessions[sid];
 }
@@ -186,7 +195,7 @@ function getContextPercent(stdin) {
 // --- Main ---
 async function main() {
   const [stdin, profileName] = await Promise.all([readStdin(), getProfileName()]);
-  const elapsed = getSessionElapsed();
+  const elapsed = getSessionElapsed(stdin?.session_id);
 
   // rate limits from stdin (provided by Claude Code)
   const fiveHour = stdin?.rate_limits?.five_hour;
