@@ -20,6 +20,7 @@ const red = s => `\x1b[31m${s}${R}`;
 const cyan = s => `\x1b[36m${s}${R}`;
 const blue = s => `\x1b[34m${s}${R}`;
 const mag = s => `\x1b[35m${s}${R}`;
+const bmag = s => `\x1b[95m${s}${R}`;
 
 function color(pct) {
   if (pct >= 90) return red;
@@ -234,7 +235,12 @@ async function main() {
   const user = profileName || userInfo().username;
   const sHost = `\x1b[32m${user}\x1b[37m@\x1b[33m${hostname().replace(/\.local$/, '')}${R}`;
 
-  console.log(`${sHost} ${gray('│')} ${s5} ${gray('│')} ${s7} ${gray('│')} ${sCtx} ${gray('│')} ${sTime}`);
+  const modelName = stdin?.model?.display_name;
+  const sModel = modelName ? bmag(modelName) : null;
+
+  const parts = [sHost, s5, s7, sCtx, sTime];
+  if (sModel) parts.push(sModel);
+  console.log(parts.join(` ${gray('│')} `));
 }
 
 main().catch(() => process.exit(0));
