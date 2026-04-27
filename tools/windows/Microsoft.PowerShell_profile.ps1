@@ -87,8 +87,8 @@ function py { python @args }
 
 function make { make.exe -j @args }
 
-function cl  { claude --remote-control @args }
-function cld { claude --dangerously-skip-permissions --remote-control @args }
+function cl  { $env:CLAUDE_CODE_NO_FLICKER=1; claude --remote-control @args }
+function cld { $env:CLAUDE_CODE_NO_FLICKER=1; claude --dangerously-skip-permissions --remote-control @args }
 
 function gad { git add $args }
 function gap { git add -p $args }
