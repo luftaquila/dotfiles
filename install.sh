@@ -401,10 +401,16 @@ function fn_install_brew_packages() {
 }
 
 function fn_install_languages() {
-  echo "[INF] installing languages via mise..."
+  echo "[INF] installing languages..."
   for lang in "$@"; do
     echo "[INF] installing $lang..."
-    fn_cmd "mise use -g $lang"
+    if [[ $lang == "python" ]]; then
+      # python is managed by uv (uv itself is managed by mise)
+      fn_cmd "mise use -g uv"
+      fn_cmd "mise exec -- uv python install --default --preview"
+    else
+      fn_cmd "mise use -g $lang"
+    fi
   done
 }
 
@@ -437,12 +443,14 @@ function fn_install_tmux() {
 function fn_install_nvim() {
   echo "[INF] configuring NeoVim..."
 
-  if ! [[ -x "$(mise which python)" ]]; then
-    echo "[INF] installing python for pynvim..."
-    fn_cmd "mise use -g python"
+  # ensure uv-managed python (with global shim) is available for pynvim
+  if ! [[ -x "$HOME/.local/bin/python3" ]]; then
+    echo "[INF] installing python via uv for pynvim..."
+    fn_cmd "mise use -g uv"
+    fn_cmd "mise exec -- uv python install --default --preview"
   fi
 
-  fn_cmd "$(mise which python) -m pip install pynvim" ignore
+  fn_cmd "mise exec -- uv pip install --python $HOME/.local/bin/python3 --break-system-packages pynvim" ignore
 
   fn_cmd "mkdir -p $HOME/.config"
 
@@ -455,7 +463,8 @@ function fn_install_nvim() {
   fi
 
   fn_cmd "ln -s $DOTFILES_DIR/nvim $HOME/.config/nvim"
-  fn_cmd "nvim --headless '+Lazy! sync' +qall" ignore
+  # prepend ~/.local/bin so nvim picks up the uv-managed python3 with pynvim
+  fn_cmd "PATH=\"\$HOME/.local/bin:\$PATH\" nvim --headless '+Lazy! sync' +qall" ignore
 }
 
 function fn_install_vim() {
@@ -551,7 +560,7 @@ function fn_set_directory() {
 #  dependency graph:
 #    ohmyzsh      — independent
 #    brew         — provides mise, tmux, nvim, tig binaries
-#    lang-python  ⇐ brew (via mise)
+#    lang-python  ⇐ brew (mise installs uv, uv installs python)
 #    lang-node    ⇐ brew (via mise)
 #    lang-rust    ⇐ brew (via mise)
 #    tmux         ⇐ brew (tmux binary for tpm install)
@@ -615,7 +624,7 @@ function fn_configure_items() {
     sel[brew]=$ASK_RESULT
 
     if [[ ${sel[brew]} == true ]]; then
-      printf "  %slanguages (via mise):%s\n" "$C_D" "$C_R"
+      printf "  %slanguages:%s\n" "$C_D" "$C_R"
       fn_ask_yn "python"  "y" "    "; sel[lang-python]=$ASK_RESULT
       fn_ask_yn "node"    "y" "    "; sel[lang-node]=$ASK_RESULT
       fn_ask_yn "rust"    "y" "    "; sel[lang-rust]=$ASK_RESULT
