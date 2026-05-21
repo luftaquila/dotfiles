@@ -143,7 +143,7 @@ export CLAUDE_CODE_NO_FLICKER=1
 # navigation
 #############################################################################
 bindkey -v
-export KEYTIMEOUT=1
+export KEYTIMEOUT=25
 
 autoload -Uz bracketed-paste-magic
 zle -N bracketed-paste bracketed-paste-magic
