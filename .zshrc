@@ -158,8 +158,8 @@ alias f='fg'
 alias make='make -j'
 
 alias vi='nvim'
-alias cl='claude --remote-control'
-alias cld='claude --dangerously-skip-permissions --remote-control'
+alias cl='claude'
+alias cld='claude --dangerously-skip-permissions'
 
 alias tm='tmux -2'
 alias ta='tmux attach'
