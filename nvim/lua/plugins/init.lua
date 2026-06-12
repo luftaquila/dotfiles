@@ -25,6 +25,7 @@ return {
           "rust-analyzer",
           "taplo",
           "tinymist",
+          "tree-sitter-cli",
           "vtsls",
           "vue-language-server",
           "clang-format",
@@ -47,6 +48,7 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     opts = {
       ensure_installed = {
         "asm",
