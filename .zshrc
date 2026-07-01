@@ -193,7 +193,7 @@ alias gpl='git pull'
 alias gpr='git pull --rebase'
 
 alias gph='git push'
-alias gpf='git push -f'
+alias gpf='git push --force-with-lease --force-if-includes'
 alias gpn='git push --set-upstream origin $(git branch --show-current)'
 
 alias grt='git reset'

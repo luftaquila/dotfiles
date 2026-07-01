@@ -134,7 +134,7 @@ function gpl { git pull $args }
 function gpr { git pull --rebase $args }
 
 function gph { git push $args }
-function gpf { git push -f $args }
+function gpf { git push --force-with-lease --force-if-includes $args }
 function gpn { git push --set-upstream origin "$(git branch --show-current)" @args }
 
 function grt { git reset $args }
