@@ -161,6 +161,8 @@ alias vi='nvim'
 alias cl='claude'
 alias cld='claude --dangerously-skip-permissions'
 
+alias cdx='codex --sandbox danger-full-access'
+
 alias tm='tmux -2'
 alias ta='tmux attach'
 
@@ -326,3 +328,6 @@ eval "$(atuin init zsh --disable-up-arrow)"
 # PER MACHINE
 #############################################################################
 [[ ! -f ~/.machine.zsh ]] || source ~/.machine.zsh
+
+# Added by LM Studio CLI tool (lms)
+export PATH="$PATH:/Users/luftaquila/.lmstudio/bin"
