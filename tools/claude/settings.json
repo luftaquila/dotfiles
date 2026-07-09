@@ -5,6 +5,7 @@
     ],
     "defaultMode": "auto"
   },
+  "model": "opus[1m]",
   "statusLine": {
     "type": "command",
     "command": "node $HOME/.claude/hud/status.mjs"
@@ -15,9 +16,8 @@
   "effortLevel": "xhigh",
   "promptSuggestionEnabled": false,
   "showThinkingSummaries": true,
+  "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true,
-  "skipDangerousModePermissionPrompt": true,
-  "agentPushNotifEnabled": true
+  "skipAutoPermissionPrompt": true
 }
