@@ -9,7 +9,7 @@ set -uo pipefail
 packages_brew=(
   "atuin" "bat" "btop" "cmake" "code-minimap"
   "duf" "dust" "eza" "fd" "fzf" "git-delta" "mise"
-  "nvim" "rainbarf" "ripgrep" "starship" "tig" "tmux"
+  "nvim" "rainbarf" "ripgrep" "rtk" "sem-cli" "starship" "tig" "tmux"
   "zoxide"
 )
 
