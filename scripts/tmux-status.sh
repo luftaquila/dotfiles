@@ -179,6 +179,18 @@ if [ "$converted" -gt 0 ]; then
 fi
 tmux "${apply[@]}" 2>/dev/null || exit 1
 
+# A previous run may have left options behind for segments that no longer
+# exist -- drop them, or the recovery path above would resurrect phantom
+# segments and keep evaluating their commands forever.
+if [ "$converted" -gt 0 ]; then
+  i=${#cmds[@]}
+  while [ -n "$(tmux show-option -gqv "${CMD_PREFIX}${i}")" ]; do
+    tmux set -gu "${CMD_PREFIX}${i}" 2>/dev/null
+    tmux set -gu "${OPT_PREFIX}${i}" 2>/dev/null
+    i=$((i + 1))
+  done
+fi
+
 ############################################################################
 # update loop
 ############################################################################
