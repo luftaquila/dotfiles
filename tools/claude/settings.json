@@ -5,7 +5,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus[1m]",
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "node $HOME/.claude/hud/status.mjs"
@@ -13,11 +13,34 @@
   "enabledPlugins": {
     "claude-code-wakatime@wakatime": true
   },
+  "extraKnownMarketplaces": {
+    "kicad-happy": {
+      "source": {
+        "source": "github",
+        "repo": "aklofas/kicad-happy"
+      }
+    },
+    "jlcpcb-skills": {
+      "source": {
+        "source": "github",
+        "repo": "mash/jlcpcb-skills"
+      }
+    }
+  },
   "effortLevel": "xhigh",
+  "modelSettings": {
+    "claude-fable-5-1": {
+      "effortLevel": "xhigh"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
+  },
   "promptSuggestionEnabled": false,
   "showThinkingSummaries": true,
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
+  "switchModelsOnFlag": false,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
 }
