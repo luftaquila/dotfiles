@@ -109,6 +109,5 @@
   "showThinkingSummaries": true,
   "skipDangerousModePermissionPrompt": true,
   "switchModelsOnFlag": false,
-  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
 }
