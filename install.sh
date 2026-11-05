@@ -14,7 +14,7 @@ packages_brew=(
 )
 
 # selection keys — labels and dependencies defined in fn_configure_items
-item_keys=( ohmyzsh brew lang-python lang-node lang-rust tmux nvim vim claude )
+item_keys=( ohmyzsh brew lang-python lang-node lang-rust tmux nvim vim claude codex )
 declare -A sel=()
 
 # state (populated by argv parsing)
@@ -329,6 +329,7 @@ function fn_print_summary() {
   fi
   fn_print_item vim           "Vim"
   fn_print_item claude        "Claude Code"
+  fn_print_item codex         "Codex CLI"
 }
 
 
@@ -510,6 +511,34 @@ function fn_install_claude() {
   done
 }
 
+function fn_install_codex() {
+  if ! command -v codex &>/dev/null; then
+    echo "[INF] installing Codex CLI..."
+    # the installer appends a PATH block to the shell profile (~/.zshrc, a dotfiles
+    # symlink) unless its bin dir is already on PATH
+    fn_cmd "mkdir -p $HOME/.local/bin"
+    export PATH="$HOME/.local/bin:$PATH"
+    fn_cmd "curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 sh"
+  else
+    echo "[INF] Codex CLI is already installed. skipping install..."
+  fi
+
+  echo "[INF] configuring Codex CLI..."
+  fn_cmd "mkdir -p $HOME/.codex"
+
+  if [[ -L "$HOME/.codex/hooks.json" ]]; then
+    fn_cmd "rm -f $HOME/.codex/hooks.json"
+  elif [[ -f "$HOME/.codex/hooks.json" ]]; then
+    fn_cmd "mkdir -p $DOTFILES_DIR/backups"
+    fn_cmd "cp $HOME/.codex/hooks.json $DOTFILES_DIR/backups/.codex-hooks.json"
+    fn_cmd "rm -f $HOME/.codex/hooks.json"
+  fi
+  fn_cmd "ln -s $DOTFILES_DIR/tools/codex/hooks.json $HOME/.codex/hooks.json"
+
+  # hooks run by the shared app-server daemon get the daemon's TMUX_PANE, not the TUI's
+  fn_cmd "codex features disable daemon_auto_start" ignore
+}
+
 
 ###############################################################################
 #  identify dotfiles repository
@@ -567,6 +596,7 @@ function fn_set_directory() {
 #    nvim         ⇐ brew (nvim binary) + lang-python (pynvim)
 #    vim          — independent (uses system vim)
 #    claude       — independent
+#    codex        — independent
 ###############################################################################
 function fn_apply_only_filter() {
   local requested=()
@@ -642,6 +672,7 @@ function fn_configure_items() {
 
     fn_ask_yn "Vim ${C_D}+ Vundle${C_R}"  "y"; sel[vim]=$ASK_RESULT
     fn_ask_yn "Claude Code"               "y"; sel[claude]=$ASK_RESULT
+    fn_ask_yn "Codex CLI"                 "y"; sel[codex]=$ASK_RESULT
 
     fn_print_summary
     echo
@@ -680,6 +711,7 @@ function fn_execute_items() {
 
   [[ ${sel[vim]}    == true ]] && fn_install_vim
   [[ ${sel[claude]} == true ]] && fn_install_claude
+  [[ ${sel[codex]}  == true ]] && fn_install_codex
 
   return 0
 }

@@ -105,7 +105,7 @@ function refresh-path() {
 #  items
 #============================================================
 $sel = [ordered]@{}
-foreach ($k in @('dotfiles', 'packages', 'packages-cli', 'packages-apps', 'claude', 'ssh')) {
+foreach ($k in @('dotfiles', 'packages', 'packages-cli', 'packages-apps', 'claude', 'codex', 'ssh')) {
   $sel[$k] = $false
 }
 
@@ -134,6 +134,8 @@ function configure-items() {
       $sel['dotfiles'] = $true
     }
 
+    $sel['codex'] = ask-yn 'Codex CLI' 'y'
+
     $sel['ssh'] = ask-yn 'SSH setup (authorized_keys + key gen)' 'y'
 
     print-header 'Summary'
@@ -144,6 +146,7 @@ function configure-items() {
       print-item $sel['packages-apps'] 'Apps'      '  '
     }
     print-item $sel['claude']        'Claude Code'
+    print-item $sel['codex']         'Codex CLI'
     print-item $sel['ssh']           'SSH setup'
     Write-Host ''
 
@@ -298,6 +301,32 @@ function install-claude() {
 
 
 #============================================================
+#  install: codex
+#============================================================
+function install-codex() {
+  if (Get-Command codex -ErrorAction SilentlyContinue) {
+    log INF 'Codex CLI is already installed. skipping install...'
+  } else {
+    log INF 'installing Codex CLI...'
+    # separate process: the installer can exit, and sets StrictMode + ErrorActionPreference
+    $env:CODEX_NON_INTERACTIVE = '1'
+    powershell -NoProfile -ExecutionPolicy Bypass -Command 'irm https://chatgpt.com/codex/install.ps1 | iex'
+    if ($LASTEXITCODE -ne 0) {
+      log WRN "Codex install failed (exit $LASTEXITCODE) - continuing"
+      return
+    }
+    refresh-path
+  }
+
+  log INF 'configuring Codex CLI...'
+  codex features disable daemon_auto_start
+  if ($LASTEXITCODE -ne 0) {
+    log WRN "disabling Codex daemon auto-start failed (exit $LASTEXITCODE) - continuing"
+  }
+}
+
+
+#============================================================
 #  install: ssh
 #============================================================
 function install-authorized-keys() {
@@ -355,6 +384,7 @@ function execute-items() {
     if ($sel['packages-apps']) { install-packages-apps }
   }
   if ($sel['claude'])         { install-claude }
+  if ($sel['codex'])          { install-codex }
   if ($sel['ssh'])            { install-ssh }
 }
 
