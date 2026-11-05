@@ -1,0 +1,15 @@
+personality = "pragmatic"
+approvals_reviewer = "auto_review"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+model = "gpt-6-astra"
+model_reasoning_effort = "max"
+service_tier = "default"
+plan_mode_reasoning_effort = "xhigh"
+
+[tui]
+status_line = ["model-with-reasoning", "context-used", "five-hour-limit", "weekly-limit", "codex-version", "context-window-size", "total-input-tokens", "total-output-tokens"]
+theme = "dark-neon"
+
+[features]
+memories = true

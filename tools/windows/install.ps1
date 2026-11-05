@@ -319,6 +319,8 @@ function install-codex() {
   }
 
   log INF 'configuring Codex CLI...'
+  # used with `codex --profile dotfiles`; ~/.codex/config.toml keeps machine state
+  link "$HOME\.codex\dotfiles.config.toml" "$HOME\dotfiles\tools\codex\config.toml"
   codex features disable daemon_auto_start
   if ($LASTEXITCODE -ne 0) {
     log WRN "disabling Codex daemon auto-start failed (exit $LASTEXITCODE) - continuing"

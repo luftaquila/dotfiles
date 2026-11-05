@@ -526,14 +526,20 @@ function fn_install_codex() {
   echo "[INF] configuring Codex CLI..."
   fn_cmd "mkdir -p $HOME/.codex"
 
-  if [[ -L "$HOME/.codex/hooks.json" ]]; then
-    fn_cmd "rm -f $HOME/.codex/hooks.json"
-  elif [[ -f "$HOME/.codex/hooks.json" ]]; then
-    fn_cmd "mkdir -p $DOTFILES_DIR/backups"
-    fn_cmd "cp $HOME/.codex/hooks.json $DOTFILES_DIR/backups/.codex-hooks.json"
-    fn_cmd "rm -f $HOME/.codex/hooks.json"
-  fi
-  fn_cmd "ln -s $DOTFILES_DIR/tools/codex/hooks.json $HOME/.codex/hooks.json"
+  # config.toml is the `--profile dotfiles` layer; ~/.codex/config.toml keeps machine state
+  local src dst
+  for src in hooks.json config.toml; do
+    dst=$src
+    [[ $src == config.toml ]] && dst=dotfiles.config.toml
+    if [[ -L "$HOME/.codex/$dst" ]]; then
+      fn_cmd "rm -f $HOME/.codex/$dst"
+    elif [[ -f "$HOME/.codex/$dst" ]]; then
+      fn_cmd "mkdir -p $DOTFILES_DIR/backups"
+      fn_cmd "cp $HOME/.codex/$dst $DOTFILES_DIR/backups/.codex-$dst"
+      fn_cmd "rm -f $HOME/.codex/$dst"
+    fi
+    fn_cmd "ln -s $DOTFILES_DIR/tools/codex/$src $HOME/.codex/$dst"
+  done
 
   # hooks run by the shared app-server daemon get the daemon's TMUX_PANE, not the TUI's
   fn_cmd "codex features disable daemon_auto_start" ignore
