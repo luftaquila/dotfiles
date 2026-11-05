@@ -90,6 +90,8 @@ function make { make.exe -j @args }
 function cl  { $env:CLAUDE_CODE_NO_FLICKER=1; claude @args }
 function cld { $env:CLAUDE_CODE_NO_FLICKER=1; claude --dangerously-skip-permissions @args }
 
+function cdx { codex --no-daemon --profile dotfiles --sandbox danger-full-access @args }
+
 function gad { git add $args }
 function gap { git add -p $args }
 
