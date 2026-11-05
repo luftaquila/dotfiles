@@ -161,7 +161,7 @@ alias vi='nvim'
 alias cl='claude'
 alias cld='claude --dangerously-skip-permissions'
 
-alias cdx='codex --sandbox danger-full-access'
+alias cdx='codex --no-daemon --sandbox danger-full-access'
 
 alias tm='tmux -2'
 alias ta='tmux attach'
