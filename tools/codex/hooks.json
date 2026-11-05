@@ -1,0 +1,65 @@
+{
+  "description": "tmux window agent-state markers, shown by dracula-tmux (scripts/agent_state.sh)",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.tmux/plugins/dracula-tmux/scripts/agent_state.sh\" running 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.tmux/plugins/dracula-tmux/scripts/agent_state.sh\" running 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.tmux/plugins/dracula-tmux/scripts/agent_state.sh\" waiting 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.tmux/plugins/dracula-tmux/scripts/agent_state.sh\" done 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "Interrupt": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.tmux/plugins/dracula-tmux/scripts/agent_state.sh\" done 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.tmux/plugins/dracula-tmux/scripts/agent_state.sh\" clear 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
