@@ -16,7 +16,10 @@
 # Run from .tmux.conf *after* the theme has built the status line:
 #   run -b '.../scripts/tmux-status.sh >/dev/null 2>&1'
 
-PIDFILE="${TMUX_TMPDIR:-/tmp}/tmux-status-$(id -u).pid"
+# one daemon per tmux server
+sock=${TMUX%%,*}
+sock=${sock##*/}
+PIDFILE="${TMUX_TMPDIR:-/tmp}/tmux-status-$(id -u)-${sock:-default}.pid"
 OPT_PREFIX="@_status_seg"
 CMD_PREFIX="@_status_cmd"
 
