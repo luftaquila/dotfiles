@@ -9,7 +9,7 @@ set -uo pipefail
 packages_brew=(
   "atuin" "bat" "btop" "cmake" "code-minimap"
   "duf" "dust" "eza" "fd" "fzf" "git-delta" "mise"
-  "nvim" "rainbarf" "ripgrep" "sem-cli" "starship" "tig" "tmux"
+  "nvim" "rainbarf" "ripgrep" "sem-cli" "starship" "tmux"
   "zoxide"
 )
 
@@ -398,7 +398,6 @@ function fn_install_brew_packages() {
   fn_check_homebrew
   fn_cmd "brew update && brew upgrade" ignore
   fn_cmd "brew install ${packages_brew[*]}"
-  fn_install_dotfile ".tigrc"
 }
 
 function fn_install_languages() {
@@ -594,7 +593,7 @@ function fn_set_directory() {
 #
 #  dependency graph:
 #    ohmyzsh      — independent
-#    brew         — provides mise, tmux, nvim, tig binaries
+#    brew         — provides mise, tmux, nvim binaries
 #    lang-python  ⇐ brew (mise installs uv, uv installs python)
 #    lang-node    ⇐ brew (via mise)
 #    lang-rust    ⇐ brew (via mise)
@@ -656,7 +655,7 @@ function fn_configure_items() {
     fn_ask_yn "Oh My Zsh ${C_D}(zsh, plugins)${C_R}" "y"
     sel[ohmyzsh]=$ASK_RESULT
 
-    fn_ask_yn "Homebrew packages ${C_D}(CLI tools: mise, nvim, tmux, tig, ...)${C_R}" "y"
+    fn_ask_yn "Homebrew packages ${C_D}(CLI tools: mise, nvim, tmux, ...)${C_R}" "y"
     sel[brew]=$ASK_RESULT
 
     if [[ ${sel[brew]} == true ]]; then
