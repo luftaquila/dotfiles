@@ -1,5 +1,5 @@
 {
-  "description": "tmux window agent-state markers, shown by dracula-tmux (scripts/agent_state.sh)",
+  "description": "tmux window agent-state markers, shown by dracula-tmux (scripts/agent_state.sh), and window subject titles (dotfiles scripts/tmux-agent-title.sh)",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -7,6 +7,10 @@
           {
             "type": "command",
             "command": "\"$HOME/.tmux/plugins/dracula-tmux/scripts/agent_state.sh\" running 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "command": "d=$(readlink \"$HOME/.tmux.conf\") && \"${d%/*}/scripts/tmux-agent-title.sh\" prompt 2>/dev/null || true"
           }
         ]
       }
@@ -57,6 +61,10 @@
           {
             "type": "command",
             "command": "\"$HOME/.tmux/plugins/dracula-tmux/scripts/agent_state.sh\" clear 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "command": "d=$(readlink \"$HOME/.tmux.conf\") && \"${d%/*}/scripts/tmux-agent-title.sh\" clear 2>/dev/null || true"
           }
         ]
       }
