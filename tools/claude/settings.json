@@ -15,7 +15,7 @@
           },
           {
             "type": "command",
-            "command": "d=$(readlink \"$HOME/.tmux.conf\") && \"${d%/*}/scripts/tmux-agent-title.sh\" prompt 2>/dev/null || true"
+            "command": "d=$(readlink \"$HOME/.tmux.conf\") && \"${d%/*}/scripts/tmux-agent-title.sh\" sync claude 2>/dev/null || true"
           }
         ]
       }
@@ -57,6 +57,10 @@
           {
             "type": "command",
             "command": "\"$HOME/.tmux/plugins/dracula-tmux/scripts/agent_state.sh\" done 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "command": "d=$(readlink \"$HOME/.tmux.conf\") && \"${d%/*}/scripts/tmux-agent-title.sh\" sync claude 2>/dev/null || true"
           }
         ]
       }
